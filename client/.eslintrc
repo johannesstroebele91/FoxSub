@@ -1,0 +1,36 @@
+{
+  "extends": [],
+  "env": {
+    "browser": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "plugins": [
+    "@typescript-eslint/eslint-plugin",
+    "sort-imports-es6-autofix"
+  ],
+  "rules": {
+    "semi": "error",
+    "padding-line-between-statements": "warn",
+    "no-empty-function": "off",
+    "no-inferrable-types": "off",
+    "no-irregular-whitespace": "error",
+    "no-multiple-empty-lines": "error",
+    "sort-imports": [
+      2,
+      {
+        "ignoreCase": false,
+        "ignoreMemberSort": false,
+        "memberSyntaxSortOrder": [
+          "none",
+          "all",
+          "multiple",
+          "single"
+        ]
+      }
+    ]
+  }
+}
