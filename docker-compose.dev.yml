@@ -3,7 +3,6 @@ version: "3"
 services:
   db:
     image: mariadb
-    restart: always
     environment:
       MYSQL_DATABASE: 'fabulous-fox'
       # So you don't have to use root, but you can if you like
