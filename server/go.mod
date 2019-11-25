@@ -1,5 +1,3 @@
-module fabulous-fox/server
+module fabulous-fox
 
-go 1.12
-
-require rsc.io/quote v1.5.2
+go 1.13
