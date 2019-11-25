@@ -2,7 +2,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: {
-    'app': './src/main.ts'
+    main: './src/main.ts'
   },
   resolve: {
     extensions: ['.ts', '.js']
@@ -11,7 +11,8 @@ module.exports = {
     rules: [
       {
         test: /\.ts$/,
-        use: ['ts-loader', 'angular2-template-loader']
+        use: ['ts-loader', 'angular2-template-loader'],
+        exclude: [/node_modules/]
       },
       {
         test: /[\/\\]@angular[\/\\]core[\/\\].+\.js$/,

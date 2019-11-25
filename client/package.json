@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --mode development",
+    "start": "webpack-dev-server --history-api-fallback --mode development",
     "build": "webpack"
   },
   "keywords": [],
