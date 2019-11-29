@@ -9,7 +9,7 @@ import (
 
 var schema = `
 CREATE TABLE user (
-	userID INTEGER UNIQUE NOT NULL,
+	userID INTEGER PRIMARY KEY,
     first_name VARCHAR(255) NOT NULL,
     last_name VARCHAR(255),
     email VARCHAR(255) UNIQUE NOT NULL,
