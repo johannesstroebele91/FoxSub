@@ -1,4 +1,4 @@
-FROM node:8-alpine AS build_baser
+FROM node:8-alpine AS build_base
 WORKDIR client
 COPY . .
 RUN npm install
@@ -8,5 +8,5 @@ FROM nginx:alpine
 
 RUN rm -rf /usr/share/nginx/html/*
 
-COPY --from=build_baser client/default.conf	/etc/nginx/conf.d
-COPY --from=build_baser client/dist/ /usr/share/nginx/html
+COPY --from=build_base client/default.conf	/etc/nginx/conf.d
+COPY --from=build_base client/dist/ /usr/share/nginx/html
