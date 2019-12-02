@@ -21,20 +21,20 @@ CREATE TABLE user (
 )
 
 CREATE TABLE subscription (
-	subscriptionID int NOT NULL UNIQUE,
-	cost decimal NOT NULL,
-	dueDate date,
-	category varchar(255) NOT NULL,
-	monthlyPayment boolean NOT NULL,
-	automaticPayment bolean NOT NULL,
+	subscriptionID INTEGER PRIMARY KEY,
+	cost DECIMAL NOT NULL,
+	dueDate DATE,
+	monthlyPayment BOOLEAN NOT NULL,
+	automaticPayment BOOLEAN NOT NULL,
 	FOREIGN KEY (userID) REFERENCES user(userID),
 	FOREIGN KEY (serviceID) REFERENCES service(serviceID)
 );
 
 CREATE TABLE service (
-	serviceID int NOT NULL UNIQUE,
-	name varchar(255) NOT NULL,
-	imageUrl varchar(255) NOT NULL
+	serviceID INTEGER PRIMARY KEY,
+	name VARCHAR(255) NOT NULL,
+	imageUrl VARCHAR(255) NOT NULL,
+	category VARCHAR(255) NOT NULL
 )`
 
 type User struct {
@@ -51,7 +51,6 @@ type User struct {
 type Subscription struct {
 	Cost             float32   `db:"cost"`
 	DueDate          time.Time `db:"dueDate"`
-	Category         string    `db:"category"`
 	MonthlyPayment   bool      `db:"monthlyPayment"`
 	AutomaticPayment bool      `db:"automaticPayment"`
 	UserID           uint16    `db:"userID"`
@@ -61,4 +60,5 @@ type Subscription struct {
 type Service struct {
 	Name     string `db:"name"`
 	ImageUrl string `db:"imageUrl"`
+	Category         string    `db:"category"`
 }
