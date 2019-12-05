@@ -8,34 +8,37 @@ import (
 )
 
 var schema = `
-CREATE TABLE user (
-	userID INTEGER PRIMARY KEY,
-    first_name VARCHAR(255) NOT NULL,
-    last_name VARCHAR(255),
-    email VARCHAR(255) UNIQUE NOT NULL,
-	password VARCHAR(255) NOT NULL,
-	goal DECIMAL,
-	monthlyCumulatedPayment DECIMAL,
-	nextDueDate DATETIME,
-	subscriptionCounter INTEGER
-)
-
-CREATE TABLE subscription (
-	subscriptionID INTEGER PRIMARY KEY,
-	cost DECIMAL NOT NULL,
-	dueDate DATE,
-	monthlyPayment BOOLEAN NOT NULL,
-	automaticPayment BOOLEAN NOT NULL,
-	FOREIGN KEY (userID) REFERENCES user(userID),
-	FOREIGN KEY (serviceID) REFERENCES service(serviceID)
+CREATE TABLE IF NOT EXISTS user (
+                      userID INTEGER PRIMARY KEY,
+                      first_name VARCHAR(255) NOT NULL,
+                      last_name VARCHAR(255),
+                      email VARCHAR(255) UNIQUE NOT NULL,
+                      password VARCHAR(255) NOT NULL,
+                      goal DECIMAL,
+                      monthlyCumulatedPayment DECIMAL,
+                      nextDueDate DATETIME,
+                      subscriptionCounter INTEGER
 );
 
-CREATE TABLE service (
-	serviceID INTEGER PRIMARY KEY,
-	name VARCHAR(255) NOT NULL,
-	imageUrl VARCHAR(255) NOT NULL,
-	category VARCHAR(255) NOT NULL
-)`
+CREATE TABLE IF NOT EXISTS service (
+                         serviceID INTEGER PRIMARY KEY,
+                         name VARCHAR(255) NOT NULL,
+                         imageUrl VARCHAR(255) NOT NULL,
+                         category VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS subscription (
+                              subscriptionID INTEGER PRIMARY KEY,
+                              cost DECIMAL NOT NULL,
+                              dueDate DATE,
+                              monthlyPayment BOOLEAN NOT NULL,
+                              automaticPayment BOOLEAN NOT NULL,
+                              userID INTEGER,
+                              serviceID INTEGER,
+                              FOREIGN KEY (userID) REFERENCES user(userID),
+                              FOREIGN KEY (serviceID) REFERENCES service(serviceID)
+);
+`
 
 type User struct {
 	FirstName               string    `db:"first_name"`
