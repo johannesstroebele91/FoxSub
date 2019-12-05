@@ -1,0 +1,10 @@
+<div id="header">
+    <div><a>Logo</a></div>
+    <div class="material-icons"  (click)="clickMenu()">menu</div>
+    <div id="navigation" *ngIf="showMenu">
+        <a>Dashboard</a>
+        <a routerLink="subscriptions" routerLinkActive="">Subscriptions</a>
+        <a>Add subscription</a>
+        <a>Profile</a>
+    </div>
+</div>

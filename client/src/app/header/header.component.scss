@@ -1,0 +1,10 @@
+@import '~material-icons/iconfont/material-icons.scss';
+
+#header div {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: stretch;
+  align-content: stretch;
+}
