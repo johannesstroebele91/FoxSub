@@ -60,5 +60,5 @@ type Subscription struct {
 type Service struct {
 	Name     string `db:"name"`
 	ImageUrl string `db:"imageUrl"`
-	Category         string    `db:"category"`
+	Category string `db:"category"`
 }
