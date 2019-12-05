@@ -9,7 +9,7 @@ import (
 
 var schema = `
 CREATE TABLE user (
-	userID INTEGER UNIQUE NOT NULL,
+	userID INTEGER PRIMARY KEY,
     first_name VARCHAR(255) NOT NULL,
     last_name VARCHAR(255),
     email VARCHAR(255) UNIQUE NOT NULL,
@@ -18,7 +18,24 @@ CREATE TABLE user (
 	monthlyCumulatedPayment DECIMAL,
 	nextDueDate DATETIME,
 	subscriptionCounter INTEGER
-);`
+)
+
+CREATE TABLE subscription (
+	subscriptionID INTEGER PRIMARY KEY,
+	cost DECIMAL NOT NULL,
+	dueDate DATE,
+	monthlyPayment BOOLEAN NOT NULL,
+	automaticPayment BOOLEAN NOT NULL,
+	FOREIGN KEY (userID) REFERENCES user(userID),
+	FOREIGN KEY (serviceID) REFERENCES service(serviceID)
+);
+
+CREATE TABLE service (
+	serviceID INTEGER PRIMARY KEY,
+	name VARCHAR(255) NOT NULL,
+	imageUrl VARCHAR(255) NOT NULL,
+	category VARCHAR(255) NOT NULL
+)`
 
 type User struct {
 	FirstName               string    `db:"first_name"`
@@ -29,4 +46,19 @@ type User struct {
 	MonthlyCumulatedPayment float32   `db:"monthlyCumulatedPayment"`
 	NextDueDate             time.Time `db:"nextDueDate"`
 	SubscriptionCounter     uint16    `db:"subscriptionCounter"`
+}
+
+type Subscription struct {
+	Cost             float32   `db:"cost"`
+	DueDate          time.Time `db:"dueDate"`
+	MonthlyPayment   bool      `db:"monthlyPayment"`
+	AutomaticPayment bool      `db:"automaticPayment"`
+	UserID           uint16    `db:"userID"`
+	ServiceID        uint16    `db:"serviceID"`
+}
+
+type Service struct {
+	Name     string `db:"name"`
+	ImageUrl string `db:"imageUrl"`
+	Category         string    `db:"category"`
 }
