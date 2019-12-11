@@ -7,36 +7,17 @@ import (
 	_ "github.com/lib/pq"
 )
 
-var schema = `
+var UserSchema = `
 CREATE TABLE IF NOT EXISTS user (
-                      userID INTEGER PRIMARY KEY,
-                      first_name VARCHAR(255) NOT NULL,
-                      last_name VARCHAR(255),
-                      email VARCHAR(255) UNIQUE NOT NULL,
-                      password VARCHAR(255) NOT NULL,
-                      goal DECIMAL,
-                      monthlyCumulatedPayment DECIMAL,
-                      nextDueDate DATETIME,
-                      subscriptionCounter INTEGER
-);
-
-CREATE TABLE IF NOT EXISTS service (
-                         serviceID INTEGER PRIMARY KEY,
-                         name VARCHAR(255) NOT NULL,
-                         imageUrl VARCHAR(255) NOT NULL,
-                         category VARCHAR(255) NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS subscription (
-                              subscriptionID INTEGER PRIMARY KEY,
-                              cost DECIMAL NOT NULL,
-                              dueDate DATE,
-                              monthlyPayment BOOLEAN NOT NULL,
-                              automaticPayment BOOLEAN NOT NULL,
-                              userID INTEGER,
-                              serviceID INTEGER,
-                              FOREIGN KEY (userID) REFERENCES user(userID),
-                              FOREIGN KEY (serviceID) REFERENCES service(serviceID)
+    userID VARCHAR(36) PRIMARY KEY,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255),
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    goal DECIMAL,
+    monthlyCumulatedPayment DECIMAL,
+    nextDueDate DATETIME,
+    subscriptionCounter INTEGER
 );
 `
 
@@ -51,6 +32,18 @@ type User struct {
 	SubscriptionCounter     uint16    `db:"subscriptionCounter"`
 }
 
+var SubscriptionSchema = `
+CREATE TABLE IF NOT EXISTS subscription (
+    subscriptionID INTEGER PRIMARY KEY,
+    cost DECIMAL NOT NULL,
+    dueDate DATE,
+    monthlyPayment BOOLEAN NOT NULL,
+    automaticPayment BOOLEAN NOT NULL,
+    userID VARCHAR(36),
+    FOREIGN KEY (userID) REFERENCES user(userID)
+);
+`
+
 type Subscription struct {
 	Cost             float32   `db:"cost"`
 	DueDate          time.Time `db:"dueDate"`
@@ -60,8 +53,16 @@ type Subscription struct {
 	ServiceID        uint16    `db:"serviceID"`
 }
 
+var ServiceSchema = `
+`
+
 type Service struct {
 	Name     string `db:"name"`
-	ImageUrl string `db:"imageUrl"`
+	ImageURL string `db:"imageUrl"`
 	Category string `db:"category"`
+}
+
+type Credentials struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }
