@@ -8,6 +8,4 @@ import {Component, Input} from '@angular/core';
 export class RowComponent {
     @Input() rows : any[];
     row : any[];
-    // @Input() firstRow : any;
-    // @Input() secondRow : any;
 }
