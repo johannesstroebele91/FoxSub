@@ -3,6 +3,9 @@ const webpack = require('webpack');
 const path = require('path');
 
 module.exports = {
+  devServer: {
+    port: 4200
+  },
   entry: {
     main: './src/main.ts'
   },
@@ -51,4 +54,4 @@ module.exports = {
       /\@angular(\\|\/)core(\\|\/)f?esm5/, path.join(__dirname, './src')
   )
   ]
-}
+};

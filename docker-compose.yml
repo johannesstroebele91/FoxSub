@@ -14,7 +14,7 @@ services:
   frontend:
     build:
       context: ./client
-      
+
   backend:
     build:
       context: ./server
