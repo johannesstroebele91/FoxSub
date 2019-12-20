@@ -6,6 +6,7 @@ import { Component } from '@angular/core';
     styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
+
     showMenu: boolean = true;
 
     clickMenu(){

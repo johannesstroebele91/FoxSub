@@ -1,18 +1,43 @@
 export class Subscription {
+    constructor(private _subscriptionId: number, private _cost: number, private _dueData: Date, private _monthlyPayment: boolean, private _automaticPayment: boolean) {
+    }
+    get subscriptionId(): number {
+        return this._subscriptionId;
+    }
 
-    subscriptionId: number;
-    cost: number;
-    dueData: Date;
-    monthlyPayment: boolean;
-    automaticPayment: boolean;
-    serviceId: number;
+    set subscriptionId(value: number) {
+        this._subscriptionId = value;
+    }
 
-    constructor(subscriptionId: number, cost: number, dueData: Date, monthlyPayment: boolean, automaticPayment: boolean, serviceId: number) {
-        this.subscriptionId = subscriptionId;
-        this.cost = cost;
-        this.dueData = dueData;
-        this.monthlyPayment = monthlyPayment;
-        this.automaticPayment = automaticPayment;
-        this.serviceId = serviceId;
+    get cost(): number {
+        return this._cost;
+    }
+
+    set cost(value: number) {
+        this._cost = value;
+    }
+
+    get dueData(): Date {
+        return this._dueData;
+    }
+
+    set dueData(value: Date) {
+        this._dueData = value;
+    }
+
+    get monthlyPayment(): boolean {
+        return this._monthlyPayment;
+    }
+
+    set monthlyPayment(value: boolean) {
+        this._monthlyPayment = value;
+    }
+
+    get automaticPayment(): boolean {
+        return this._automaticPayment;
+    }
+
+    set automaticPayment(value: boolean) {
+        this._automaticPayment = value;
     }
 }

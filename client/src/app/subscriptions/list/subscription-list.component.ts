@@ -7,11 +7,11 @@ import {Subscription} from "../../../../shared/models/Subscription";
     styleUrls: ['./subscription-list.component.scss']
 })
 export class SubscriptionListComponent implements OnInit {
-    spotifySubscription: Subscription = new Subscription(1,5.99,new Date(), true, true, 1);
-    netflixSubscription: Subscription = new Subscription(1,5.99,new Date(), true, true, 1);
-    adobeSubscription: Subscription = new Subscription(1,5.99,new Date(), true, true, 1);
-    fit4funubscription: Subscription = new Subscription(1,5.99,new Date(), true, true, 1);
-    officeSubscription: Subscription = new Subscription(1,5.99,new Date(), true, true, 1);
+    spotifySubscription: Subscription = new Subscription(1,5.99,new Date(), true, true);
+    netflixSubscription: Subscription = new Subscription(1,5.99,new Date(), true, true);
+    adobeSubscription: Subscription = new Subscription(1,5.99,new Date(), true, true);
+    fit4funubscription: Subscription = new Subscription(1,5.99,new Date(), true, true);
+    officeSubscription: Subscription = new Subscription(1,5.99,new Date(), true, true);
 
     subscriptions: Subscription[] = [this.spotifySubscription, this.netflixSubscription, this.adobeSubscription, this.fit4funubscription, this.officeSubscription];
 

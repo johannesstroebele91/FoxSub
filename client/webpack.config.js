@@ -1,6 +1,9 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
+  devServer: {
+    port: 4200
+  },
   entry: {
     main: './src/main.ts'
   },
@@ -32,4 +35,4 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({ template: './src/index.html' })
   ]
-}
+};
