@@ -20,9 +20,10 @@ func main() {
 	// err = db.Ping()
 	fmt.Println("err", err)
 
-	db.MustExec(UserSchema)
+	db.MustExec(UsersSchema)
 	// db.MustExec(ServiceSchema)
-	db.MustExec(SubscriptionSchema)
+	db.MustExec(SubscriptionsSchema)
+	db.MustExec(SessionsSchema)
 
 	fmt.Println("db :", db)
 
@@ -34,7 +35,7 @@ func main() {
 	apiSubrouter := router.PathPrefix("/api").Subrouter()
 	v1Subrouter := apiSubrouter.PathPrefix("/v1").Subrouter()
 	v1Subrouter.Use(Authenticator())
-	v1Subrouter.HandleFunc("/test", Test).Methods("GET")
+	v1Subrouter.HandleFunc("/test", AuthTest).Methods("GET")
 	apiSubrouter.HandleFunc("/signin", signin).Methods("POST")
 	apiSubrouter.HandleFunc("/register", Register).Methods("POST")
 
@@ -56,14 +57,31 @@ func signin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	expectedPassword := "password"
+	row := db.QueryRowx("SELECT * FROM users WHERE email=?", credentials.Email)
+	var user User
+	row.StructScan(&user)
+
+	expectedPassword := user.Password
 
 	if expectedPassword != credentials.Password {
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
 
+	createSession := `INSERT INTO sessions (ID, user_id) VALUES (?, ?)`
+
 	sessionToken := uuid.NewV4().String()
+
+	results := db.MustExec(createSession, sessionToken, user.ID)
+
+	affectedRows, err := results.RowsAffected()
+
+	if err != nil || affectedRows <= 0 {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	fmt.Print(affectedRows)
 
 	http.SetCookie(w, &http.Cookie{
 		Name:    "session_token",
@@ -91,23 +109,23 @@ func Authenticator() func(http.Handler) http.Handler {
 				return
 			}
 
-			next.ServeHTTP(w, r)<
+			next.ServeHTTP(w, r)
 		})
 	}
 }
 
-func Test(w http.ResponseWriter, r *http.Request) {
+func AuthTest(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("a"))
 }
 
 func Register(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("thereyougo", db)
 	fmt.Println("")
 
-	createuser := `INSERT INTO user (userID, first_name, email, password) VALUES (UUID(), ?, ?, ?)`
+	createUser := `INSERT INTO users (id, first_name, email, password) VALUES (UUID(), ?, ?, ?)`
 	var credentials Credentials
 
 	err := json.NewDecoder(r.Body).Decode(&credentials)
+	fmt.Println(&credentials)
 
 	if err != nil || credentials.Email == "" || credentials.Password == "" {
 		fmt.Println("noooO", err, credentials)
@@ -116,8 +134,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	results := db.MustExec(createuser, "myuser", "email", "password")
-	// fmt.Println("hihi", results)
+	results := db.MustExec(createUser, "myuser", credentials.Email, credentials.Password)
 
 	if results == nil {
 		w.WriteHeader(http.StatusUnprocessableEntity)
