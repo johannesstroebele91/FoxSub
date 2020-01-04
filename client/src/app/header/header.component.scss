@@ -1,17 +1,39 @@
 @import '~material-icons/iconfont/material-icons.scss';
 
+// General
+#header {
+  margin: 0;
+}
+
 // Mobile
 @media (max-width: 575px) {
-
+  #menuDesktop {
+    display: none;
+  }
+  #hamburger {
+    display: block;
+  }
+  #mobileMenu {
+    display: block;
+  }
 }
 
 // Desktop
 @media (min-width: 576px) {
-  max-width: 900px;
-}
-
-#headerBg {
-  height: 90px;
-  background: #1D1D1D;
+  #menuDesktop {
+    display: block;
+  }
+  #menuMobile {
+    display: none;
+  }
+  #hamburger {
+    display: none;
+  }
+  body {
+    margin: 0 auto;
+  }
+  .container{
+    max-width: 900px;
+  }
 }
 

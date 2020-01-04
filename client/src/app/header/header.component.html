@@ -1,19 +1,22 @@
-<div id="headerBg"></div>
-<div class="container"><
+<div class="container">
     <div id="header" class="row">
+        <!-- Logo -->
         <div>
             <!-- TODO <img src="../../assets/logo.svg" alt="Logo" height="30" width="30"> später ersetzen für nächste Zeile-->
             <a routerLink="" routerLinkActive=""><span class="material-icons">assignment</span></a>
             <span>Abofy</span>
         </div>
-        <div>
-            <div class="material-icons"  (click)="clickMenu()">menu</div>
-            <div id="menu" *ngIf="showMenu">
-                <a><span class="material-icons">dashboard</span>Dashboard</a>
-                <a routerLink="subscriptions" routerLinkActive=""><span class="material-icons">list</span>Subscriptions</a>
-                <a><span class="material-icons">add</span>Add subscription</a>
-                <a><span class="material-icons">person</span>Profile</a>
-            </div>
+        <!-- Desktop Menu -->
+        <div id="hamburger" class="material-icons"  (click)="clickMenu()">menu</div>
+        <div id="menuDesktop">
+            <a><span class="material-icons">dashboard</span>Dashboard</a>
+            <a routerLink="subscriptions" routerLinkActive=""><span class="material-icons">list</span>Subscriptions</a>
+            <a><span class="material-icons">person</span>Profile</a>
         </div>
+    </div>
+    <div *ngIf="!mobileMenu" id="menuMobile" >
+        <a><span class="material-icons">dashboard</span>Dashboard</a>
+        <a routerLink="subscriptions" routerLinkActive=""><span class="material-icons">list</span>Subscriptions</a>
+        <a><span class="material-icons">person</span>Profile</a>
     </div>
 </div>

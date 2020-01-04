@@ -1,9 +1,6 @@
-// TODO fixen, weil global style nicht funktioniert
-body {
+// ng-deep needed for editing body
+::ng-deep body {
     margin: 0;
-    padding: 0;
-}
-
-p {
+    background: #121212;
     color: white;
 }
