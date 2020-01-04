@@ -2,7 +2,6 @@
 
 // General
 #header {
-  margin: 0;
   display: flex;
   justify-content: space-between;
 }
@@ -10,7 +9,7 @@
   vertical-align: middle;
   padding: 0 6px 0 0 ;
 }
-#header a {
+.container a {
   color: white;
   // text-decoration: none; // TODO remove later
 }
@@ -22,13 +21,17 @@
   #hamburger {
     display: block;
   }
-  #mobileMenu {
+  #menuMobile {
+    padding-top: 12px;
     display: block;
   }
-  #mobileMenu a {
+  #menuMobile a {
+    padding-top: 18px;
     display: block;
   }
-  #mobileMenu span {
+  #menuMobile span {
+    padding: 0 6px 0 0 ;
+    display: inline-block;
     vertical-align: middle;
   }
 }
@@ -44,14 +47,10 @@
   #hamburger {
     display: none;
   }
-  body {
-    margin: 0 auto;
-  }
   #menuDesktop a {
     padding: 0 18px;
     display: inline-block;
   }
-
   #menuDesktop span {
     padding: 0 6px 0 0 ;
     display: inline-block;
