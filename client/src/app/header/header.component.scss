@@ -3,8 +3,17 @@
 // General
 #header {
   margin: 0;
+  display: flex;
+  justify-content: space-between;
 }
-
+#logo span {
+  vertical-align: middle;
+  padding: 0 6px 0 0 ;
+}
+#header a {
+  color: white;
+  // text-decoration: none; // TODO remove later
+}
 // Mobile
 @media (max-width: 575px) {
   #menuDesktop {
@@ -16,12 +25,18 @@
   #mobileMenu {
     display: block;
   }
+  #mobileMenu a {
+    display: block;
+  }
+  #mobileMenu span {
+    vertical-align: middle;
+  }
 }
 
 // Desktop
 @media (min-width: 576px) {
   #menuDesktop {
-    display: block;
+    display: inline-block;
   }
   #menuMobile {
     display: none;
@@ -32,8 +47,15 @@
   body {
     margin: 0 auto;
   }
-  .container{
-    max-width: 900px;
+  #menuDesktop a {
+    padding: 0 18px;
+    display: inline-block;
+  }
+
+  #menuDesktop span {
+    padding: 0 6px 0 0 ;
+    display: inline-block;
   }
 }
+
 

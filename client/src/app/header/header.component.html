@@ -1,7 +1,7 @@
 <div class="container">
     <div id="header" class="row">
         <!-- Logo -->
-        <div>
+        <div id="logo">
             <!-- TODO <img src="../../assets/logo.svg" alt="Logo" height="30" width="30"> später ersetzen für nächste Zeile-->
             <a routerLink="" routerLinkActive=""><span class="material-icons">assignment</span></a>
             <span>Abofy</span>
@@ -9,9 +9,9 @@
         <!-- Desktop Menu -->
         <div id="hamburger" class="material-icons"  (click)="clickMenu()">menu</div>
         <div id="menuDesktop">
-            <a><span class="material-icons">dashboard</span>Dashboard</a>
-            <a routerLink="subscriptions" routerLinkActive=""><span class="material-icons">list</span>Subscriptions</a>
-            <a><span class="material-icons">person</span>Profile</a>
+            <a>Dashboard</a>
+            <a routerLink="subscriptions" routerLinkActive="">Subscriptions</a>
+            <a>Profile</a>
         </div>
     </div>
     <div *ngIf="!mobileMenu" id="menuMobile" >
