@@ -1,14 +1,17 @@
 @import '~material-icons/iconfont/material-icons.scss';
 
-#header {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-  align-items: stretch;
-  align-content: stretch;
+// Mobile
+@media (max-width: 575px) {
+
 }
 
-#header h1 {
-  display: inline;
+// Desktop
+@media (min-width: 576px) {
+  max-width: 900px;
 }
+
+#headerBg {
+  height: 90px;
+  background: #1D1D1D;
+}
+

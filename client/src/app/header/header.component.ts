@@ -9,6 +9,8 @@ export class HeaderComponent {
 
     showMenu: boolean = true;
 
+
+
     clickMenu(){
         this.showMenu = !this.showMenu;
     }
