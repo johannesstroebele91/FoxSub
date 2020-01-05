@@ -1,67 +1,18 @@
-export class User {
-    get subscriptionCounter(): number {
-        return this._subscriptionCounter;
-    }
+export interface User {
 
-    set subscriptionCounter(value: number) {
-        this._subscriptionCounter = value;
-    }
-    get userId(): number {
-        return this._userId;
-    }
+    id?: string;
 
-    set userId(value: number) {
-        this._userId = value;
-    }
+    firstName?: string;
 
-    get lastName(): string {
-        return this._lastName;
-    }
+    lastName?: string;
 
-    set lastName(value: string) {
-        this._lastName = value;
-    }
+    email?: string;
 
-    get firstName(): string {
-        return this._firstName;
-    }
+    goal?: number;
 
-    set firstName(value: string) {
-        this._firstName = value;
-    }
+    montlyCumulatedPayment?: number;
 
-    get email(): string {
-        return this._email;
-    }
+    nextDueDate?: number;
 
-    set email(value: string) {
-        this._email = value;
-    }
-
-    get password(): string {
-        return this._password;
-    }
-
-    set password(value: string) {
-        this._password = value;
-    }
-
-    get monthlyCummulatedPayment(): number {
-        return this._monthlyCummulatedPayment;
-    }
-
-    set monthlyCummulatedPayment(value: number) {
-        this._monthlyCummulatedPayment = value;
-    }
-
-    get nextDueDate(): Date {
-        return this._nextDueDate;
-    }
-
-    set nextDueDate(value: Date) {
-        this._nextDueDate = value;
-    }
-
-    constructor(private _userId: number, private _lastName: string, private _firstName: string, private _email: string, private _password: string, goal: number, private _monthlyCummulatedPayment: number, private _nextDueDate: Date, private _subscriptionCounter: number) {
-    }
+    subscriptionCounter?: number;
 }
