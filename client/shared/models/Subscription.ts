@@ -1,3 +1,5 @@
+import { Service } from "./Service";
+
 export interface Subscription {
 
     id?: string;
@@ -9,4 +11,6 @@ export interface Subscription {
     monthlyPayment?: boolean;
 
     automaticPayment?: boolean;
+
+    service?: Service;
 }
