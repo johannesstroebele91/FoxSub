@@ -4,7 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { SubscriptionListComponent } from './subscriptions/list/subscription-list.component';
-import { SubscriptionListExpansionComponentComponent} from "./subscriptions/list/expansion/subscription-list-expansion.component";
+import { SubscriptionListElementComponent} from "./subscriptions/list/expansion/subscription-list-element.component";
 import { HeaderComponent} from "./header/header.component";
 
 @NgModule({
@@ -16,7 +16,7 @@ import { HeaderComponent} from "./header/header.component";
   declarations: [
     AppComponent,
     SubscriptionListComponent,
-    SubscriptionListExpansionComponentComponent,
+    SubscriptionListElementComponent,
     HeaderComponent
   ],
   bootstrap: [AppComponent]

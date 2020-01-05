@@ -8,18 +8,12 @@ import {Subscription} from "../../../../shared/models/Subscription";
 })
 export class SubscriptionListComponent {
 
-    displayDetails: boolean = false;
-
     subscriptions: Subscription[] = [
-        {cost: 5, dueDate: 2000, monthlyPayment: true, automaticPayment: true, service: { name: 'Netflix', category: 'Entertainment' }},
-        {cost: 5, dueDate: 2000, monthlyPayment: true, automaticPayment: true, service: { name: 'Netflix', category: 'Entertainment' }},
-        {cost: 10, dueDate: 2000, monthlyPayment: true, automaticPayment: true, service: { name: 'Netflix', category: 'Entertainment' }},
-        {cost: 10, dueDate: 2000, monthlyPayment: true, automaticPayment: true, service: { name: 'Netflix', category: 'Entertainment' }},
-        {cost: 5, dueDate: 2000, monthlyPayment: true, automaticPayment: true, service: { name: 'Netflix', category: 'Entertainment' }},
-        {cost: 5, dueDate: 2000, monthlyPayment: true, automaticPayment: true, service: { name: 'Netflix', category: 'Entertainment' }},
+        {id: '1', cost: 5, dueDate: 2000, monthlyPayment: true, paymentMethod: 'PayPal', automaticPayment: true, service: { name: 'Netflix', category: 'Entertainment' }},
+        {id: '2', cost: 5, dueDate: 2000, monthlyPayment: true, paymentMethod: 'PayPal', automaticPayment: true, service: { name: 'Netflix', category: 'Entertainment' }},
+        {id: '3', cost: 10, dueDate: 2000, monthlyPayment: true, paymentMethod: 'PayPal', automaticPayment: true, service: { name: 'Netflix', category: 'Entertainment' }},
+        {id: '4', cost: 10, dueDate: 2000, monthlyPayment: true, paymentMethod: 'PayPal', automaticPayment: true, service: { name: 'Netflix', category: 'Entertainment' }},
+        {id: '5', cost: 5, dueDate: 2000, monthlyPayment: true, paymentMethod: 'PayPal', automaticPayment: true, service: { name: 'Netflix', category: 'Entertainment' }},
+        {id: '6', cost: 5, dueDate: 2000, monthlyPayment: true, paymentMethod: 'PayPal', automaticPayment: true, service: { name: 'Netflix', category: 'Entertainment' }},
     ];
-
-    clickDetails(){
-        this.displayDetails = !this.displayDetails;
-    }
 }

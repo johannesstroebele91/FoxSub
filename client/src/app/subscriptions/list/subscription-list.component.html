@@ -1,13 +1,9 @@
 <app-header></app-header>
 <div class="container">
-    <p>{{subscriptions.length}} subscriptions</p>
+    <p id="button-add-subscription">Add Subscription</p>
+    <h1>{{subscriptions.length}} Subscriptions</h1>
+
     <div class="subscription" *ngFor="let subscription of subscriptions">
-        <div id="details" class="material-icons"  (click)="clickDetails()">keyboard_arrow_down</div>
-        <div>
-            <div>{{subscription.service.name}}</div>
-            <div>{{subscription.dueDate}}</div>
-            <div>{{subscription.cost}} Euro</div>
-        </div>
-        <subscription-list-expansion *ngIf="displayDetails" [subscriptions]="subscriptions"></subscription-list-expansion>
+        <subscription-list-expansion [subscription]="subscription"></subscription-list-expansion>
     </div>
 </div>

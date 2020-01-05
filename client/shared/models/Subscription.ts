@@ -8,6 +8,8 @@ export interface Subscription {
 
     dueDate?: number;
 
+    paymentMethod?: string;
+
     monthlyPayment?: boolean;
 
     automaticPayment?: boolean;

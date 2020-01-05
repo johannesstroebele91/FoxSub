@@ -1,7 +1,12 @@
 .subscription {
-  padding-top: 18px;
+  padding-top: 12px;
 }
-#details {
+#button-add-subscription {
   float: right;
-  margin-top: -6px;
+  margin-top: 18px;
+  padding: 12px 24px;
+  font-weight: 500;
+  border-radius: 2px;
+  background: #D7303E;
+  color: white;
 }
