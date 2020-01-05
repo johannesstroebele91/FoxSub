@@ -1,8 +1,13 @@
 <app-header></app-header>
 <div class="container">
-    <div *ngFor="let subscription of subscriptions">{{subscription.cost}}</div>
-    <div class="row">
-        <div class="col-xs-6">asdasdasdasd</div>
-        <div class="col-xs-6">asdasdasdasd</div>
+    <p>{{subscriptions.length}} subscriptions</p>
+    <div class="subscription" *ngFor="let subscription of subscriptions">
+        <div id="details" class="material-icons"  (click)="clickDetails()">keyboard_arrow_down</div>
+        <div>
+            <div>{{subscription.service.name}}</div>
+            <div>{{subscription.dueDate}}</div>
+            <div>{{subscription.cost}} Euro</div>
+        </div>
+        <subscription-list-expansion *ngIf="displayDetails" [subscriptions]="subscriptions"></subscription-list-expansion>
     </div>
 </div>

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {Subscription} from "../../../../shared/models/Subscription";
 
 @Component({
@@ -6,16 +6,20 @@ import {Subscription} from "../../../../shared/models/Subscription";
     templateUrl: './subscription-list.component.html',
     styleUrls: ['./subscription-list.component.scss']
 })
-export class SubscriptionListComponent implements OnInit {
-    spotifySubscription: Subscription = new Subscription(1,5.99,new Date(), true, true);
-    netflixSubscription: Subscription = new Subscription(1,5.99,new Date(), true, true);
-    adobeSubscription: Subscription = new Subscription(1,5.99,new Date(), true, true);
-    fit4funubscription: Subscription = new Subscription(1,5.99,new Date(), true, true);
-    officeSubscription: Subscription = new Subscription(1,5.99,new Date(), true, true);
+export class SubscriptionListComponent {
 
-    subscriptions: Subscription[] = [this.spotifySubscription, this.netflixSubscription, this.adobeSubscription, this.fit4funubscription, this.officeSubscription];
+    displayDetails: boolean = false;
 
-    ngOnInit(): void {
-        console.log(this.subscriptions)
+    subscriptions: Subscription[] = [
+        {cost: 5, dueDate: 2000, monthlyPayment: true, automaticPayment: true, service: { name: 'Netflix', category: 'Entertainment' }},
+        {cost: 5, dueDate: 2000, monthlyPayment: true, automaticPayment: true, service: { name: 'Netflix', category: 'Entertainment' }},
+        {cost: 10, dueDate: 2000, monthlyPayment: true, automaticPayment: true, service: { name: 'Netflix', category: 'Entertainment' }},
+        {cost: 10, dueDate: 2000, monthlyPayment: true, automaticPayment: true, service: { name: 'Netflix', category: 'Entertainment' }},
+        {cost: 5, dueDate: 2000, monthlyPayment: true, automaticPayment: true, service: { name: 'Netflix', category: 'Entertainment' }},
+        {cost: 5, dueDate: 2000, monthlyPayment: true, automaticPayment: true, service: { name: 'Netflix', category: 'Entertainment' }},
+    ];
+
+    clickDetails(){
+        this.displayDetails = !this.displayDetails;
     }
 }
