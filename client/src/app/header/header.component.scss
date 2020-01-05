@@ -1,0 +1,69 @@
+// General
+#headerBG {
+  background: #242224;
+  height: 60px;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+#header {
+  display: flex;
+  justify-content: space-between;
+}
+#header a {
+  color: white;
+  // text-decoration: none; // TODO remove later
+}
+#logo span {
+  vertical-align: middle;
+  padding: 0 6px 0 0 ;
+}
+
+// Mobile
+@media (max-width: 575px) {
+  #menuDesktop {
+    display: none;
+  }
+  #hamburger {
+    display: block;
+  }
+  // TODO fix mobile navigation background
+  #menuMobile {
+    padding-top: 12px;
+    display: block;
+    background: #242224;
+  }
+  #menuMobile a {
+    padding-top: 18px;
+    display: block;
+  }
+  #menuMobile span {
+    padding: 0 6px 0 0 ;
+    display: inline-block;
+    vertical-align: middle;
+  }
+}
+
+// Desktop
+@media (min-width: 576px) {
+  #menuDesktop {
+    display: inline-block;
+  }
+  #menuMobile {
+    display: none;
+  }
+  #hamburger {
+    display: none;
+  }
+  #menuDesktop a {
+    padding: 0 18px;
+    display: inline-block;
+  }
+  #menuDesktop span {
+    padding: 0 6px 0 0 ;
+    display: inline-block;
+  }
+}
+
+
