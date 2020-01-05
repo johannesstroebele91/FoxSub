@@ -6,4 +6,4 @@ docker-compose -f docker-compose.dev.yml up
 
 #### Endpoints
 ``` /api/v1/signin ```
-* POST {username: <username>, password: <password>}
+* POST {username: 'username', password: 'password'}
