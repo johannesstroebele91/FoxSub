@@ -1,0 +1,24 @@
+<div class="row">
+    <div class="col-xs-11">
+        <p>{{subscription.service.name}}</p>
+        <p>{{subscription.dueDate}}</p>
+        <p>{{subscription.cost}} Euro</p>
+        <div *ngIf="isExpanded">
+            <p *ngIf="subscription.monthlyPayment">Monthly payment</p>
+            <p *ngIf="!subscription.monthlyPayment">Yearly payment</p>
+            <p>{{subscription.paymentMethod}}</p>
+
+            // TODO fix position of edit button
+            <div class="row between-xs">
+                <div class="col-xs-11" >
+                    <p *ngIf="subscription.automaticPayment">Automatic renewal</p>
+                    <p *ngIf="!subscription.automaticPayment">Manual renewal</p>
+                </div>
+                <div class="material-icons button-edit col-xs-1"  (click)="clickEdit()">create</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-1">
+        <div class="material-icons expansion-arrow"  (click)="clickDetails()">keyboard_arrow_down</div>
+    </div>
+</div>
