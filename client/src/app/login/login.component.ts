@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { User} from "../../../shared/models/User";
 
 @Component({
     selector: 'app-login',
@@ -8,4 +9,7 @@ import { Component } from '@angular/core';
 
 export class LoginComponent {
 
+    clickSignIn() {
+        // TODO: implement sign in with User model
+    }
 }

@@ -1,12 +1,6 @@
 .subscription {
   padding-top: 12px;
 }
-.button-add-subscription {
-  padding: 12px 24px;
-  font-weight: 500;
-  border-radius: 6px;
-  background: #D7303E;
-}
 h1{
   padding-top: 18px;
 }
@@ -17,7 +11,7 @@ h1{
 
 // Desktop
 @media (min-width: 576px) {
-  #topbar {
+  #top-bar {
     display: flex;
     justify-content: space-between;
     align-items: center;

@@ -10,6 +10,16 @@
     max-width: 720px;
     padding: 0 6%;
 }
+a {
+    color: #e8e8e8;
+}
+.button {
+    text-align: center;
+    padding: 12px 24px;
+    font-weight: 500;
+    border-radius: 6px;
+    background: #D7303E;
+}
 
 // Header for all pages and login
 .headerBackground {
@@ -20,9 +30,17 @@
     top: 0;
     left: 0;
 }
+#logo {
+    width: 90px;
+    margin: 0 auto;
+}
+#logo div:first-child {
+    margin-right: 6px;
+    text-decoration: none;
+}
+
 #logoText {
     display: inline-block;
     font-size: 18px;
     font-weight: bold;
 }
-

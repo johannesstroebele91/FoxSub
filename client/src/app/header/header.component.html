@@ -2,9 +2,9 @@
 <div class="container">
     <div id="header">
         <!-- Logo -->
-        <div id="logo">
+        <div id="logo" routerLink="" routerLinkActive="">
             <!-- TODO <img src="../../assets/logo.svg" alt="Logo" height="30" width="30"> später ersetzen für nächste Zeile-->
-            <a class="material-icons" routerLink="" routerLinkActive="">assignment</a>
+            <div class="material-icons">assignment</div>
             <div id="logoText">Abofy</div>
         </div>
         <!-- Desktop Menu -->
@@ -16,6 +16,7 @@
         </div>
     </div>
     <div *ngIf="!showMobileMenu" id="menuMobile" [ngStyle]="{'background-color': showMobileMenu ? '#242224' : 'none'}">
+        <!-- TODO implement links to other pages -->
         <a><span class="material-icons">dashboard</span>Dashboard</a>
         <a routerLink="subscriptions" routerLinkActive=""><span class="material-icons">list</span>Subscriptions</a>
         <a><span class="material-icons">person</span>Profile</a>
