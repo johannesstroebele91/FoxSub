@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS sessions (
 
 type Session struct {
 	ID     string `db:"id"`
-	UserID string `db:"user_id"`
+	UserID string `db:"userId"`
 }
 
 var CategoriesSchema = `
