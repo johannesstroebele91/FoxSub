@@ -3,10 +3,26 @@
     margin: 0;
     background: #121212;
     color: #e8e8e8;
-    font-family: Helvetica;
+    font-family: Helvetica, serif;
 }
 .container{
     position: relative;
     max-width: 720px;
-    padding: 18px 6%;
+    padding: 0 6%;
 }
+
+// Header for all pages and login
+.headerBackground {
+    background: #1C1C1C;
+    height: 60px;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+#logoText {
+    display: inline-block;
+    font-size: 18px;
+    font-weight: bold;
+}
+
