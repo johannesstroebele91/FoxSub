@@ -1,19 +1,27 @@
 // General
-#headerBG {
-  background: #242224;
+.headerBackground {
+  background: #1C1C1C;
   height: 60px;
   width: 100%;
   position: absolute;
   top: 0;
   left: 0;
 }
+.headerBackgroundMobile {
+  height: 200px;
+}
+#logoText {
+  display: inline-block;
+  font-size: 18px;
+  font-weight: bold;
+}
 #header {
   display: flex;
   justify-content: space-between;
 }
 #header a {
-  color: white;
-  // text-decoration: none; // TODO remove later
+  color: #e8e8e8;
+  text-decoration: none;
 }
 #logo span {
   vertical-align: middle;
@@ -22,21 +30,23 @@
 
 // Mobile
 @media (max-width: 575px) {
-  #menuDesktop {
+    #menuDesktop {
     display: none;
   }
   #hamburger {
     display: block;
   }
-  // TODO fix mobile navigation background
   #menuMobile {
-    padding-top: 12px;
     display: block;
-    background: #242224;
   }
-  #menuMobile a {
-    padding-top: 18px;
+  #menuMobile a:first-child {
+    padding-top: 30px;
+  }
+    #menuMobile a {
+    color: #e8e8e8;
+    text-decoration: none;
     display: block;
+    padding-top: 18px;
   }
   #menuMobile span {
     padding: 0 6px 0 0 ;
@@ -47,7 +57,10 @@
 
 // Desktop
 @media (min-width: 576px) {
-  #menuDesktop {
+  .headerBackground {
+    height: 60px;
+  }
+    #menuDesktop {
     display: inline-block;
   }
   #menuMobile {
