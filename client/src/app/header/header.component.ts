@@ -8,9 +8,9 @@ import { Component } from '@angular/core';
 
 export class HeaderComponent {
 
-    mobileMenu: boolean = true;
+    showMobileMenu: boolean = true;
 
     clickMenu(){
-        this.mobileMenu = !this.mobileMenu;
+        this.showMobileMenu = !this.showMobileMenu;
     }
 }

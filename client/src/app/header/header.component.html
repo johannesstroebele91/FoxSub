@@ -1,11 +1,11 @@
-<div id="headerBG"></div>
+<div class="headerBackground" [ngClass]="{'headerBackgroundMobile': !showMobileMenu}"></div>
 <div class="container">
     <div id="header">
         <!-- Logo -->
         <div id="logo">
             <!-- TODO <img src="../../assets/logo.svg" alt="Logo" height="30" width="30"> später ersetzen für nächste Zeile-->
             <a routerLink="" routerLinkActive=""><span class="material-icons">assignment</span></a>
-            <span>Abofy</span>
+            <div id="logoText">Abofy</div>
         </div>
         <!-- Desktop Menu -->
         <div id="hamburger" class="material-icons"  (click)="clickMenu()">menu</div>
@@ -15,7 +15,7 @@
             <a>Profile</a>
         </div>
     </div>
-    <div *ngIf="!mobileMenu" id="menuMobile" >
+    <div *ngIf="!showMobileMenu" id="menuMobile" [ngStyle]="{'background-color': showMobileMenu ? '#242224' : 'none'}">
         <a><span class="material-icons">dashboard</span>Dashboard</a>
         <a routerLink="subscriptions" routerLinkActive=""><span class="material-icons">list</span>Subscriptions</a>
         <a><span class="material-icons">person</span>Profile</a>
