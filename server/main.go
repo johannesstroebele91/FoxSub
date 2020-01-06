@@ -21,7 +21,8 @@ func main() {
 	fmt.Println("err", err)
 
 	db.MustExec(UsersSchema)
-	// db.MustExec(ServiceSchema)
+	db.MustExec(CategoriesSchema)
+	db.MustExec(ServicesSchema)
 	db.MustExec(SubscriptionsSchema)
 	db.MustExec(SessionsSchema)
 
