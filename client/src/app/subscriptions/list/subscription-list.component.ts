@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {Subscription} from "../../../../shared/models/Subscription";
 
 @Component({
-    selector: 'subscription-list',
+    selector: 'app-subscription-list',
     templateUrl: './subscription-list.component.html',
     styleUrls: ['./subscription-list.component.scss']
 })

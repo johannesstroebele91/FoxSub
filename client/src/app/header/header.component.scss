@@ -1,31 +1,25 @@
 // General
-.headerBackground {
-  background: #1C1C1C;
-  height: 60px;
-  width: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
 .headerBackgroundMobile {
   height: 200px;
-}
-#logoText {
-  display: inline-block;
-  font-size: 18px;
-  font-weight: bold;
 }
 #header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 #header a {
   color: #e8e8e8;
   text-decoration: none;
 }
-#logo span {
-  vertical-align: middle;
-  padding: 0 6px 0 0 ;
+#logo {
+  position: relative;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#logo a {
+  margin-right: 6px;
 }
 
 // Mobile
@@ -40,7 +34,7 @@
     display: block;
   }
   #menuMobile a:first-child {
-    padding-top: 30px;
+    padding-top: 18px;
   }
     #menuMobile a {
     color: #e8e8e8;
