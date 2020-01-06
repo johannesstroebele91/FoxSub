@@ -1,12 +1,26 @@
 .subscription {
   padding-top: 12px;
 }
-#button-add-subscription {
-  float: right;
-  margin-top: 18px;
+.button-add-subscription {
   padding: 12px 24px;
   font-weight: 500;
-  border-radius: 2px;
+  border-radius: 6px;
   background: #D7303E;
   color: white;
 }
+// Mobile
+@media (max-width: 575px) {
+}
+
+// Desktop
+@media (min-width: 576px) {
+  #topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  h1 .button-add-subscription {
+    display: inline-block;
+  }
+}
+

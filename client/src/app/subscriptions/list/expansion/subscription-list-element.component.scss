@@ -1,11 +1,29 @@
-.expansion-arrow {
+.arrow-expansion {
   float: right;
-  margin-top: -6px;
-  color: grey;
+  margin-top: 6px;
+  font-size: 30px;
+  color: #a7a7a7;
 }
 .button-edit {
   float: right;
-  color: #2ECC71;
   bottom: 0;
   right: 0;
+  margin-right: 6px;
+  font-size: 22px;
+  color: #4d4d4d;
+}
+.distributeArrowButton {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.text {
+  color: #e8e8e8;
+  margin-top: 12px;
+}
+.fieldBackground {
+  background: #191919;
+  padding: 0 12px 12px 12px;
+  border-radius: 6px;
 }

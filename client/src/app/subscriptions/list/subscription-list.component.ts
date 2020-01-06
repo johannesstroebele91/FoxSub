@@ -8,6 +8,7 @@ import {Subscription} from "../../../../shared/models/Subscription";
 })
 export class SubscriptionListComponent {
 
+    // TODO delete mock data later
     subscriptions: Subscription[] = [
         {id: '1', cost: 5, dueDate: 2000, monthlyPayment: true, paymentMethod: 'PayPal', automaticPayment: true, service: { name: 'Netflix', category: 'Entertainment' }},
         {id: '2', cost: 5, dueDate: 2000, monthlyPayment: true, paymentMethod: 'PayPal', automaticPayment: true, service: { name: 'Netflix', category: 'Entertainment' }},
@@ -16,4 +17,8 @@ export class SubscriptionListComponent {
         {id: '5', cost: 5, dueDate: 2000, monthlyPayment: true, paymentMethod: 'PayPal', automaticPayment: true, service: { name: 'Netflix', category: 'Entertainment' }},
         {id: '6', cost: 5, dueDate: 2000, monthlyPayment: true, paymentMethod: 'PayPal', automaticPayment: true, service: { name: 'Netflix', category: 'Entertainment' }},
     ];
+
+    clickAddSubscription(){
+        // TODO implement "add subscription" functionality
+    }
 }
