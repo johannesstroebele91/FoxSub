@@ -16,14 +16,16 @@
 h1 {
   text-align: center;
 }
-label {
+.row-spacing label {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding-bottom: 6px;
 }
-input {
-  color: #e8e8e8;
+.row-spacing input {
+  width: 100%;
   padding: 9px;
+  color: #e8e8e8;
   background: #4d4d4d;
   border: none;
 }

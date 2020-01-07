@@ -7,12 +7,14 @@ import { HeaderComponent} from "./header/header.component";
 import { SubscriptionListComponent } from './subscriptions/list/subscription-list.component';
 import { SubscriptionListElementComponent} from "./subscriptions/list/expansion/subscription-list-element.component";
 import { LoginComponent } from './login/login.component';
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
   imports: [
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
+    FormsModule,
   ],
   declarations: [
     AppComponent,

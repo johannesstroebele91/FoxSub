@@ -7,20 +7,20 @@
 <div class="container-login">
     <h1>Welcome!</h1>
 
-    <!-- TODO implement validation of input -->
-    <form>
-        <div class="row row-spacing">
-            <label class="col-xs-4" for="email">Email</label>
-            <input class="col-xs-8" type="text" id="email" required>
+    <!-- TODO implement validation of input via: https://angular.io/guide/forms-->
+    <form #heroForm="ngForm">
+        <div class="row-spacing">
+            <label for="email">Email</label>
+            <input type="text" id="email" required [(ngModel)]="users[1].email" email="email">
+        </div>
+        <div class="row-spacing">
+            <label for="password">Password</label>
+            <input type="text" id="password" required>
         </div>
 
-        <div class="row row-spacing">
-            <label class="col-xs-4" for="password">Password</label>
-            <input class="col-xs-8" type="text" id="password">
-        </div>
-
-        <!-- TODO implement submit functionality -->
-        <button class="button" type="submit" routerLink="subscriptions" routerLinkActive="" >Sign In</button>
+        <!-- TODO implement submit & routing functionality -->
+        <!-- routerLink="subscriptions" routerLinkActive="" -->
+        <button class="button" type="submit"  >Sign In</button>
 
     </form>
 
