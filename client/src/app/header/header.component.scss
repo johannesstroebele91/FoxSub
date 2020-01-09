@@ -8,7 +8,6 @@
   align-items: center;
 }
 #header a {
-  color: #e8e8e8;
   text-decoration: none;
 }
 #logo {
@@ -17,6 +16,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.router-link-active {
+  color: #D7303E;
 }
 
 // Mobile

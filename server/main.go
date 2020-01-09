@@ -21,7 +21,8 @@ func main() {
 	fmt.Println("err", err)
 
 	db.MustExec(UsersSchema)
-	// db.MustExec(ServiceSchema)
+	db.MustExec(CategoriesSchema)
+	db.MustExec(ServicesSchema)
 	db.MustExec(SubscriptionsSchema)
 	db.MustExec(SessionsSchema)
 
@@ -68,7 +69,7 @@ func signin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	createSession := `INSERT INTO sessions (ID, user_id) VALUES (?, ?)`
+	createSession := `INSERT INTO sessions (ID, userId) VALUES (?, ?)`
 
 	sessionToken := uuid.NewV4().String()
 
@@ -119,9 +120,7 @@ func AuthTest(w http.ResponseWriter, r *http.Request) {
 }
 
 func Register(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("")
-
-	createUser := `INSERT INTO users (id, first_name, email, password) VALUES (UUID(), ?, ?, ?)`
+	createUser := `INSERT INTO users (id, firstName, email, password) VALUES (UUID(), ?, ?, ?)`
 	var credentials Credentials
 
 	err := json.NewDecoder(r.Body).Decode(&credentials)

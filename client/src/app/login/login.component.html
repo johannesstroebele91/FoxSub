@@ -1,35 +1,31 @@
 <div class="headerBackground"></div>
-<div id="logo" routerLink="" routerLinkActive="">
+<div id="logo">
     <!-- TODO insert renderer for logo <img src="../../assets/logo.svg" alt="Logo" height="30" width="30"> später ersetzen für nächste Zeile-->
     <div class="material-icons">assignment</div>
-    <div id="logoText">Abofy</div>
+    <div id="logoText" >Abofy</div>
 </div>
 <div class="container-login">
     <h1>Welcome!</h1>
 
-    <!-- TODO implement validation of input via: https://angular.io/guide/forms-->
-    <form #heroForm="ngForm">
+    <div [formGroup]="form">
         <div class="row-spacing">
             <label for="email">Email</label>
-            <input type="text" id="email" required [(ngModel)]="users[1].email" email="email">
+            <input type="text" id="email" [formControlName]="'email'" placeholder="Insert your email">
         </div>
         <div class="row-spacing">
             <label for="password">Password</label>
-            <input type="text" id="password" required>
+            <input type="text" id="password" [formControlName]="'password'" placeholder="Insert your password">
         </div>
+        <div class="button" (click)="submit()" routerLink="/subscriptions">Sign In</div>
 
-        <!-- TODO implement submit & routing functionality -->
-        <!-- routerLink="subscriptions" routerLinkActive="" -->
-        <button class="button" type="submit"  >Sign In</button>
-
-    </form>
+    </div>
 
     <div id="vertical-line"></div>
 
     <div id="footer">
         <!-- TODO implement sign up functionality -->
-        <a routerLink="" routerLinkActive="">Sign Up</a>
+        <a>Sign Up</a>
         <!-- TODO implement forgot password functionality -->
-        <a routerLink="" routerLinkActive="">Forgot Password</a>
+        <a>Forgot Password</a>
     </div>
 </div>
