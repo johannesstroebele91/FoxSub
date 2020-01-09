@@ -7,6 +7,7 @@ import { HeaderComponent} from "./header/header.component";
 import { SubscriptionListComponent } from './subscriptions/list/subscription-list.component';
 import { SubscriptionListElementComponent} from "./subscriptions/list/expansion/subscription-list-element.component";
 import { SubscriptionAddComponent } from './subscriptions/subscription-add/subscription-add.component';
+import { SubscriptionEditComponent } from './subscriptions/subscription-edit/subscription-edit.component';
 import { LoginComponent } from './login/login.component';
 import { ReactiveFormsModule } from "@angular/forms";
 
@@ -23,6 +24,7 @@ import { ReactiveFormsModule } from "@angular/forms";
     SubscriptionListComponent,
     SubscriptionListElementComponent,
     SubscriptionAddComponent,
+    SubscriptionEditComponent,
     LoginComponent
   ],
   bootstrap: [AppComponent]
