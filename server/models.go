@@ -39,6 +39,7 @@ CREATE TABLE IF NOT EXISTS subscriptions (
     dueDate DATE NOT NULL,
     monthlyPayment BOOLEAN NOT NULL,
 	automaticPayment BOOLEAN NOT NULL,
+	paymentMethod VARBINARY(255),
 	serviceId VARCHAR(36),
 	userId VARCHAR(36),
 	FOREIGN KEY (serviceId) REFERENCES services(id),
@@ -47,14 +48,14 @@ CREATE TABLE IF NOT EXISTS subscriptions (
 `
 
 type Subscription struct {
-	ID               string    `db:"id"`
-	Cost             float32   `db:"cost"`
-	DueDate          time.Time `db:"dueDate"`
-	PaymentMethod    string    `db:"paymentMethod"`
-	MonthlyPayment   bool      `db:"monthlyPayment"`
-	AutomaticPayment bool      `db:"automaticPayment"`
-	UserID           string    `db:"userId"`
-	ServiceID        uint16    `db:"serviceID"`
+	ID               string      `db:"id"`
+	Cost             float32     `db:"cost"`
+	DueDate          time.Time   `db:"dueDate"`
+	PaymentMethod    null.String `db:"paymentMethod"`
+	MonthlyPayment   bool        `db:"monthlyPayment"`
+	AutomaticPayment bool        `db:"automaticPayment"`
+	UserID           string      `db:"userId"`
+	ServiceId        string      `db:"serviceId"`
 }
 
 var ServicesSchema = `
