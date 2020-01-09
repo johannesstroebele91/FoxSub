@@ -7,12 +7,14 @@ import { RowComponent } from "./row/row.component";
 import { ProfileComponent } from "./profile/profile.component";
 import { SubscriptionListComponent } from './subscriptions/list/subscription-list.component';
 import { HeaderComponent} from "./header/header.component";
+import {ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
   imports: [
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
+    ReactiveFormsModule,
   ],
   declarations: [
     AppComponent,
