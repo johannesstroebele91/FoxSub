@@ -1,15 +1,17 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
-import { AppComponent } from './app.component';
+import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from "@angular/forms";
+import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
-import { HeaderComponent} from "./header/header.component";
+import { AppComponent } from './app.component';
+import { HeaderComponent } from "./header/header.component";
+import { LoginComponent } from './login/login.component';
+import { ProfileComponent } from "./profile/profile.component";
+import { RowComponent } from "./row/row.component";
+import { SubscriptionListElementComponent } from "./subscriptions/list/expansion/subscription-list-element.component";
 import { SubscriptionListComponent } from './subscriptions/list/subscription-list.component';
-import { SubscriptionListElementComponent} from "./subscriptions/list/expansion/subscription-list-element.component";
 import { SubscriptionAddComponent } from './subscriptions/subscription-add/subscription-add.component';
 import { SubscriptionEditComponent } from './subscriptions/subscription-edit/subscription-edit.component';
-import { LoginComponent } from './login/login.component';
-import { ReactiveFormsModule } from "@angular/forms";
 
 @NgModule({
   imports: [
@@ -20,6 +22,8 @@ import { ReactiveFormsModule } from "@angular/forms";
   ],
   declarations: [
     AppComponent,
+    ProfileComponent,
+    RowComponent,
     HeaderComponent,
     SubscriptionListComponent,
     SubscriptionListElementComponent,
