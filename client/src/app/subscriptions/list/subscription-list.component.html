@@ -1,8 +1,8 @@
 <app-header></app-header>
 <div class="container">
-    <div id="top-bar">
+    <div id="top-bar" >
         <h1>{{subscriptions.length}} Subscriptions</h1>
-        <div class="button" (click)="clickAddSubscription()">Add Subscription</div>
+        <div class="button" routerLink="add">Add Subscription</div>
     </div>
     <div class="subscription" *ngFor="let subscription of subscriptions">
         <app-subscription-list-expansion [subscription]="subscription"></app-subscription-list-expansion>

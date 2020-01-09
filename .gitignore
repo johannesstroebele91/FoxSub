@@ -34,6 +34,7 @@ speed-measure-plugin.json
 *.launch
 .settings/
 *.sublime-workspace
+**/src/styles.css.map
 
 # IDE - VSCode
 **/.vs
@@ -58,3 +59,5 @@ typings/
 .DS_Store
 Thumbs.db
 
+# GO executable
+**/server/fabulous-fox

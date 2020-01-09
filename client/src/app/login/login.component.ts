@@ -1,6 +1,10 @@
 import { Component, OnInit} from '@angular/core';
 import { User} from "../../../shared/models/User";
 import { FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { AuthService} from "../../../shared/auth.service";
+import {Router} from "@angular/router";
+import {catchError} from "rxjs/operators";
+import {of} from "rxjs";
 
 @Component({
     selector: 'app-login',
@@ -10,9 +14,11 @@ import { FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 export class LoginComponent implements OnInit{
 
+    showLoginError: boolean = false;
+
     form: FormGroup;
 
-    constructor(private formBuilder: FormBuilder) {}
+    constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) {}
 
     buildLoginForm() {
         this.form = this.formBuilder.group( {
@@ -21,10 +27,13 @@ export class LoginComponent implements OnInit{
         });
     }
 
-    // TODO: implement service
     submit() {
-        console.log(this.form.get('email').value);
-        console.log(this.form.get('password').value);
+        this.authService.signIn(this.form.get('email').value, this.form.get('password').value).pipe(
+            catchError(() => {
+                this.showLoginError = true;
+                return of();
+            })
+        ).subscribe(()=> this.router.navigate(["/subscriptions"]));
     }
 
     // TODO delete mock data later
@@ -35,4 +44,6 @@ export class LoginComponent implements OnInit{
     ngOnInit(): void {
         this.buildLoginForm()
     }
+
+    // TODO implement logic for invalid form
 }
