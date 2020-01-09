@@ -6,21 +6,23 @@ import { AppRoutingModule } from './app-routing.module';
 import { HeaderComponent} from "./header/header.component";
 import { SubscriptionListComponent } from './subscriptions/list/subscription-list.component';
 import { SubscriptionListElementComponent} from "./subscriptions/list/expansion/subscription-list-element.component";
+import { SubscriptionAddComponent } from './subscriptions/subscription-add/subscription-add.component';
 import { LoginComponent } from './login/login.component';
-import {FormsModule} from "@angular/forms";
+import { ReactiveFormsModule } from "@angular/forms";
 
 @NgModule({
   imports: [
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
-    FormsModule,
+    ReactiveFormsModule,
   ],
   declarations: [
     AppComponent,
     HeaderComponent,
     SubscriptionListComponent,
     SubscriptionListElementComponent,
+    SubscriptionAddComponent,
     LoginComponent
   ],
   bootstrap: [AppComponent]
