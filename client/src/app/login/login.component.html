@@ -14,9 +14,11 @@
         </div>
         <div class="row-spacing">
             <label for="password">Password</label>
-            <input type="text" id="password" [formControlName]="'password'" placeholder="Insert your password">
+            <input type="password" id="password" [formControlName]="'password'" placeholder="Insert your password">
         </div>
-        <div class="button" (click)="submit()" routerLink="/subscriptions">Sign In</div>
+        <div [ngClass]="{'visible' : showLoginError, 'hidden': !showLoginError}" class="row-spacing text-login-error">Username or password is invalid. Try again.</div>
+
+        <button class="button" (click)="submit()" [disabled]="form.invalid">Sign In</button>
 
     </div>
 

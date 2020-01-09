@@ -32,13 +32,17 @@ h1 {
   border: none;
 }
 .button {
+  width: 100%;
   display: flex;
   justify-content: center;
   text-align: center;
-  margin: 42px auto 42px auto;
+  margin: 0 auto 42px auto;
   color: #e8e8e8;
   font-size: 14px;
   border: none;
+}
+.button:disabled {
+  background: grey;
 }
 #vertical-line {
   width: 100%;
@@ -52,6 +56,16 @@ h1 {
 #footer a {
   color: darkgrey;
 }
+.text-login-error {
+  color: #D7303E;
+}
+.visible {
+  visibility: visible;
+}
+.hidden {
+  visibility: hidden;
+}
+
 // Mobile
 @media (max-width: 420px) {
   .container-login{
@@ -60,9 +74,6 @@ h1 {
     }
     .row-spacing {
       margin: 18px 0;
-    }
-    .button {
-      width: 210px;
     }
   }
 }
