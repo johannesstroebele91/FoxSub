@@ -28,8 +28,12 @@ a {
   left: 0; }
 
 #logo {
+<<<<<<< HEAD
   width: 90px;
   margin: 0 auto; }
+=======
+  width: 90px; }
+>>>>>>> 774d5a3d8f55be127ce1b52d359e66d836d6b451
 
 #logo div:first-child {
   margin-right: 6px;

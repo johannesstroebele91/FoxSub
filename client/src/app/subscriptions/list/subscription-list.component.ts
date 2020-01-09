@@ -18,7 +18,4 @@ export class SubscriptionListComponent {
         {id: '6', cost: 5, dueDate: 2000, monthlyPayment: true, paymentMethod: 'PayPal', automaticPayment: true, service: { name: 'Netflix', category: 'Entertainment' }},
     ];
 
-    // TODO implement "add subscription" functionality
-    clickAddSubscription(){
-    }
 }

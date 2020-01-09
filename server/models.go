@@ -5,63 +5,96 @@ import (
 	"time"
 
 	_ "github.com/lib/pq"
+	"gopkg.in/guregu/null.v3"
 )
 
-var schema = `
-CREATE TABLE IF NOT EXISTS user (
-                      userID INTEGER PRIMARY KEY,
-                      first_name VARCHAR(255) NOT NULL,
-                      last_name VARCHAR(255),
-                      email VARCHAR(255) UNIQUE NOT NULL,
-                      password VARCHAR(255) NOT NULL,
-                      goal DECIMAL,
-                      monthlyCumulatedPayment DECIMAL,
-                      nextDueDate DATETIME,
-                      subscriptionCounter INTEGER
-);
-
-CREATE TABLE IF NOT EXISTS service (
-                         serviceID INTEGER PRIMARY KEY,
-                         name VARCHAR(255) NOT NULL,
-                         imageUrl VARCHAR(255) NOT NULL,
-                         category VARCHAR(255) NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS subscription (
-                              subscriptionID INTEGER PRIMARY KEY,
-                              cost DECIMAL NOT NULL,
-                              dueDate DATE,
-                              monthlyPayment BOOLEAN NOT NULL,
-                              automaticPayment BOOLEAN NOT NULL,
-                              userID INTEGER,
-                              serviceID INTEGER,
-                              FOREIGN KEY (userID) REFERENCES user(userID),
-                              FOREIGN KEY (serviceID) REFERENCES service(serviceID)
+var UsersSchema = `
+CREATE TABLE IF NOT EXISTS users (
+    id VARCHAR(36) PRIMARY KEY,
+    firstName VARCHAR(255) NOT NULL,
+    lastName VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    goal DECIMAL,
+    monthlyCumulatedPayment DECIMAL NULL DEFAULT 0,
+    nextDueDate DATETIME
 );
 `
 
 type User struct {
-	FirstName               string    `db:"first_name"`
-	LastName                string    `db:"last_name"`
-	Email                   string    `db:"email"`
-	Password                string    `db:"password"`
-	Goal                    float32   `db:"goal"`
-	MonthlyCumulatedPayment float32   `db:"monthlyCumulatedPayment"`
-	NextDueDate             time.Time `db:"nextDueDate"`
-	SubscriptionCounter     uint16    `db:"subscriptionCounter"`
+	ID                      string     `db:"id"`
+	FirstName               string     `db:"firstName"`
+	LastName                string     `db:"lastName"`
+	Email                   string     `db:"email"`
+	Password                string     `db:"password"`
+	Goal                    null.Float `db:"goal"`
+	MonthlyCumulatedPayment null.Float `db:"monthlyCumulatedPayment,omitempty"`
+	NextDueDate             null.Time  `db:"nextDueDate,omitempty"`
 }
+
+var SubscriptionsSchema = `
+CREATE TABLE IF NOT EXISTS subscriptions (
+    id VARCHAR(36) PRIMARY KEY,
+    cost DECIMAL NOT NULL,
+    dueDate DATE NOT NULL,
+    monthlyPayment BOOLEAN NOT NULL,
+	automaticPayment BOOLEAN NOT NULL,
+	paymentMethod VARBINARY(255),
+	serviceId VARCHAR(36),
+	userId VARCHAR(36),
+	FOREIGN KEY (serviceId) REFERENCES services(id),
+    FOREIGN KEY (userId) REFERENCES users(id)
+);
+`
 
 type Subscription struct {
-	Cost             float32   `db:"cost"`
-	DueDate          time.Time `db:"dueDate"`
-	MonthlyPayment   bool      `db:"monthlyPayment"`
-	AutomaticPayment bool      `db:"automaticPayment"`
-	UserID           uint16    `db:"userID"`
-	ServiceID        uint16    `db:"serviceID"`
+	ID               string      `db:"id"`
+	Cost             float32     `db:"cost"`
+	DueDate          time.Time   `db:"dueDate"`
+	PaymentMethod    null.String `db:"paymentMethod"`
+	MonthlyPayment   bool        `db:"monthlyPayment"`
+	AutomaticPayment bool        `db:"automaticPayment"`
+	UserID           string      `db:"userId"`
+	ServiceId        string      `db:"serviceId"`
 }
 
+var ServicesSchema = `
+CREATE TABLE IF NOT EXISTS services (
+	id VARCHAR(36) PRIMARY KEY,
+	name VARCHAR(255) NOT NULL,
+	imageURL VARCHAR(255),
+	category VARCHAR(255) NOT NULL,
+    FOREIGN KEY (category) REFERENCES categories(name)
+);
+`
+
 type Service struct {
-	Name     string `db:"name"`
-	ImageUrl string `db:"imageUrl"`
-	Category string `db:"category"`
+	ID       string      `db:"id"`
+	Name     string      `db:"name"`
+	ImageURL null.String `db:"imageUrl"`
+	Category string      `db:"category"`
+}
+
+var SessionsSchema = `
+CREATE TABLE IF NOT EXISTS sessions (
+    id VARCHAR(36) PRIMARY KEY,
+	userId VARCHAR(36) NOT NULL,
+	FOREIGN KEY (userId) REFERENCES users(id)
+);`
+
+type Session struct {
+	ID     string `db:"id"`
+	UserID string `db:"userId"`
+}
+
+var CategoriesSchema = `
+CREATE TABLE IF NOT EXISTS categories (
+	id VARCHAR(36) PRIMARY KEY,
+	name VARCHAR(255) UNIQUE NOT NULL
+);
+`
+
+type Credentials struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }
