@@ -15,8 +15,8 @@ export class SubscriptionListElementComponent {
     clickDetails(){
         this.isExpanded = !this.isExpanded;
     }
-
+    
+    // TODO implement edit functionality
     clickEdit(){
-        // TODO implement edit functionality
     }
 }
