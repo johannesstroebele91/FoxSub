@@ -7,17 +7,16 @@
 <div class="container-login">
     <h1>Welcome!</h1>
 
-    <div>
+    <div [formGroup]="form">
         <div class="row-spacing">
             <label for="email">Email</label>
-            <input type="text" id="email" [formControl]="form.get('email')" placeholder="Insert your email">
+            <input type="text" id="email" [formControlName]="'email'" placeholder="Insert your email">
         </div>
         <div class="row-spacing">
             <label for="password">Password</label>
-            <input type="text" id="password" [formControl]="form.get('password')" placeholder="Insert your password">
+            <input type="text" id="password" [formControlName]="'password'" placeholder="Insert your password">
         </div>
-        <!-- TODO fix button styling -->
-        <div class="button" (click)="submit()" routerLink="subscriptions" routerLinkActive="">Sign In</div>
+        <div class="button" (click)="submit()" routerLink="/subscriptions">Sign In</div>
 
     </div>
 
@@ -25,8 +24,8 @@
 
     <div id="footer">
         <!-- TODO implement sign up functionality -->
-        <a routerLink="" routerLinkActive="">Sign Up</a>
+        <a>Sign Up</a>
         <!-- TODO implement forgot password functionality -->
-        <a routerLink="" routerLinkActive="">Forgot Password</a>
+        <a>Forgot Password</a>
     </div>
 </div>

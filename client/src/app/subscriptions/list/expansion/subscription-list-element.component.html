@@ -1,6 +1,6 @@
 <div class="row fieldBackground">
     <div class="col-xs-11">
-        <div class="text">{{subscription.service.name}}</div>
+        <h3 class="text">{{subscription.service.name}}</h3>
         <div class="text">{{subscription.dueDate}}</div>
         <div class="text">{{subscription.cost}} Euro</div>
         <div *ngIf="isExpanded">
@@ -13,6 +13,6 @@
     </div>
     <div class="col-xs-1 distributeArrowButton">
         <div class="material-icons arrow-expansion"  (click)="clickDetails()">keyboard_arrow_down</div>
-        <div class="material-icons button-edit"  (click)="clickEdit()">create</div>
+        <div class="material-icons button-edit" routerLink="edit">create</div>
     </div>
 </div>
