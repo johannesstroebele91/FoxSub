@@ -55,7 +55,7 @@ type Subscription struct {
 	MonthlyPayment   bool        `db:"monthlyPayment"`
 	AutomaticPayment bool        `db:"automaticPayment"`
 	UserID           string      `db:"userId"`
-	ServiceId        string      `db:"serviceId"`
+	ServiceID        string      `db:"serviceId"`
 }
 
 var ServicesSchema = `

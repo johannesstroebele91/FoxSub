@@ -37,6 +37,7 @@ func main() {
 	v1Subrouter := apiSubrouter.PathPrefix("/v1").Subrouter()
 	v1Subrouter.Use(Authenticator())
 	v1Subrouter.HandleFunc("/test", AuthTest).Methods("GET")
+	v1Subrouter.HandleFunc("/subscriptions", CreateSubscription).Methods(("POST"))
 	apiSubrouter.HandleFunc("/signin", signin).Methods("POST")
 	apiSubrouter.HandleFunc("/register", Register).Methods("POST")
 
@@ -106,11 +107,12 @@ func Authenticator() func(http.Handler) http.Handler {
 			row := db.QueryRowx("SELECT * FROM sessions WHERE id=?", sessionToken.Value)
 			var session Session
 			err = row.StructScan(&session)
-			if err != nil || session.UserID == "" {
+			if err != nil {
 				w.WriteHeader(http.StatusUnauthorized)
 				return
 			}
 			r.Header.Set("user", session.UserID)
+			fmt.Println(r)
 			next.ServeHTTP(w, r)
 		})
 	}
@@ -142,4 +144,33 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusOK)
+}
+
+func CreateSubscription(w http.ResponseWriter, r *http.Request) {
+	createSubscription := `INSERT INTO subscriptions (id, cost, dueDate, paymentMethod, monthlyPayment, automaticPayment, userId, serviceId) VALUES (UUID(), ?, ?, ?, ?, ?, ?, ?) RETURNING`
+	var subscription Subscription
+
+	err := json.NewDecoder(r.Body).Decode(&subscription)
+	fmt.Println(&subscription)
+
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	/**
+	 * TODO add logic for user id
+	 */
+	results := db.QueryRowx(createSubscription, subscription.Cost, subscription.DueDate, subscription.PaymentMethod, subscription.MonthlyPayment, subscription.AutomaticPayment, r.Header.Get("user"), "f6da8cbc-2d71-11ea-8b61-0242ac120003")
+
+	err = results.StructScan(&subscription)
+
+	if err != nil {
+		w.Header().Set("Content-Type", "application/json")
+		test, _ := json.Marshal(&subscription)
+		w.Write(test)
+		w.WriteHeader(http.StatusUnprocessableEntity)
+		return
+	}
+
 }
