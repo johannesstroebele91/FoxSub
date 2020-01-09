@@ -1,14 +1,73 @@
-@import '~material-icons/iconfont/material-icons.scss';
-
+// General
+.headerBackgroundMobile {
+  height: 200px;
+}
 #header {
   display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
   justify-content: space-between;
-  align-items: stretch;
-  align-content: stretch;
+  align-items: center;
+}
+#header a {
+  color: #e8e8e8;
+  text-decoration: none;
+}
+#logo {
+  position: relative;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-#header h1 {
-  display: inline;
+// Mobile
+@media (max-width: 575px) {
+    #menuDesktop {
+    display: none;
+  }
+  #hamburger {
+    display: block;
+  }
+  #menuMobile {
+    display: block;
+  }
+  #menuMobile a:first-child {
+    padding-top: 18px;
+  }
+    #menuMobile a {
+    color: #e8e8e8;
+    text-decoration: none;
+    display: block;
+    padding-top: 18px;
+  }
+  #menuMobile span {
+    padding: 0 6px 0 0 ;
+    display: inline-block;
+    vertical-align: middle;
+  }
 }
+
+// Desktop
+@media (min-width: 576px) {
+  .headerBackground {
+    height: 60px;
+  }
+    #menuDesktop {
+    display: inline-block;
+  }
+  #menuMobile {
+    display: none;
+  }
+  #hamburger {
+    display: none;
+  }
+  #menuDesktop a {
+    padding: 0 18px;
+    display: inline-block;
+  }
+  #menuDesktop span {
+    padding: 0 6px 0 0 ;
+    display: inline-block;
+  }
+}
+
+

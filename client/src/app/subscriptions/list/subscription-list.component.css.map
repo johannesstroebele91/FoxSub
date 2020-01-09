@@ -1,7 +1,7 @@
 {
 "version": 3,
-"mappings": "",
-"sources": [],
+"mappings": "AAAA,aAAc;EACZ,WAAW,EAAE,IAAI;;AAEnB,EAAE;EACA,WAAW,EAAE,IAAI;;AAQnB,yBAA0B;EACxB,QAAS;IACP,OAAO,EAAE,IAAI;IACb,eAAe,EAAE,aAAa;IAC9B,WAAW,EAAE,MAAM;;EAErB,2BAA4B;IAC1B,OAAO,EAAE,YAAY",
+"sources": ["subscription-list.component.scss"],
 "names": [],
 "file": "subscription-list.component.css"
 }

@@ -1,43 +1,18 @@
-export class Subscription {
-    constructor(private _subscriptionId: number, private _cost: number, private _dueData: Date, private _monthlyPayment: boolean, private _automaticPayment: boolean) {
-    }
-    get subscriptionId(): number {
-        return this._subscriptionId;
-    }
+import { Service } from "./Service";
 
-    set subscriptionId(value: number) {
-        this._subscriptionId = value;
-    }
+export interface Subscription {
 
-    get cost(): number {
-        return this._cost;
-    }
+    id?: string;
 
-    set cost(value: number) {
-        this._cost = value;
-    }
+    cost?: number;
 
-    get dueData(): Date {
-        return this._dueData;
-    }
+    dueDate?: number;
 
-    set dueData(value: Date) {
-        this._dueData = value;
-    }
+    paymentMethod?: string;
 
-    get monthlyPayment(): boolean {
-        return this._monthlyPayment;
-    }
+    monthlyPayment?: boolean;
 
-    set monthlyPayment(value: boolean) {
-        this._monthlyPayment = value;
-    }
+    automaticPayment?: boolean;
 
-    get automaticPayment(): boolean {
-        return this._automaticPayment;
-    }
-
-    set automaticPayment(value: boolean) {
-        this._automaticPayment = value;
-    }
+    service?: Service;
 }

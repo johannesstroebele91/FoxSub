@@ -1,21 +1,24 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {Subscription} from "../../../../shared/models/Subscription";
 
 @Component({
-    selector: 'subscription-list',
+    selector: 'app-subscription-list',
     templateUrl: './subscription-list.component.html',
     styleUrls: ['./subscription-list.component.scss']
 })
-export class SubscriptionListComponent implements OnInit {
-    spotifySubscription: Subscription = new Subscription(1,5.99,new Date(), true, true);
-    netflixSubscription: Subscription = new Subscription(1,5.99,new Date(), true, true);
-    adobeSubscription: Subscription = new Subscription(1,5.99,new Date(), true, true);
-    fit4funubscription: Subscription = new Subscription(1,5.99,new Date(), true, true);
-    officeSubscription: Subscription = new Subscription(1,5.99,new Date(), true, true);
+export class SubscriptionListComponent {
 
-    subscriptions: Subscription[] = [this.spotifySubscription, this.netflixSubscription, this.adobeSubscription, this.fit4funubscription, this.officeSubscription];
+    // TODO delete mock data later
+    subscriptions: Subscription[] = [
+        {id: '1', cost: 5, dueDate: 2000, monthlyPayment: true, paymentMethod: 'PayPal', automaticPayment: true, service: { name: 'Netflix', category: 'Entertainment' }},
+        {id: '2', cost: 5, dueDate: 2000, monthlyPayment: true, paymentMethod: 'PayPal', automaticPayment: true, service: { name: 'Netflix', category: 'Entertainment' }},
+        {id: '3', cost: 10, dueDate: 2000, monthlyPayment: true, paymentMethod: 'PayPal', automaticPayment: true, service: { name: 'Netflix', category: 'Entertainment' }},
+        {id: '4', cost: 10, dueDate: 2000, monthlyPayment: true, paymentMethod: 'PayPal', automaticPayment: true, service: { name: 'Netflix', category: 'Entertainment' }},
+        {id: '5', cost: 5, dueDate: 2000, monthlyPayment: true, paymentMethod: 'PayPal', automaticPayment: true, service: { name: 'Netflix', category: 'Entertainment' }},
+        {id: '6', cost: 5, dueDate: 2000, monthlyPayment: true, paymentMethod: 'PayPal', automaticPayment: true, service: { name: 'Netflix', category: 'Entertainment' }},
+    ];
 
-    ngOnInit(): void {
-        console.log(this.subscriptions)
+    // TODO implement "add subscription" functionality
+    clickAddSubscription(){
     }
 }

@@ -5,9 +5,11 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { RowComponent } from "./row/row.component";
 import { ProfileComponent } from "./profile/profile.component";
-import { SubscriptionListComponent } from './subscriptions/list/subscription-list.component';
 import { HeaderComponent} from "./header/header.component";
-import {ReactiveFormsModule} from "@angular/forms";
+import { SubscriptionListComponent } from './subscriptions/list/subscription-list.component';
+import { SubscriptionListElementComponent} from "./subscriptions/list/expansion/subscription-list-element.component";
+import { LoginComponent } from './login/login.component';
+import { ReactiveFormsModule } from "@angular/forms";
 
 @NgModule({
   imports: [
@@ -15,13 +17,16 @@ import {ReactiveFormsModule} from "@angular/forms";
     HttpClientModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    ReactiveFormsModule
   ],
   declarations: [
     AppComponent,
     ProfileComponent,
     RowComponent,
+    HeaderComponent,
     SubscriptionListComponent,
-    HeaderComponent
+    SubscriptionListElementComponent,
+    LoginComponent
   ],
   bootstrap: [AppComponent]
 })

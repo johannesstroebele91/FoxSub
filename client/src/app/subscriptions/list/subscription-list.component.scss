@@ -1,0 +1,23 @@
+.subscription {
+  padding-top: 12px;
+}
+h1{
+  padding-top: 18px;
+}
+
+// Mobile
+@media (max-width: 575px) {
+}
+
+// Desktop
+@media (min-width: 576px) {
+  #top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  h1 .button-add-subscription {
+    display: inline-block;
+  }
+}
+

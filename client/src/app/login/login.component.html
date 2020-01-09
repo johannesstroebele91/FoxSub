@@ -1,0 +1,32 @@
+<div class="headerBackground"></div>
+<div id="logo">
+    <!-- TODO insert renderer for logo <img src="../../assets/logo.svg" alt="Logo" height="30" width="30"> später ersetzen für nächste Zeile-->
+    <div class="material-icons">assignment</div>
+    <div id="logoText" >Abofy</div>
+</div>
+<div class="container-login">
+    <h1>Welcome!</h1>
+
+    <div>
+        <div class="row-spacing">
+            <label for="email">Email</label>
+            <input type="text" id="email" [formControl]="form.get('email')" placeholder="Insert your email">
+        </div>
+        <div class="row-spacing">
+            <label for="password">Password</label>
+            <input type="text" id="password" [formControl]="form.get('password')" placeholder="Insert your password">
+        </div>
+        <!-- TODO fix button styling -->
+        <div class="button" (click)="submit()" routerLink="subscriptions" routerLinkActive="">Sign In</div>
+
+    </div>
+
+    <div id="vertical-line"></div>
+
+    <div id="footer">
+        <!-- TODO implement sign up functionality -->
+        <a routerLink="" routerLinkActive="">Sign Up</a>
+        <!-- TODO implement forgot password functionality -->
+        <a routerLink="" routerLinkActive="">Forgot Password</a>
+    </div>
+</div>

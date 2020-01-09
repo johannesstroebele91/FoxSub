@@ -13,7 +13,7 @@ import {rename} from "fs";
 export class ProfileComponent {
     date: Date = new Date();
     //TODO: DB Data
-    user: User = new User(1, "Marx", "Karl", "karl.marx@ourland.de", "sicher", 0, 399.99, this.date,18);
+    user: User = {id:"0", firstName:"Manni", lastName:"DelGardo", email:"manni@del.gardo", goal:4, montlyCumulatedPayment:3, nextDueDate:121212, subscriptionCounter:6};
 
     row0 : String[] = ["Vorname", this.user.firstName];
     row1 : String[] = ["Nachname", this.user.lastName];

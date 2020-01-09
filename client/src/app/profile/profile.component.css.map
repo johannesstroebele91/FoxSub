@@ -1,7 +1,7 @@
 {
 "version": 3,
-"mappings": "AAAA,IAAK;EACH,gBAAgB,EAAE,OAAO;EACzB,KAAK,EAAE,OAAO",
-"sources": ["profile.component.scss"],
+"mappings": "",
+"sources": [],
 "names": [],
 "file": "profile.component.css"
 }

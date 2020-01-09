@@ -5,11 +5,12 @@ import { Component } from '@angular/core';
     templateUrl: './header.component.html',
     styleUrls: ['./header.component.scss']
 })
+
 export class HeaderComponent {
 
-    showMenu: boolean = true;
+    showMobileMenu: boolean = true;
 
     clickMenu(){
-        this.showMenu = !this.showMenu;
+        this.showMobileMenu = !this.showMobileMenu;
     }
 }

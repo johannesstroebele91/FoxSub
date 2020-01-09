@@ -24,7 +24,4 @@ export class RowComponent implements OnInit{
 
     @Input() rows : any[];
     row : any[];
-
-    @Input()
-    ngSwitch: any
 }
