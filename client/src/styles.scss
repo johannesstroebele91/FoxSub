@@ -1,14 +1,17 @@
 // ng-deep needed for editing body
 ::ng-deep body {
-    margin: 0;
     background: #121212;
     color: #e8e8e8;
-    font-family: Helvetica, serif;
+    font-family: Helvetica, sans-serif;
+    margin: 0 0 120px;
 }
 .container{
     position: relative;
     max-width: 720px;
     padding: 0 6%;
+}
+h1{
+    padding-top: 12px;
 }
 a {
     color: #e8e8e8;
@@ -32,7 +35,6 @@ a {
 }
 #logo {
     width: 90px;
-    margin: 0 auto;
 }
 #logo div:first-child {
     margin-right: 6px;

@@ -10,14 +10,12 @@
         <!-- Desktop Menu -->
         <div id="hamburger" class="material-icons"  (click)="clickMenu()">menu</div>
         <div id="menuDesktop">
-            <!-- TODO fix links to dashboard and profile page -->
             <a routerLink="/dashboard" routerLinkActive="router-link-active">Dashboard</a>
             <a routerLink="/subscriptions" routerLinkActive="router-link-active">Subscriptions</a>
             <a routerLink="/dashboard" routerLinkActive="router-link-active">Profile</a>
         </div>
     </div>
     <div *ngIf="!showMobileMenu" id="menuMobile" [ngStyle]="{'background-color': showMobileMenu ? '#242224' : 'none'}">
-        <!-- TODO fix links to dashboard and profile page -->
         <a routerLink="/dashboard" routerLinkActive="router-link-active"><span class="material-icons">dashboard</span>Dashboard</a>
         <a routerLink="/subscriptions" routerLinkActive="router-link-active"><span class="material-icons">list</span>Subscriptions</a>
         <a routerLink="/profile" routerLinkActive="router-link-active"><span class="material-icons">person</span>Profile</a>
