@@ -46,9 +46,6 @@ func main() {
 }
 
 func signin(w http.ResponseWriter, r *http.Request) {
-	/**
-	* @TODO add validation for credentials
-	 */
 	var credentials Credentials
 
 	err := json.NewDecoder(r.Body).Decode(&credentials)
@@ -75,14 +72,10 @@ func signin(w http.ResponseWriter, r *http.Request) {
 
 	results := db.MustExec(createSession, sessionToken, user.ID)
 
-	affectedRows, err := results.RowsAffected()
-
-	if err != nil || affectedRows <= 0 {
+	if results == nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-
-	fmt.Print(affectedRows)
 
 	http.SetCookie(w, &http.Cookie{
 		Name:    "session_token",
@@ -94,7 +87,7 @@ func signin(w http.ResponseWriter, r *http.Request) {
 func Authenticator() func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			c, err := r.Cookie("session_token")
+			sessionToken, err := r.Cookie("session_token")
 			if err != nil {
 				if err == http.ErrNoCookie {
 					w.WriteHeader(http.StatusUnauthorized)
@@ -105,11 +98,19 @@ func Authenticator() func(http.Handler) http.Handler {
 				return
 			}
 
-			if c.Expires.After(time.Now()) {
+			if sessionToken.Expires.After(time.Now()) {
 				w.WriteHeader(http.StatusUnauthorized)
 				return
 			}
 
+			row := db.QueryRowx("SELECT * FROM sessions WHERE id=?", sessionToken.Value)
+			var session Session
+			err = row.StructScan(&session)
+			if err != nil || session.UserID == "" {
+				w.WriteHeader(http.StatusUnauthorized)
+				return
+			}
+			r.Header.Set("user", session.UserID)
 			next.ServeHTTP(w, r)
 		})
 	}
