@@ -4,7 +4,14 @@ const path = require('path');
 
 module.exports = {
   devServer: {
-    port: 4200
+    port: 4200,
+    historyApiFallback: true,
+    proxy: {
+      "/api":
+      {target: 'http://localhost:3000',
+      secure: false,
+      changeOrigin: true}
+    },
   },
   entry: {
     main: './src/main.ts'
