@@ -10,6 +10,13 @@
     max-width: 720px;
     padding: 0 6%;
 }
+.children-inline-block h1, .children-inline-block .material-icons{
+    display: inline-block;
+}
+.children-inline-block .material-icons {
+    font-size: 30px;
+    margin-right: 6px;
+}
 h1{
     padding-top: 12px;
 }

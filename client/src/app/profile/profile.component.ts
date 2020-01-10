@@ -1,13 +1,13 @@
 import {Component, Input} from '@angular/core';
-import {Subscription} from "../../../shared/models/Subscription";
+import {Subscription} from "../../../shared/models/Subscription"; // TODO delete?
 import {User} from "../../../shared/models/User";
-import DateTimeFormat = Intl.DateTimeFormat;
-import {rename} from "fs";
+import DateTimeFormat = Intl.DateTimeFormat;  // TODO delete?
+import {rename} from "fs"; // TODO delete?
 
 @Component({
     selector: 'app-profile',
     templateUrl: './profile.component.html',
-    styleUrls: ['./profile.component.css']
+    styleUrls: ['./profile.component.scss']
 })
 
 export class ProfileComponent {
