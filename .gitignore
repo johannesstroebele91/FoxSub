@@ -34,7 +34,7 @@ speed-measure-plugin.json
 *.launch
 .settings/
 *.sublime-workspace
-**/src/styles.css.map
+**/*.css.map
 
 # IDE - VSCode
 **/.vs
