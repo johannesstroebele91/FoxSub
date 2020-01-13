@@ -33,13 +33,11 @@ type User struct {
 
 var SubscriptionsSchema = `
 CREATE TABLE IF NOT EXISTS subscriptions (
-	id INT(11) PRIMARY KEY AUTO_INCREMENT,
-    uuid VARCHAR(36) NOT NULL UNIQUE,
+    id VARCHAR(36) PRIMARY KEY,
     cost DECIMAL NOT NULL,
     dueDate DATE NOT NULL,
     monthlyPayment BOOLEAN NOT NULL,
 	automaticPayment BOOLEAN NOT NULL,
-	paymentMethod VARCHAR(255),
 	serviceId VARCHAR(36),
 	userId VARCHAR(36),
 	FOREIGN KEY (serviceId) REFERENCES services(id),
