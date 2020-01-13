@@ -2,6 +2,7 @@ package main
 
 import (
 	_ "database/sql"
+	"time"
 
 	_ "github.com/lib/pq"
 	"gopkg.in/guregu/null.v3"
@@ -21,25 +22,23 @@ CREATE TABLE IF NOT EXISTS users (
 `
 
 type User struct {
-	ID                      string     `db:"id" 						json:"uuid"`
-	FirstName               string     `db:"firstName"					json:"firstName"`
-	LastName                string     `db:"lastName"					json:"lastName"`
-	Email                   string     `db:"email"						json:"email"`
-	Password                string     `db:"password"					json:"password"`
-	Goal                    null.Float `db:"goal"						json:"goal"`
-	MonthlyCumulatedPayment null.Float `db:"monthlyCumulatedPayment"	json:"monthlyCumulatedPayment"`
-	NextDueDate             null.Time  `db:"nextDueDate" 				json:"nextDueDate"`
+	ID                      string     `db:"id"`
+	FirstName               string     `db:"firstName"`
+	LastName                string     `db:"lastName"`
+	Email                   string     `db:"email"`
+	Password                string     `db:"password"`
+	Goal                    null.Float `db:"goal"`
+	MonthlyCumulatedPayment null.Float `db:"monthlyCumulatedPayment,omitempty"`
+	NextDueDate             null.Time  `db:"nextDueDate,omitempty"`
 }
 
 var SubscriptionsSchema = `
 CREATE TABLE IF NOT EXISTS subscriptions (
-	id INT(11) PRIMARY KEY AUTO_INCREMENT,
-    uuid VARCHAR(36) NOT NULL UNIQUE,
+    id VARCHAR(36) PRIMARY KEY,
     cost DECIMAL NOT NULL,
     dueDate DATE NOT NULL,
     monthlyPayment BOOLEAN NOT NULL,
 	automaticPayment BOOLEAN NOT NULL,
-	paymentMethod VARCHAR(255),
 	serviceId VARCHAR(36),
 	userId VARCHAR(36),
 	FOREIGN KEY (serviceId) REFERENCES services(id),
@@ -48,16 +47,14 @@ CREATE TABLE IF NOT EXISTS subscriptions (
 `
 
 type Subscription struct {
-	ID               float32     `db:"id"					json:"-"`
-	UUID             string      `db:"uuid"					json:"uuid"`
-	Cost             float32     `db:"cost"					json:"cost"`
-	DueDate          string      `db:"dueDate"				json:"dueDate"`
-	PaymentMethod    null.String `db:"paymentMethod"		json:"paymentMethod"`
-	MonthlyPayment   bool        `db:"monthlyPayment"		json:"monthlyPayment"`
-	AutomaticPayment bool        `db:"automaticPayment"		json:"automaticPayment"`
-	UserID           string      `db:"userId" json:"-"		json:"userId"`
-	ServiceID        string      `db:"serviceId" json:"-"	json:"serviceId"`
-	Service          `db:"service" 							json:"service"`
+	ID               string    `db:"id"`
+	Cost             float32   `db:"cost"`
+	DueDate          time.Time `db:"dueDate"`
+	PaymentMethod    string    `db:"paymentMethod"`
+	MonthlyPayment   bool      `db:"monthlyPayment"`
+	AutomaticPayment bool      `db:"automaticPayment"`
+	UserID           string    `db:"userId"`
+	ServiceID        uint16    `db:"serviceID"`
 }
 
 var ServicesSchema = `
@@ -71,10 +68,10 @@ CREATE TABLE IF NOT EXISTS services (
 `
 
 type Service struct {
-	ID       string      `db:"id"		json:"uuid"`
-	Name     string      `db:"name"		json:"name"`
-	ImageURL null.String `db:"imageUrl" json:"imageUrl"`
-	Category string      `db:"category"  json:"category"`
+	ID       string      `db:"id"`
+	Name     string      `db:"name"`
+	ImageURL null.String `db:"imageUrl"`
+	Category string      `db:"category"`
 }
 
 var SessionsSchema = `
@@ -85,8 +82,8 @@ CREATE TABLE IF NOT EXISTS sessions (
 );`
 
 type Session struct {
-	ID     string `db:"id"		json:"uuid"`
-	UserID string `db:"userId"  json:"userId"`
+	ID     string `db:"id"`
+	UserID string `db:"userId"`
 }
 
 var CategoriesSchema = `
@@ -97,6 +94,6 @@ CREATE TABLE IF NOT EXISTS categories (
 `
 
 type Credentials struct {
-	Email    string `json:"email"		json:"email"`
-	Password string `json:"password"	json:"password"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }
