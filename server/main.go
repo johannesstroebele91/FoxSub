@@ -38,7 +38,7 @@ func main() {
 	v1Subrouter.HandleFunc("/test", AuthTest).Methods("GET")
 	v1Subrouter.HandleFunc("/subscriptions", CreateSubscription).Methods(("POST"))
 	v1Subrouter.HandleFunc("/subscriptions", GetSubscriptions).Methods("GET")
-	v1Subrouter.HandleFunc("/subscriptions/{uuid}", UpdateSubscription).Methods("POST")
+	v1Subrouter.HandleFunc("/subscriptions/{uuid}", UpdateSubscription).Methods("PUT")
 
 	apiSubrouter.HandleFunc("/signin", signin).Methods("POST")
 	apiSubrouter.HandleFunc("/register", Register).Methods("POST")
@@ -178,8 +178,9 @@ func CreateSubscription(w http.ResponseWriter, r *http.Request) {
 
 func GetSubscriptions(w http.ResponseWriter, r *http.Request) {
 	subscriptions := []Subscription{}
-	err := db.Select(&subscriptions, `SELECT services.id = "service.id", services.name "service.name", services.category "service.category", subscriptions.* FROM subscriptions JOIN services ON services.id = subscriptions.serviceId AND subscriptions.userId=?`, r.Header.Get("user"))
+	err := db.Select(&subscriptions, `SELECT services.id "service.id", services.name "service.name", services.category "service.category", subscriptions.* FROM subscriptions JOIN services ON services.id = subscriptions.serviceId AND subscriptions.userId=?`, r.Header.Get("user"))
 
+	fmt.Println(err)
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
 		return
@@ -196,7 +197,7 @@ func GetSubscriptions(w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdateSubscription(w http.ResponseWriter, r *http.Request) {
-	const updateQuery = `UPDATE subscriptions SET cost=:cost, dueDate=:dueDate, monthlyPayment=: montlyPayment, automaticPayment=:paymentMethod, serviceId=:serviceId WHERE uuid=:uuid AND userId=:userId`
+	const updateQuery = `UPDATE subscriptions SET cost=?, dueDate=?, monthlyPayment=?, paymentMethod=?, automaticPayment=?, serviceId=? WHERE uuid=? AND userId=?`
 
 	subscirptionUUID := mux.Vars(r)["uuid"]
 
@@ -204,12 +205,25 @@ func UpdateSubscription(w http.ResponseWriter, r *http.Request) {
 
 	err := json.NewDecoder(r.Body).Decode(&subscription)
 
+	// fmt.Println(subscription)
+	// fmt.Println(subscription.Service.Name)
+
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
-	fmt.Println(w, "test", subscirptionUUID)
+	subscription.UserID = r.Header.Get("user")
+	subscription.UUID = subscirptionUUID
+	fmt.Print(subscription.ServiceID)
+	// subscription.Service.Name = "test"
+
+	rows, err := db.Queryx(updateQuery, subscription.Cost, subscription.DueDate, subscription.MonthlyPayment, subscription.AutomaticPayment, subscription.PaymentMethod, subscription.ServiceID, subscription.UUID, subscription.UserID)
+
+	fmt.Println(err)
+	fmt.Println(rows)
+
+	// fmt.Println(w, "test", results)
 }
 
 // CommonMiddleware used on router to set the Content-Type header to application/json for every route
