@@ -2,7 +2,6 @@ package main
 
 import (
 	_ "database/sql"
-	"time"
 
 	_ "github.com/lib/pq"
 	"gopkg.in/guregu/null.v3"
@@ -34,12 +33,13 @@ type User struct {
 
 var SubscriptionsSchema = `
 CREATE TABLE IF NOT EXISTS subscriptions (
-    id VARCHAR(36) PRIMARY KEY,
+	id INT(11) PRIMARY KEY AUTO_INCREMENT,
+    uuid VARCHAR(36) NOT NULL UNIQUE,
     cost DECIMAL NOT NULL,
     dueDate DATE NOT NULL,
     monthlyPayment BOOLEAN NOT NULL,
 	automaticPayment BOOLEAN NOT NULL,
-	paymentMethod VARBINARY(255),
+	paymentMethod VARCHAR(255),
 	serviceId VARCHAR(36),
 	userId VARCHAR(36),
 	FOREIGN KEY (serviceId) REFERENCES services(id),
@@ -48,14 +48,16 @@ CREATE TABLE IF NOT EXISTS subscriptions (
 `
 
 type Subscription struct {
-	ID               string      `db:"id"`
+	ID               float32     `db:"id" json:"-"`
+	UUID             string      `db:"uuid"`
 	Cost             float32     `db:"cost"`
-	DueDate          time.Time   `db:"dueDate"`
+	DueDate          string      `db:"dueDate"`
 	PaymentMethod    null.String `db:"paymentMethod"`
 	MonthlyPayment   bool        `db:"monthlyPayment"`
 	AutomaticPayment bool        `db:"automaticPayment"`
-	UserID           string      `db:"userId"`
-	ServiceId        string      `db:"serviceId"`
+	UserID           string      `db:"userId" json:"-"`
+	ServiceID        string      `db:"serviceId" json:"-"`
+	Service          `db:"service" json:"service"`
 }
 
 var ServicesSchema = `
