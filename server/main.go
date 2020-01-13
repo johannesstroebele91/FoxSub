@@ -18,7 +18,6 @@ func main() {
 	var err error
 	db, err = sqlx.Connect("mysql", "root:password@tcp(127.0.0.1:3306)/fabulous-fox")
 	// err = db.Ping()
-	fmt.Println("err", err)
 
 	db.MustExec(UsersSchema)
 	db.MustExec(CategoriesSchema)
@@ -26,18 +25,21 @@ func main() {
 	db.MustExec(SubscriptionsSchema)
 	db.MustExec(SessionsSchema)
 
-	fmt.Println("db :", db)
-
 	if err != nil {
 		panic(err.Error())
 	}
 
 	router := mux.NewRouter()
+	router.Use(CommonMiddleware)
 	apiSubrouter := router.PathPrefix("/api").Subrouter()
 	v1Subrouter := apiSubrouter.PathPrefix("/v1").Subrouter()
+
 	v1Subrouter.Use(Authenticator())
 	v1Subrouter.HandleFunc("/test", AuthTest).Methods("GET")
 	v1Subrouter.HandleFunc("/subscriptions", CreateSubscription).Methods(("POST"))
+	v1Subrouter.HandleFunc("/subscriptions", GetSubscriptions).Methods("GET")
+	v1Subrouter.HandleFunc("/subscriptions/{uuid}", UpdateSubscription).Methods("POST")
+
 	apiSubrouter.HandleFunc("/signin", signin).Methods("POST")
 	apiSubrouter.HandleFunc("/register", Register).Methods("POST")
 
@@ -88,7 +90,7 @@ func signin(w http.ResponseWriter, r *http.Request) {
 func Authenticator() func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			sessionToken, err := r.Cookie("session_token")
+			sessionCookie, err := r.Cookie("session_token")
 			if err != nil {
 				if err == http.ErrNoCookie {
 					w.WriteHeader(http.StatusUnauthorized)
@@ -99,20 +101,19 @@ func Authenticator() func(http.Handler) http.Handler {
 				return
 			}
 
-			if sessionToken.Expires.After(time.Now()) {
+			if sessionCookie.Expires.After(time.Now()) {
 				w.WriteHeader(http.StatusUnauthorized)
 				return
 			}
 
-			row := db.QueryRowx("SELECT * FROM sessions WHERE id=?", sessionToken.Value)
+			row := db.QueryRowx("SELECT * FROM sessions WHERE id=?", sessionCookie.Value)
 			var session Session
 			err = row.StructScan(&session)
-			if err != nil {
+			if err != nil || sessionCookie.Value == "" {
 				w.WriteHeader(http.StatusUnauthorized)
 				return
 			}
 			r.Header.Set("user", session.UserID)
-			fmt.Println(r)
 			next.ServeHTTP(w, r)
 		})
 	}
@@ -127,11 +128,8 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	var credentials Credentials
 
 	err := json.NewDecoder(r.Body).Decode(&credentials)
-	fmt.Println(&credentials)
 
 	if err != nil || credentials.Email == "" || credentials.Password == "" {
-		fmt.Println("noooO", err, credentials)
-
 		w.WriteHeader((http.StatusBadRequest))
 		return
 	}
@@ -147,30 +145,77 @@ func Register(w http.ResponseWriter, r *http.Request) {
 }
 
 func CreateSubscription(w http.ResponseWriter, r *http.Request) {
-	createSubscription := `INSERT INTO subscriptions (id, cost, dueDate, paymentMethod, monthlyPayment, automaticPayment, userId, serviceId) VALUES (UUID(), ?, ?, ?, ?, ?, ?, ?) RETURNING`
+	createSubscription := `INSERT INTO subscriptions (uuid, cost, paymentMethod, monthlyPayment, automaticPayment, userId, serviceId) VALUES (UUID(), ?, ?, ?, ?, ?, ?)`
 	var subscription Subscription
 
 	err := json.NewDecoder(r.Body).Decode(&subscription)
-	fmt.Println(&subscription)
 
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
-	/**
-	 * TODO add logic for user id
-	 */
-	results := db.QueryRowx(createSubscription, subscription.Cost, subscription.DueDate, subscription.PaymentMethod, subscription.MonthlyPayment, subscription.AutomaticPayment, r.Header.Get("user"), "f6da8cbc-2d71-11ea-8b61-0242ac120003")
+	results := db.MustExec(createSubscription, subscription.Cost, subscription.PaymentMethod, subscription.MonthlyPayment, subscription.AutomaticPayment, r.Header.Get("user"), subscription.ServiceID)
 
-	err = results.StructScan(&subscription)
+	insertedIndex, err := results.LastInsertId()
 
 	if err != nil {
-		w.Header().Set("Content-Type", "application/json")
-		test, _ := json.Marshal(&subscription)
-		w.Write(test)
-		w.WriteHeader(http.StatusUnprocessableEntity)
+		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
+	err = db.QueryRowx("SELECT * FROM subscriptions WHERE id=?", insertedIndex).StructScan(&subscription)
+
+	subscriptionJSON, err := json.Marshal(&subscription)
+
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	w.Write(subscriptionJSON)
+}
+
+func GetSubscriptions(w http.ResponseWriter, r *http.Request) {
+	subscriptions := []Subscription{}
+	err := db.Select(&subscriptions, `SELECT services.name "service.name", services.category "service.category", subscriptions.* FROM subscriptions JOIN services ON services.id = subscriptions.serviceId AND subscriptions.userId=?`, r.Header.Get("user"))
+
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	subscriptionsJSON, err := json.Marshal(&subscriptions)
+
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	w.Write(subscriptionsJSON)
+}
+
+func UpdateSubscription(w http.ResponseWriter, r *http.Request) {
+	const updateQuery = `UPDATE subscriptions SET cost=:cost, dueDate=:dueDate, monthlyPayment=: montlyPayment, automaticPayment=:paymentMethod, serviceId=:serviceId WHERE uuid=:uuid AND userId=:userId`
+
+	subscirptionUUID := mux.Vars(r)["uuid"]
+
+	var subscription Subscription
+
+	err := json.NewDecoder(r.Body).Decode(&subscription)
+
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	fmt.Println(w, "test", subscirptionUUID)
+}
+
+// CommonMiddleware used on router to set the Content-Type header to application/json for every route
+func CommonMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Add("Content-Type", "application/json")
+		next.ServeHTTP(w, r)
+	})
 }
