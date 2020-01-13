@@ -21,14 +21,14 @@ CREATE TABLE IF NOT EXISTS users (
 `
 
 type User struct {
-	ID                      string     `db:"id"`
-	FirstName               string     `db:"firstName"`
-	LastName                string     `db:"lastName"`
-	Email                   string     `db:"email"`
-	Password                string     `db:"password"`
-	Goal                    null.Float `db:"goal"`
-	MonthlyCumulatedPayment null.Float `db:"monthlyCumulatedPayment,omitempty"`
-	NextDueDate             null.Time  `db:"nextDueDate,omitempty"`
+	ID                      string     `db:"id" 						json:"uuid"`
+	FirstName               string     `db:"firstName"					json:"firstName"`
+	LastName                string     `db:"lastName"					json:"lastName"`
+	Email                   string     `db:"email"						json:"email"`
+	Password                string     `db:"password"					json:"password"`
+	Goal                    null.Float `db:"goal"						json:"goal"`
+	MonthlyCumulatedPayment null.Float `db:"monthlyCumulatedPayment"	json:"monthlyCumulatedPayment"`
+	NextDueDate             null.Time  `db:"nextDueDate" 				json:"nextDueDate"`
 }
 
 var SubscriptionsSchema = `
@@ -48,16 +48,16 @@ CREATE TABLE IF NOT EXISTS subscriptions (
 `
 
 type Subscription struct {
-	ID               float32     `db:"id" json:"-"`
-	UUID             string      `db:"uuid"`
-	Cost             float32     `db:"cost"`
-	DueDate          string      `db:"dueDate"`
-	PaymentMethod    null.String `db:"paymentMethod"`
-	MonthlyPayment   bool        `db:"monthlyPayment"`
-	AutomaticPayment bool        `db:"automaticPayment"`
-	UserID           string      `db:"userId" json:"-"`
-	ServiceID        string      `db:"serviceId" json:"-"`
-	Service          `db:"service" json:"service"`
+	ID               float32     `db:"id"					json:"-"`
+	UUID             string      `db:"uuid"					json:"uuid"`
+	Cost             float32     `db:"cost"					json:"cost"`
+	DueDate          string      `db:"dueDate"				json:"dueDate"`
+	PaymentMethod    null.String `db:"paymentMethod"		json:"paymentMethod"`
+	MonthlyPayment   bool        `db:"monthlyPayment"		json:"monthlyPayment"`
+	AutomaticPayment bool        `db:"automaticPayment"		json:"automaticPayment"`
+	UserID           string      `db:"userId" json:"-"		json:"userId"`
+	ServiceID        string      `db:"serviceId" json:"-"	json:"serviceId"`
+	Service          `db:"service" 							json:"service"`
 }
 
 var ServicesSchema = `
@@ -71,10 +71,10 @@ CREATE TABLE IF NOT EXISTS services (
 `
 
 type Service struct {
-	ID       string      `db:"id"`
-	Name     string      `db:"name"`
-	ImageURL null.String `db:"imageUrl"`
-	Category string      `db:"category"`
+	ID       string      `db:"id"		json:"uuid"`
+	Name     string      `db:"name"		json:"name"`
+	ImageURL null.String `db:"imageUrl" json:"imageUrl"`
+	Category string      `db:"category"  json:"category"`
 }
 
 var SessionsSchema = `
@@ -85,8 +85,8 @@ CREATE TABLE IF NOT EXISTS sessions (
 );`
 
 type Session struct {
-	ID     string `db:"id"`
-	UserID string `db:"userId"`
+	ID     string `db:"id"		json:"uuid"`
+	UserID string `db:"userId"  json:"userId"`
 }
 
 var CategoriesSchema = `
@@ -97,6 +97,6 @@ CREATE TABLE IF NOT EXISTS categories (
 `
 
 type Credentials struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
+	Email    string `json:"email"		json:"email"`
+	Password string `json:"password"	json:"password"`
 }
