@@ -6,6 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from "./header/header.component";
 import { LoginComponent } from './login/login.component';
+import { DashboardComponent} from "./dashboard/dashboard.component";
 import { ProfileComponent } from "./profile/profile.component";
 import { RowComponent } from "./row/row.component";
 import { SubscriptionListElementComponent } from "./subscriptions/list/expansion/subscription-list-element.component";
@@ -25,6 +26,7 @@ import { SubscriptionEditComponent } from './subscriptions/subscription-edit/sub
     ProfileComponent,
     RowComponent,
     HeaderComponent,
+    DashboardComponent,
     SubscriptionListComponent,
     SubscriptionListElementComponent,
     SubscriptionAddComponent,
