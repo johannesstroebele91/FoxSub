@@ -39,6 +39,7 @@ func main() {
 	v1Subrouter.HandleFunc("/subscriptions", CreateSubscription).Methods(("POST"))
 	v1Subrouter.HandleFunc("/subscriptions", GetSubscriptions).Methods("GET")
 	v1Subrouter.HandleFunc("/subscriptions/{uuid}", UpdateSubscription).Methods("PUT")
+	v1Subrouter.HandleFunc("/subscriptions", DeleteSubscription).Methods("DELETE")
 
 	apiSubrouter.HandleFunc("/signin", signin).Methods("POST")
 	apiSubrouter.HandleFunc("/register", Register).Methods("POST")
@@ -151,8 +152,12 @@ func CreateSubscription(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(&subscription)
 
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		w.WriteHeader(http.StatusUnprocessableEntity)
 		return
+	}
+
+	if subscription.Service.ID != "" {
+		subscription.ServiceID = subscription.Service.ID
 	}
 
 	results := db.MustExec(createSubscription, subscription.Cost, subscription.PaymentMethod, subscription.MonthlyPayment, subscription.AutomaticPayment, r.Header.Get("user"), subscription.ServiceID)
@@ -160,7 +165,7 @@ func CreateSubscription(w http.ResponseWriter, r *http.Request) {
 	insertedIndex, err := results.LastInsertId()
 
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
+		w.WriteHeader(http.StatusUnprocessableEntity)
 		return
 	}
 
@@ -199,14 +204,9 @@ func GetSubscriptions(w http.ResponseWriter, r *http.Request) {
 func UpdateSubscription(w http.ResponseWriter, r *http.Request) {
 	const updateQuery = `UPDATE subscriptions SET cost=?, dueDate=?, monthlyPayment=?, paymentMethod=?, automaticPayment=?, serviceId=? WHERE uuid=? AND userId=?`
 
-	subscirptionUUID := mux.Vars(r)["uuid"]
-
 	var subscription Subscription
 
 	err := json.NewDecoder(r.Body).Decode(&subscription)
-
-	// fmt.Println(subscription)
-	// fmt.Println(subscription.Service.Name)
 
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
@@ -214,16 +214,48 @@ func UpdateSubscription(w http.ResponseWriter, r *http.Request) {
 	}
 
 	subscription.UserID = r.Header.Get("user")
-	subscription.UUID = subscirptionUUID
-	fmt.Print(subscription.ServiceID)
-	// subscription.Service.Name = "test"
 
-	rows, err := db.Queryx(updateQuery, subscription.Cost, subscription.DueDate, subscription.MonthlyPayment, subscription.AutomaticPayment, subscription.PaymentMethod, subscription.ServiceID, subscription.UUID, subscription.UserID)
+	if subscription.Service.ID != "" {
+		subscription.ServiceID = subscription.Service.ID
+	}
 
-	fmt.Println(err)
-	fmt.Println(rows)
+	_, err = db.Queryx(updateQuery, subscription.Cost, subscription.DueDate, subscription.MonthlyPayment, subscription.PaymentMethod, subscription.AutomaticPayment, subscription.ServiceID, subscription.UUID, subscription.UserID)
 
-	// fmt.Println(w, "test", results)
+	if err != nil {
+		w.WriteHeader(http.StatusUnprocessableEntity)
+		return
+	}
+
+	subscriptionJSON, _ := json.Marshal(&subscription)
+
+	if err != nil {
+		// TODO think about error response? is it rly needed
+		w.WriteHeader(http.StatusUnprocessableEntity)
+		return
+	}
+
+	w.Write(subscriptionJSON)
+}
+
+func DeleteSubscription(w http.ResponseWriter, r *http.Request) {
+	const deleteQuery = `DELETE FROM subscriptions WHERE uuid=? AND userId=?`
+
+	var subscription Subscription
+
+	err := json.NewDecoder(r.Body).Decode(&subscription)
+
+	if err != nil || subscription.UUID == "" {
+		w.WriteHeader(http.StatusUnprocessableEntity)
+		return
+	}
+
+	_, err = db.Query(deleteQuery, subscription.UUID, r.Header.Get("user"))
+
+	if err != nil {
+		fmt.Println(err)
+		w.WriteHeader(http.StatusUnprocessableEntity)
+		return
+	}
 }
 
 // CommonMiddleware used on router to set the Content-Type header to application/json for every route
