@@ -11,6 +11,10 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ReactiveFormsModule } from "@angular/forms";
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SubscriptionAddComponent } from './subscriptions/subscription-add/subscription-add.component';
+import { SubscriptionEditComponent } from './subscriptions/subscription-edit/subscription-edit.component';
+import {ProfileComponent} from "./profile/profile.component";
+import {RowComponent} from "./row/row.component";
 
 @NgModule({
   imports: [
@@ -23,9 +27,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   ],
   declarations: [
     AppComponent,
+    ProfileComponent,
+    RowComponent,
     HeaderComponent,
+    DashboardComponent,
     SubscriptionListComponent,
     SubscriptionListElementComponent,
+    SubscriptionAddComponent,
+    SubscriptionEditComponent,
     LoginComponent,
     DashboardComponent
   ],

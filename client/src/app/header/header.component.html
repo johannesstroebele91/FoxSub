@@ -2,23 +2,23 @@
 <div class="container">
     <div id="header">
         <!-- Logo -->
-        <div id="logo" routerLink="" routerLinkActive="">
+        <a id="logo" routerLink="/dashboard">
             <!-- TODO <img src="../../assets/logo.svg" alt="Logo" height="30" width="30"> später ersetzen für nächste Zeile-->
             <div class="material-icons">assignment</div>
             <div id="logoText">Abofy</div>
-        </div>
+        </a>
         <!-- Desktop Menu -->
         <div id="hamburger" class="material-icons"  (click)="clickMenu()">menu</div>
         <div id="menuDesktop">
-            <a>Dashboard</a>
-            <a routerLink="subscriptions" routerLinkActive="">Subscriptions</a>
-            <a>Profile</a>
+            <a routerLink="/dashboard" routerLinkActive="router-link-active">Dashboard</a>
+            <a routerLink="/subscriptions" routerLinkActive="router-link-active">Subscriptions</a>
+            <a routerLink="/profile" routerLinkActive="router-link-active">Profile</a>
         </div>
     </div>
+    <!-- Mobile Menu -->
     <div *ngIf="!showMobileMenu" id="menuMobile" [ngStyle]="{'background-color': showMobileMenu ? '#242224' : 'none'}">
-        <!-- TODO implement links to other pages -->
-        <a><span class="material-icons">dashboard</span>Dashboard</a>
-        <a routerLink="subscriptions" routerLinkActive=""><span class="material-icons">list</span>Subscriptions</a>
-        <a><span class="material-icons">person</span>Profile</a>
+        <a routerLink="/dashboard" routerLinkActive="router-link-active"><span class="material-icons">dashboard</span>Dashboard</a>
+        <a routerLink="/subscriptions" routerLinkActive="router-link-active"><span class="material-icons">list</span>Subscriptions</a>
+        <a routerLink="/profile" routerLinkActive="router-link-active"><span class="material-icons">person</span>Profile</a>
     </div>
 </div>
