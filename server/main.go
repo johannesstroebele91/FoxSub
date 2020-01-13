@@ -178,7 +178,7 @@ func CreateSubscription(w http.ResponseWriter, r *http.Request) {
 
 func GetSubscriptions(w http.ResponseWriter, r *http.Request) {
 	subscriptions := []Subscription{}
-	err := db.Select(&subscriptions, `SELECT services.name "service.name", services.category "service.category", subscriptions.* FROM subscriptions JOIN services ON services.id = subscriptions.serviceId AND subscriptions.userId=?`, r.Header.Get("user"))
+	err := db.Select(&subscriptions, `SELECT services.id = "service.id", services.name "service.name", services.category "service.category", subscriptions.* FROM subscriptions JOIN services ON services.id = subscriptions.serviceId AND subscriptions.userId=?`, r.Header.Get("user"))
 
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
