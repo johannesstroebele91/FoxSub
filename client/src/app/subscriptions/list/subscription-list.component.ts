@@ -1,21 +1,20 @@
-import {Component} from '@angular/core';
-import {Subscription} from "../../../../shared/models/Subscription";
+import { Component, OnInit } from '@angular/core';
+import { Subscription } from "../../../../shared/models/Subscription";
+import { SubscriptionsService } from '../../../../shared/services/subscriptions.service';
 
 @Component({
     selector: 'app-subscription-list',
     templateUrl: './subscription-list.component.html',
     styleUrls: ['./subscription-list.component.scss']
 })
-export class SubscriptionListComponent {
+export class SubscriptionListComponent implements OnInit {
 
-    // TODO delete mock data later
-    subscriptions: Subscription[] = [
-        {id: '1', cost: 5, dueDate: 2000, monthlyPayment: true, paymentMethod: 'PayPal', automaticPayment: true, service: { name: 'Netflix', category: 'Entertainment' }},
-        {id: '2', cost: 5, dueDate: 2000, monthlyPayment: true, paymentMethod: 'PayPal', automaticPayment: true, service: { name: 'Netflix', category: 'Entertainment' }},
-        {id: '3', cost: 10, dueDate: 2000, monthlyPayment: true, paymentMethod: 'PayPal', automaticPayment: true, service: { name: 'Netflix', category: 'Entertainment' }},
-        {id: '4', cost: 10, dueDate: 2000, monthlyPayment: true, paymentMethod: 'PayPal', automaticPayment: true, service: { name: 'Netflix', category: 'Entertainment' }},
-        {id: '5', cost: 5, dueDate: 2000, monthlyPayment: true, paymentMethod: 'PayPal', automaticPayment: true, service: { name: 'Netflix', category: 'Entertainment' }},
-        {id: '6', cost: 5, dueDate: 2000, monthlyPayment: true, paymentMethod: 'PayPal', automaticPayment: true, service: { name: 'Netflix', category: 'Entertainment' }},
-    ];
+    subscriptions: Subscription[] = []
+
+    constructor(private subscriptionsService: SubscriptionsService) { }
+
+    ngOnInit() {
+        this.subscriptionsService.getSubscriptions().subscribe((subscriptions) => { this.subscriptions = subscriptions })
+    }
 
 }

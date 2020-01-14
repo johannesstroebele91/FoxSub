@@ -142,3 +142,79 @@ func Register(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 }
+
+func CreateSubscription(w http.ResponseWriter, r *http.Request) {
+	createSubscription := `INSERT INTO subscriptions (uuid, cost, paymentMethod, monthlyPayment, automaticPayment, userId, serviceId) VALUES (UUID(), ?, ?, ?, ?, ?, ?)`
+	var subscription Subscription
+
+	err := json.NewDecoder(r.Body).Decode(&subscription)
+
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	results := db.MustExec(createSubscription, subscription.Cost, subscription.PaymentMethod, subscription.MonthlyPayment, subscription.AutomaticPayment, r.Header.Get("user"), subscription.ServiceID)
+
+	insertedIndex, err := results.LastInsertId()
+
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	err = db.QueryRowx("SELECT * FROM subscriptions WHERE id=?", insertedIndex).StructScan(&subscription)
+
+	subscriptionJSON, err := json.Marshal(&subscription)
+
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	w.Write(subscriptionJSON)
+}
+
+func GetSubscriptions(w http.ResponseWriter, r *http.Request) {
+	subscriptions := []Subscription{}
+	err := db.Select(&subscriptions, `SELECT services.id "service.id", services.name "service.name", services.category "service.category", subscriptions.* FROM subscriptions JOIN services ON services.id = subscriptions.serviceId AND subscriptions.userId=?`, r.Header.Get("user"))
+
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	subscriptionsJSON, err := json.Marshal(&subscriptions)
+
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	w.Write(subscriptionsJSON)
+}
+
+func UpdateSubscription(w http.ResponseWriter, r *http.Request) {
+	const updateQuery = `UPDATE subscriptions SET cost=:cost, dueDate=:dueDate, monthlyPayment=: montlyPayment, automaticPayment=:paymentMethod, serviceId=:serviceId WHERE uuid=:uuid AND userId=:userId`
+
+	subscirptionUUID := mux.Vars(r)["uuid"]
+
+	var subscription Subscription
+
+	err := json.NewDecoder(r.Body).Decode(&subscription)
+
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	fmt.Println(w, "test", subscirptionUUID)
+}
+
+// CommonMiddleware used on router to set the Content-Type header to application/json for every route
+func CommonMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Add("Content-Type", "application/json")
+		next.ServeHTTP(w, r)
+	})
+}
