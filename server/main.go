@@ -18,6 +18,7 @@ func main() {
 	var err error
 	db, err = sqlx.Connect("mysql", "root:password@tcp(127.0.0.1:3306)/fabulous-fox")
 	// err = db.Ping()
+	fmt.Println("err", err)
 
 	db.MustExec(UsersSchema)
 	db.MustExec(CategoriesSchema)
@@ -25,15 +26,15 @@ func main() {
 	db.MustExec(SubscriptionsSchema)
 	db.MustExec(SessionsSchema)
 
+	fmt.Println("db :", db)
+
 	if err != nil {
 		panic(err.Error())
 	}
 
 	router := mux.NewRouter()
-	router.Use(CommonMiddleware)
 	apiSubrouter := router.PathPrefix("/api").Subrouter()
 	v1Subrouter := apiSubrouter.PathPrefix("/v1").Subrouter()
-
 	v1Subrouter.Use(Authenticator())
 	v1Subrouter.HandleFunc("/test", AuthTest).Methods("GET")
 	v1Subrouter.HandleFunc("/subscriptions", CreateSubscription).Methods(("POST"))
@@ -50,6 +51,9 @@ func main() {
 }
 
 func signin(w http.ResponseWriter, r *http.Request) {
+	/**
+	* @TODO add validation for credentials
+	 */
 	var credentials Credentials
 
 	err := json.NewDecoder(r.Body).Decode(&credentials)
@@ -76,10 +80,14 @@ func signin(w http.ResponseWriter, r *http.Request) {
 
 	results := db.MustExec(createSession, sessionToken, user.ID)
 
-	if results == nil {
+	affectedRows, err := results.RowsAffected()
+
+	if err != nil || affectedRows <= 0 {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
+
+	fmt.Print(affectedRows)
 
 	http.SetCookie(w, &http.Cookie{
 		Name:    "session_token",
@@ -91,7 +99,7 @@ func signin(w http.ResponseWriter, r *http.Request) {
 func Authenticator() func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			sessionCookie, err := r.Cookie("session_token")
+			c, err := r.Cookie("session_token")
 			if err != nil {
 				if err == http.ErrNoCookie {
 					w.WriteHeader(http.StatusUnauthorized)
@@ -102,19 +110,11 @@ func Authenticator() func(http.Handler) http.Handler {
 				return
 			}
 
-			if sessionCookie.Expires.After(time.Now()) {
+			if c.Expires.After(time.Now()) {
 				w.WriteHeader(http.StatusUnauthorized)
 				return
 			}
 
-			row := db.QueryRowx("SELECT * FROM sessions WHERE id=?", sessionCookie.Value)
-			var session Session
-			err = row.StructScan(&session)
-			if err != nil || sessionCookie.Value == "" {
-				w.WriteHeader(http.StatusUnauthorized)
-				return
-			}
-			r.Header.Set("user", session.UserID)
 			next.ServeHTTP(w, r)
 		})
 	}
@@ -129,8 +129,11 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	var credentials Credentials
 
 	err := json.NewDecoder(r.Body).Decode(&credentials)
+	fmt.Println(&credentials)
 
 	if err != nil || credentials.Email == "" || credentials.Password == "" {
+		fmt.Println("noooO", err, credentials)
+
 		w.WriteHeader((http.StatusBadRequest))
 		return
 	}
