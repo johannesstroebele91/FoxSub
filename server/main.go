@@ -25,6 +25,9 @@ func main() {
 	db.MustExec(SubscriptionsSchema)
 	db.MustExec(SessionsSchema)
 
+	fmt.Println(db)
+	fmt.Println(err)
+
 	if err != nil {
 		panic(err.Error())
 	}
@@ -36,9 +39,10 @@ func main() {
 
 	v1Subrouter.Use(Authenticator())
 	v1Subrouter.HandleFunc("/test", AuthTest).Methods("GET")
-	v1Subrouter.HandleFunc("/subscriptions", CreateSubscription).Methods(("POST"))
+	v1Subrouter.HandleFunc("/subscriptions", CreateSubscription).Methods("POST")
 	v1Subrouter.HandleFunc("/subscriptions", GetSubscriptions).Methods("GET")
 	v1Subrouter.HandleFunc("/subscriptions/{uuid}", UpdateSubscription).Methods("PUT")
+	v1Subrouter.HandleFunc("/subscriptions/general", GetCostForCategories).Methods("GET")
 	v1Subrouter.HandleFunc("/subscriptions", DeleteSubscription).Methods("DELETE")
 
 	apiSubrouter.HandleFunc("/signin", signin).Methods("POST")
@@ -185,7 +189,6 @@ func GetSubscriptions(w http.ResponseWriter, r *http.Request) {
 	subscriptions := []Subscription{}
 	err := db.Select(&subscriptions, `SELECT services.id "service.id", services.name "service.name", services.category "service.category", subscriptions.* FROM subscriptions JOIN services ON services.id = subscriptions.serviceId AND subscriptions.userId=?`, r.Header.Get("user"))
 
-	fmt.Println(err)
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
 		return
@@ -264,4 +267,30 @@ func CommonMiddleware(next http.Handler) http.Handler {
 		w.Header().Add("Content-Type", "application/json")
 		next.ServeHTTP(w, r)
 	})
+}
+
+func GetCostForCategories(w http.ResponseWriter, r *http.Request) {
+	const getQuery = `SELECT name "category", SUM(cost) "cost" FROM subscriptions JOIN services ON subscriptions.serviceId = services.id AND subscriptions.userId=? GROUP BY serviceId`
+
+	fmt.Println("here")
+	var categoriesCost []CategoryCost
+
+	err := db.Select(&categoriesCost, getQuery, r.Header.Get("user"))
+
+	fmt.Println(err)
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	subscriptionsJSON, err := json.Marshal(&categoriesCost)
+
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	w.Write(subscriptionsJSON)
+
+	// SELECT SUM(cost), name FROM subscriptions JOIN services ON subscriptions.serviceId = services.id AND subscriptions.userId = '79c9e1ac-96f1-11e5-85a6-000c29f1f6c4' GROUP BY serviceId;
 }
