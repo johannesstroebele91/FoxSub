@@ -53,9 +53,9 @@ type Subscription struct {
 	PaymentMethod    null.String `db:"paymentMethod" json:"paymentMethod"`
 	MonthlyPayment   bool        `db:"monthlyPayment" json:"monthlyPayment"`
 	AutomaticPayment bool        `db:"automaticPayment" json:"automaticPayment"`
-	UserID           string      `db:"userId" json:"-" json:"userId"`
-	ServiceID        string      `db:"serviceId" json:"-" json:"serviceId"`
-	Service          `db:"service" json:"service"`
+	UserID           string      `db:"userId" json:"-"`
+	ServiceID        string      `db:"serviceId" json:"serviceId"`
+	Service          Service     `db:"service" json:"service"`
 }
 
 var ServicesSchema = `
