@@ -38,9 +38,10 @@ func main() {
 	v1Subrouter := apiSubrouter.PathPrefix("/v1").Subrouter()
 	v1Subrouter.Use(Authenticator())
 	v1Subrouter.HandleFunc("/test", AuthTest).Methods("GET")
-	v1Subrouter.HandleFunc("/subscriptions", CreateSubscription).Methods(("POST"))
+	v1Subrouter.HandleFunc("/subscriptions", CreateSubscription).Methods("POST")
 	v1Subrouter.HandleFunc("/subscriptions", GetSubscriptions).Methods("GET")
 	v1Subrouter.HandleFunc("/subscriptions/{uuid}", UpdateSubscription).Methods("PUT")
+	v1Subrouter.HandleFunc("/subscriptions/general", GetCostForCategories).Methods("GET")
 	v1Subrouter.HandleFunc("/subscriptions", DeleteSubscription).Methods("DELETE")
 
 	apiSubrouter.HandleFunc("/signin", signin).Methods("POST")
@@ -198,9 +199,6 @@ func GetSubscriptions(w http.ResponseWriter, r *http.Request) {
 	subscriptions := []Subscription{}
 	err := db.Select(&subscriptions, `SELECT services.id "service.id", services.name "service.name", services.category "service.category", subscriptions.* FROM subscriptions JOIN services ON services.id = subscriptions.serviceId AND subscriptions.userId=?`, r.Header.Get("user"))
 
-	fmt.Println(r.Header.Get("user"))
-	fmt.Println(err)
-	fmt.Println(subscriptions)
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
 		return
@@ -281,4 +279,28 @@ func CommonMiddleware() func(http http.Handler) http.Handler {
 			next.ServeHTTP(w, r)
 		})
 	}
+}
+
+func GetCostForCategories(w http.ResponseWriter, r *http.Request) {
+	const getQuery = `SELECT category, SUM(cost) "cost" FROM subscriptions JOIN services ON subscriptions.serviceId = services.id AND subscriptions.userId=? GROUP BY serviceId`
+
+	fmt.Println("here")
+	var categoriesCost []CategoryCost
+
+	err := db.Select(&categoriesCost, getQuery, r.Header.Get("user"))
+
+	fmt.Println(err)
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	subscriptionsJSON, err := json.Marshal(&categoriesCost)
+
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	w.Write(subscriptionsJSON)
 }

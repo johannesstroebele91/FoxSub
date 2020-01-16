@@ -94,7 +94,12 @@ CREATE TABLE IF NOT EXISTS categories (
 );
 `
 
+type CategoryCost struct {
+	Category string  `db:"category" json:"category"`
+	Cost     float32 `db:"cost" json:"cost"`
+}
+
 type Credentials struct {
-	Email    string `json:"email" json:"email"`
-	Password string `json:"password" json:"password"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }
