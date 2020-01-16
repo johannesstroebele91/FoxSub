@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS users (
     password VARCHAR(255) NOT NULL,
     goal DECIMAL,
     monthlyCumulatedPayment DECIMAL NULL DEFAULT 0,
-    nextDueDate DATETIME
+    nextDueDate INT(11) UNSIGNED
 );
 `
 
@@ -28,19 +28,21 @@ type User struct {
 	Password                string     `db:"password" json:"password"`
 	Goal                    null.Float `db:"goal" json:"goal"`
 	MonthlyCumulatedPayment null.Float `db:"monthlyCumulatedPayment" json:"monthlyCumulatedPayment"`
-	NextDueDate             null.Time  `db:"nextDueDate" json:"nextDueDate"`
+	NextDueDate             null.Float `db:"nextDueDate" json:"nextDueDate"`
 }
 
 var SubscriptionsSchema = `
 CREATE TABLE IF NOT EXISTS subscriptions (
-    id VARCHAR(36) PRIMARY KEY,
-    cost DECIMAL NOT NULL,
-    dueDate DATE NOT NULL,
-    monthlyPayment BOOLEAN NOT NULL,
+	id INT(11) PRIMARY KEY AUTO_INCREMENT,
+	uuid VARCHAR(36) UNIQUE NOT NULL,
+  cost DECIMAL NOT NULL,
+  dueDate INT(11) UNSIGNED NOT NULL,
+	monthlyPayment BOOLEAN NOT NULL,
+	paymentMethod VARBINARY(255),
 	automaticPayment BOOLEAN NOT NULL,
 	serviceId VARCHAR(36),
 	userId VARCHAR(36),
-	FOREIGN KEY (serviceId) REFERENCES services(id),
+	  FOREIGN KEY (serviceId) REFERENCES services(id),
     FOREIGN KEY (userId) REFERENCES users(id)
 );
 `
@@ -49,7 +51,7 @@ type Subscription struct {
 	ID               float32     `db:"id" json:"-"`
 	UUID             string      `db:"uuid" json:"uuid"`
 	Cost             float32     `db:"cost" json:"cost"`
-	DueDate          string      `db:"dueDate" json:"dueDate"`
+	DueDate          float64     `db:"dueDate" json:"dueDate"`
 	PaymentMethod    null.String `db:"paymentMethod" json:"paymentMethod"`
 	MonthlyPayment   bool        `db:"monthlyPayment" json:"monthlyPayment"`
 	AutomaticPayment bool        `db:"automaticPayment" json:"automaticPayment"`
