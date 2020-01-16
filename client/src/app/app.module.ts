@@ -11,8 +11,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ReactiveFormsModule } from "@angular/forms";
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { SubscriptionAddComponent } from './subscriptions/subscription-add/subscription-add.component';
-import { SubscriptionEditComponent } from './subscriptions/subscription-edit/subscription-edit.component';
+import { SubscriptionChangeComponent } from './subscriptions/subscription-change/subscription-change.component';
 import { ProfileComponent} from "./profile/profile.component";
 import { RowComponent} from "./row/row.component";
 import { ErrorInterceptor } from "../../shared/interceptors/ErrorInterceptor";
@@ -34,8 +33,7 @@ import { ErrorInterceptor } from "../../shared/interceptors/ErrorInterceptor";
     DashboardComponent,
     SubscriptionListComponent,
     SubscriptionListElementComponent,
-    SubscriptionAddComponent,
-    SubscriptionEditComponent,
+    SubscriptionChangeComponent,
     LoginComponent,
     DashboardComponent
   ],

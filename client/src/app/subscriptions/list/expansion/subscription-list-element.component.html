@@ -1,18 +1,18 @@
 <div class="row fieldBackground">
     <div class="col-xs-11">
         <h3 class="text">{{subscription.service.name}}</h3>
-        <div class="text">{{subscription.dueDate}}</div>
-        <div class="text">{{subscription.cost}} Euro</div>
+        <div class="text">Due date: {{subscription.dueDate*1000|date:'dd.MM.yyyy'}}</div>
+        <div class="text">Price: {{subscription.cost}} Euro</div>
         <div *ngIf="isExpanded">
+            <div class="text">Provider: {{subscription.paymentMethod}}</div>
             <div class="text" *ngIf="subscription.monthlyPayment">Monthly payment</div>
             <div class="text" *ngIf="!subscription.monthlyPayment">Yearly payment</div>
-            <div class="text">{{subscription.paymentMethod}}</div>
             <div class="text" *ngIf="subscription.automaticPayment">Automatic renewal</div>
             <div class="text" *ngIf="!subscription.automaticPayment">Manual renewal</div>
         </div>
     </div>
     <div class="col-xs-1 distributeArrowButton">
         <div class="material-icons arrow-expansion"  (click)="clickDetails()">keyboard_arrow_down</div>
-        <div class="material-icons button-edit" routerLink="edit">create</div>
+        <div class="material-icons button-edit" (click)="clickEdit()">create</div>
     </div>
 </div>
