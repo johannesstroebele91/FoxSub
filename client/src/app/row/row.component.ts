@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup} from '@angular/forms';
 
 @Component({
     selector: 'app-row',
+    styleUrls: ['./row.component.scss'],
     templateUrl: './row.component.html',
 })
 
