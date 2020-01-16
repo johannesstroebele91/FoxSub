@@ -21,25 +21,23 @@ CREATE TABLE IF NOT EXISTS users (
 `
 
 type User struct {
-	ID                      string     `db:"id" 						json:"uuid"`
-	FirstName               string     `db:"firstName"					json:"firstName"`
-	LastName                string     `db:"lastName"					json:"lastName"`
-	Email                   string     `db:"email"						json:"email"`
-	Password                string     `db:"password"					json:"password"`
-	Goal                    null.Float `db:"goal"						json:"goal"`
-	MonthlyCumulatedPayment null.Float `db:"monthlyCumulatedPayment"	json:"monthlyCumulatedPayment"`
-	NextDueDate             null.Time  `db:"nextDueDate" 				json:"nextDueDate"`
+	ID                      string     `db:"id" json:"uuid"`
+	FirstName               string     `db:"firstName" json:"firstName"`
+	LastName                string     `db:"lastName" json:"lastName"`
+	Email                   string     `db:"email" json:"email"`
+	Password                string     `db:"password" json:"password"`
+	Goal                    null.Float `db:"goal" json:"goal"`
+	MonthlyCumulatedPayment null.Float `db:"monthlyCumulatedPayment" json:"monthlyCumulatedPayment"`
+	NextDueDate             null.Time  `db:"nextDueDate" json:"nextDueDate"`
 }
 
 var SubscriptionsSchema = `
 CREATE TABLE IF NOT EXISTS subscriptions (
-	id INT(11) PRIMARY KEY AUTO_INCREMENT,
-    uuid VARCHAR(36) NOT NULL UNIQUE,
+    id VARCHAR(36) PRIMARY KEY,
     cost DECIMAL NOT NULL,
     dueDate DATE NOT NULL,
     monthlyPayment BOOLEAN NOT NULL,
 	automaticPayment BOOLEAN NOT NULL,
-	paymentMethod VARCHAR(255),
 	serviceId VARCHAR(36),
 	userId VARCHAR(36),
 	FOREIGN KEY (serviceId) REFERENCES services(id),
@@ -74,7 +72,7 @@ type Service struct {
 	ID       string      `db:"id" json:"uuid"`
 	Name     string      `db:"name" json:"name"`
 	ImageURL null.String `db:"imageUrl" json:"imageUrl"`
-	Category string      `db:"category"  json:"category"`
+	Category string      `db:"category" json:"category"`
 }
 
 var SessionsSchema = `
@@ -85,8 +83,8 @@ CREATE TABLE IF NOT EXISTS sessions (
 );`
 
 type Session struct {
-	ID     string `db:"id"		json:"uuid"`
-	UserID string `db:"userId"  json:"userId"`
+	ID     string `db:"id" json:"uuid"`
+	UserID string `db:"userId" json:"userId"`
 }
 
 var CategoriesSchema = `

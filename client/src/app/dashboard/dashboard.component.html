@@ -1,5 +1,24 @@
 <app-header></app-header>
 <div class="container">
+    <div><h1>{{monthlyPayment}}€ / month</h1></div>
+    <div>
+        Goal: {{goal}}€ / month
+        <div class="material-icons button-edit"  (click)="clickEdit()">create</div>
+    </div>
+    <div>Next due date: {{dueDate}}</div>
 
-    <!-- TODO: fix <app-row [rows]= "rows"></app-row> -->
+    <ngx-charts-bar-vertical-stacked
+            [view]="view"
+            [scheme]="colorScheme"
+            [results]="data"
+            [gradient]="gradient"
+            [xAxis]="showXAxis"
+            [yAxis]="showYAxis"
+            [legend]="showLegend"
+            [showXAxisLabel]="showXAxisLabel"
+            [showYAxisLabel]="showYAxisLabel"
+            [animations]="animations"
+            [tooltipDisabled]="tooltipDisabled"
+            (select)="onSelect($event)">
+    </ngx-charts-bar-vertical-stacked>
 </div>
