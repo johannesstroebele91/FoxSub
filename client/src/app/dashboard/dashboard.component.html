@@ -1,11 +1,13 @@
 <app-header></app-header>
 <div class="container">
-    <div><h1>{{monthlyPayment}}€ / month</h1></div>
-    <div>
-        Goal: {{goal}}€ / month
-        <div class="material-icons button-edit"  (click)="clickEdit()">create</div>
+    <div class="general-information">
+        <h1>{{monthlyPayment}}€ / month</h1>
+        <div class="goal-edit">
+            <div>Goal: {{goal}}€ / month</div>
+            <div class="material-icons button-edit"  (click)="clickEdit()">create</div>
+        </div>
+        <div>Next due date: {{dueDate}}</div>
     </div>
-    <div>Next due date: {{dueDate}}</div>
 
     <ngx-charts-bar-vertical-stacked
             [view]="view"
