@@ -270,7 +270,7 @@ func CommonMiddleware(next http.Handler) http.Handler {
 }
 
 func GetCostForCategories(w http.ResponseWriter, r *http.Request) {
-	const getQuery = `SELECT name "category", SUM(cost) "cost" FROM subscriptions JOIN services ON subscriptions.serviceId = services.id AND subscriptions.userId=? GROUP BY serviceId`
+	const getQuery = `SELECT category, SUM(cost) "cost" FROM subscriptions JOIN services ON subscriptions.serviceId = services.id AND subscriptions.userId=? GROUP BY serviceId`
 
 	fmt.Println("here")
 	var categoriesCost []CategoryCost
@@ -291,6 +291,4 @@ func GetCostForCategories(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Write(subscriptionsJSON)
-
-	// SELECT SUM(cost), name FROM subscriptions JOIN services ON subscriptions.serviceId = services.id AND subscriptions.userId = '79c9e1ac-96f1-11e5-85a6-000c29f1f6c4' GROUP BY serviceId;
 }
