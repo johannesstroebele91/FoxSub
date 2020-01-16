@@ -43,6 +43,7 @@ func main() {
 	v1Subrouter.HandleFunc("/subscriptions/{uuid}", UpdateSubscription).Methods("PUT")
 	v1Subrouter.HandleFunc("/subscriptions/general", GetCostForCategories).Methods("GET")
 	v1Subrouter.HandleFunc("/subscriptions", DeleteSubscription).Methods("DELETE")
+	v1Subrouter.HandleFunc("/subscriptions/{uuid}", GetSubscription).Methods("GET")
 
 	apiSubrouter.HandleFunc("/signin", signin).Methods("POST")
 	apiSubrouter.HandleFunc("/register", Register).Methods("POST")
@@ -210,6 +211,30 @@ func GetSubscriptions(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Write(subscriptionsJSON)
+}
+
+func GetSubscription(w http.ResponseWriter, r *http.Request) {
+	const getQuery = `SELECT services.id "service.id", services.name "service.name", services.category "service.category", subscriptions.* FROM subscriptions JOIN services ON services.id = subscriptions.serviceId AND subscriptions.userId=? AND subscriptions.uuid=?`
+
+	var subscription Subscription
+	subscriptionUUID := mux.Vars(r)["uuid"]
+
+	result := db.QueryRowx(getQuery, r.Header.Get("user"), subscriptionUUID)
+	err := result.StructScan(&subscription)
+
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	subscriptionJSON, err := json.Marshal(&subscription)
+
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	w.Write(subscriptionJSON)
 }
 
 func UpdateSubscription(w http.ResponseWriter, r *http.Request) {
