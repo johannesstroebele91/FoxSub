@@ -33,6 +33,7 @@ func main() {
 	}
 
 	router := mux.NewRouter()
+	router.Use(CommonMiddleware())
 	apiSubrouter := router.PathPrefix("/api").Subrouter()
 	v1Subrouter := apiSubrouter.PathPrefix("/v1").Subrouter()
 	v1Subrouter.Use(Authenticator())
@@ -99,7 +100,7 @@ func signin(w http.ResponseWriter, r *http.Request) {
 func Authenticator() func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			c, err := r.Cookie("session_token")
+			sessionToken, err := r.Cookie("session_token")
 			if err != nil {
 				if err == http.ErrNoCookie {
 					w.WriteHeader(http.StatusUnauthorized)
@@ -110,10 +111,19 @@ func Authenticator() func(http.Handler) http.Handler {
 				return
 			}
 
-			if c.Expires.After(time.Now()) {
+			if sessionToken.Expires.After(time.Now()) {
 				w.WriteHeader(http.StatusUnauthorized)
 				return
 			}
+
+			row := db.QueryRowx("SELECT * FROM sessions WHERE id=?", sessionToken.Value)
+			var session Session
+			err = row.StructScan(&session)
+			if err != nil || session.UserID == "" {
+				w.WriteHeader(http.StatusUnauthorized)
+				return
+			}
+			r.Header.Set("user", session.UserID)
 
 			next.ServeHTTP(w, r)
 		})
@@ -188,7 +198,9 @@ func GetSubscriptions(w http.ResponseWriter, r *http.Request) {
 	subscriptions := []Subscription{}
 	err := db.Select(&subscriptions, `SELECT services.id "service.id", services.name "service.name", services.category "service.category", subscriptions.* FROM subscriptions JOIN services ON services.id = subscriptions.serviceId AND subscriptions.userId=?`, r.Header.Get("user"))
 
+	fmt.Println(r.Header.Get("user"))
 	fmt.Println(err)
+	fmt.Println(subscriptions)
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
 		return
@@ -262,9 +274,11 @@ func DeleteSubscription(w http.ResponseWriter, r *http.Request) {
 }
 
 // CommonMiddleware used on router to set the Content-Type header to application/json for every route
-func CommonMiddleware(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Add("Content-Type", "application/json")
-		next.ServeHTTP(w, r)
-	})
+func CommonMiddleware() func(http http.Handler) http.Handler {
+	return func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			w.Header().Add("Content-Type", "application/json")
+			next.ServeHTTP(w, r)
+		})
+	}
 }
