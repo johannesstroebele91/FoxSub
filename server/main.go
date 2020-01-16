@@ -136,20 +136,18 @@ func AuthTest(w http.ResponseWriter, r *http.Request) {
 }
 
 func Register(w http.ResponseWriter, r *http.Request) {
-	createUser := `INSERT INTO users (id, firstName, email, password) VALUES (UUID(), ?, ?, ?)`
+	createUser := `INSERT INTO users (id, firstName, lastName, email, password) VALUES (UUID(), ?, ?,?, ?)`
 	var credentials Credentials
 
 	err := json.NewDecoder(r.Body).Decode(&credentials)
 	fmt.Println(&credentials)
 
 	if err != nil || credentials.Email == "" || credentials.Password == "" {
-		fmt.Println("noooO", err, credentials)
-
 		w.WriteHeader((http.StatusBadRequest))
 		return
 	}
 
-	results := db.MustExec(createUser, "myuser", credentials.Email, credentials.Password)
+	results := db.MustExec(createUser, "myuser", "myuser", credentials.Email, credentials.Password)
 
 	if results == nil {
 		w.WriteHeader(http.StatusUnprocessableEntity)
