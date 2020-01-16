@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HeaderComponent} from "./header/header.component";
@@ -13,8 +13,9 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SubscriptionAddComponent } from './subscriptions/subscription-add/subscription-add.component';
 import { SubscriptionEditComponent } from './subscriptions/subscription-edit/subscription-edit.component';
-import {ProfileComponent} from "./profile/profile.component";
-import {RowComponent} from "./row/row.component";
+import { ProfileComponent} from "./profile/profile.component";
+import { RowComponent} from "./row/row.component";
+import { ErrorInterceptor } from "../../shared/interceptors/ErrorInterceptor";
 
 @NgModule({
   imports: [
@@ -37,6 +38,9 @@ import {RowComponent} from "./row/row.component";
     SubscriptionEditComponent,
     LoginComponent,
     DashboardComponent
+  ],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })
