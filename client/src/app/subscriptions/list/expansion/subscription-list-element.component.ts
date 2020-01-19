@@ -1,5 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {Subscription} from "../../../../../shared/models/Subscription";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'app-subscription-list-expansion',
@@ -12,11 +13,14 @@ export class SubscriptionListElementComponent {
 
     isExpanded: boolean = false;
 
+    constructor(private router: Router){}
+
     clickDetails(){
         this.isExpanded = !this.isExpanded;
     }
     
-    // TODO implement edit functionality
     clickEdit(){
+        console.log(this.subscription)
+        this.router.navigate(["/subscriptions/edit/" + this.subscription.uuid])
     }
 }

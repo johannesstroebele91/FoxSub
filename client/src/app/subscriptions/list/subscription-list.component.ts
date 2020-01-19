@@ -9,12 +9,11 @@ import { SubscriptionsService } from '../../../../shared/services/subscriptions.
 })
 export class SubscriptionListComponent implements OnInit {
 
-    subscriptions: Subscription[] = []
+    subscriptions: Subscription[] = [];
 
     constructor(private subscriptionsService: SubscriptionsService) { }
 
     ngOnInit() {
         this.subscriptionsService.getSubscriptions().subscribe((subscriptions) => { this.subscriptions = subscriptions })
     }
-
 }
