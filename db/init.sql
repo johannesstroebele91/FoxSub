@@ -87,3 +87,26 @@ IF NOT EXISTS sessions
 (userId) REFERENCES users
 (id)
 );
+
+
+INSERT INTO categories
+VALUES
+  (UUID(), 'Entertainment'),
+  (UUID(), 'Productivity'),
+  (UUID(), 'Games'),
+  (UUID(), 'Others')
+
+INSERT INTO users
+  (id, firstName, lastName, email, password, goal)
+VALUES( '129f7f2c-9a8a-4e63-94a1-cc3bd2f8cc7a', 'Axel', 'Fotz', 'axel.fotz@internetlegende.de', 'admin123', 0);
+
+
+INSERT INTO services
+VALUES
+  (UUID(), 'Netflix', '', 'Entertainment'),
+  (UUID(), 'Spotify', '', 'Entertainment'),
+  (UUID(), 'Runescape', '', 'Games'),
+  (UUID(), 'World of Warcraft', '', 'Games'),
+  (UUID(), '1Password', '', 'Others'),
+  (UUID(), 'Shift', '', 'Productivity'),
+  (UUID(), 'To-Do List', '', 'Productivity');
