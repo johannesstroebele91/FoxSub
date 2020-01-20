@@ -17,7 +17,6 @@ var db *sqlx.DB
 func main() {
 	var err error
 	db, err = sqlx.Connect("mysql", "root:password@tcp(127.0.0.1:3306)/fabulous-fox")
-	// err = db.Ping()
 	fmt.Println("err", err)
 
 	db.MustExec(UsersSchema)
@@ -44,8 +43,9 @@ func main() {
 	v1Subrouter.HandleFunc("/subscriptions/general", GetCostForCategories).Methods("GET")
 	v1Subrouter.HandleFunc("/subscriptions", DeleteSubscription).Methods("DELETE")
 	v1Subrouter.HandleFunc("/subscriptions/{uuid}", GetSubscription).Methods("GET")
+	v1Subrouter.HandleFunc("/user", GetUser).Methods("GET")
 
-	apiSubrouter.HandleFunc("/signin", signin).Methods("POST")
+	apiSubrouter.HandleFunc("/login", signin).Methods("POST")
 	apiSubrouter.HandleFunc("/register", Register).Methods("POST")
 
 	http.ListenAndServe(":3000", router)
@@ -54,9 +54,6 @@ func main() {
 }
 
 func signin(w http.ResponseWriter, r *http.Request) {
-	/**
-	* @TODO add validation for credentials
-	 */
 	var credentials Credentials
 
 	err := json.NewDecoder(r.Body).Decode(&credentials)
@@ -159,7 +156,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 }
 
 func CreateSubscription(w http.ResponseWriter, r *http.Request) {
-	createSubscription := `INSERT INTO subscriptions (uuid, cost, paymentMethod, monthlyPayment, automaticPayment, userId, serviceId) VALUES (UUID(), ?, ?, ?, ?, ?, ?)`
+	createSubscription := `INSERT INTO subscriptions (uuid, cost, paymentMethod, monthlyPayment, automaticPayment, userId, serviceId, month, day) VALUES (UUID(), ?, ?, ?, ?, ?, ?, ?, ?)`
 	var subscription Subscription
 
 	err := json.NewDecoder(r.Body).Decode(&subscription)
@@ -173,7 +170,7 @@ func CreateSubscription(w http.ResponseWriter, r *http.Request) {
 		subscription.ServiceID = subscription.Service.ID
 	}
 
-	results := db.MustExec(createSubscription, subscription.Cost, subscription.PaymentMethod, subscription.MonthlyPayment, subscription.AutomaticPayment, r.Header.Get("user"), subscription.ServiceID)
+	results := db.MustExec(createSubscription, subscription.Cost, subscription.PaymentMethod, subscription.MonthlyPayment, subscription.AutomaticPayment, r.Header.Get("user"), subscription.ServiceID, subscription.DueDate.Month, subscription.DueDate.Day)
 
 	insertedIndex, err := results.LastInsertId()
 
@@ -196,7 +193,9 @@ func CreateSubscription(w http.ResponseWriter, r *http.Request) {
 
 func GetSubscriptions(w http.ResponseWriter, r *http.Request) {
 	subscriptions := []Subscription{}
-	err := db.Select(&subscriptions, `SELECT services.id "service.id", services.name "service.name", services.category "service.category", subscriptions.* FROM subscriptions JOIN services ON services.id = subscriptions.serviceId AND subscriptions.userId=?`, r.Header.Get("user"))
+	err := db.Select(&subscriptions, `SELECT services.id "service.id", services.name "service.name", services.category "service.category", day "dueDate.day", month "dueDate.month", cost, uuid, paymentMethod, monthlyPayment, automaticPayment, serviceId FROM subscriptions JOIN services ON services.id = subscriptions.serviceId AND subscriptions.userId=?`, r.Header.Get("user"))
+
+	fmt.Println(err)
 
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
@@ -214,7 +213,7 @@ func GetSubscriptions(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetSubscription(w http.ResponseWriter, r *http.Request) {
-	const getQuery = `SELECT services.id "service.id", services.name "service.name", services.category "service.category", subscriptions.* FROM subscriptions JOIN services ON services.id = subscriptions.serviceId AND subscriptions.userId=? AND subscriptions.uuid=?`
+	const getQuery = `SELECT services.id "service.id", services.name "service.name", services.category "service.category", uuid, cost ,paymentMethod, monthlyPayment, automaticPayment, serviceId, day "dueDate.day", month "dueDate.month" FROM subscriptions JOIN services ON services.id = subscriptions.serviceId AND subscriptions.userId=? AND subscriptions.uuid=?`
 
 	var subscription Subscription
 	subscriptionUUID := mux.Vars(r)["uuid"]
@@ -238,7 +237,7 @@ func GetSubscription(w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdateSubscription(w http.ResponseWriter, r *http.Request) {
-	const updateQuery = `UPDATE subscriptions SET cost=?, dueDate=?, monthlyPayment=?, paymentMethod=?, automaticPayment=?, serviceId=? WHERE uuid=? AND userId=?`
+	const updateQuery = `UPDATE subscriptions SET cost=?, monthlyPayment=?, paymentMethod=?, automaticPayment=?, serviceId=? WHERE uuid=? AND userId=?`
 
 	var subscription Subscription
 
@@ -255,7 +254,7 @@ func UpdateSubscription(w http.ResponseWriter, r *http.Request) {
 		subscription.ServiceID = subscription.Service.ID
 	}
 
-	_, err = db.Queryx(updateQuery, subscription.Cost, subscription.DueDate, subscription.MonthlyPayment, subscription.PaymentMethod, subscription.AutomaticPayment, subscription.ServiceID, subscription.UUID, subscription.UserID)
+	_, err = db.Queryx(updateQuery, subscription.Cost, subscription.MonthlyPayment, subscription.PaymentMethod, subscription.AutomaticPayment, subscription.ServiceID, subscription.UUID, subscription.UserID)
 
 	if err != nil {
 		w.WriteHeader(http.StatusUnprocessableEntity)
@@ -305,7 +304,7 @@ func CommonMiddleware() func(http http.Handler) http.Handler {
 }
 
 func GetCostForCategories(w http.ResponseWriter, r *http.Request) {
-	const getQuery = `SELECT category, SUM(cost) "cost" FROM subscriptions JOIN services ON subscriptions.serviceId = services.id AND subscriptions.userId=? GROUP BY serviceId`
+	const getQuery = `SELECT category, SUM(CASE WHEN subscriptions.monthlyPayment = 1 THEN subscriptions.cost ELSE subscriptions.cost / 12 END) "cost" FROM subscriptions JOIN services ON subscriptions.serviceId = services.id AND subscriptions.userId=? GROUP BY serviceId`
 
 	fmt.Println("here")
 	var categoriesCost []CategoryCost
@@ -326,4 +325,74 @@ func GetCostForCategories(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Write(subscriptionsJSON)
+}
+
+func GetUser(w http.ResponseWriter, r *http.Request) {
+	const getUserQuery = `SELECT users.*, day "dueDate.day", month "dueDate.month", d.monthlyCumulatedPayment FROM users 	CROSS JOIN (SELECT SUM(CASE WHEN subscriptions.monthlyPayment = 1 THEN subscriptions.cost ELSE subscriptions.cost / 12 END) "monthlyCumulatedPayment" FROM subscriptions WHERE subscriptions.userId=? GROUP BY subscriptions.userId) d JOIN subscriptions ON subscriptions.userId=users.id WHERE userId=? ORDER BY month, day ASC`
+
+	users := []User{}
+	err := db.Select(&users, getUserQuery, r.Header.Get("user"), r.Header.Get("user"))
+
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	user, err := findClosestDate(users)
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	userJSON, err := json.Marshal(user)
+
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	w.Write(userJSON)
+}
+
+func findClosestDate(users []User) (User, error) {
+	if len(users) < 1 {
+		return User{}, fmt.Errorf("No user")
+	}
+	currentDate := time.Now()
+	month := int(currentDate.Month())
+	day := currentDate.Day()
+
+	for _, user := range users {
+		if user.DueDate.Month > month {
+			month++
+			day = 1
+		}
+		if user.DueDate.Month == month {
+			if user.DueDate.Day >= day {
+				return user, nil
+			}
+		}
+	}
+
+	return users[0], nil
+}
+
+func UpdateGoal(w http.ResponseWriter, r *http.Request) {
+	const updateQuery = `UPDATE users SET goal=? WHERE id=?`
+
+	var user User
+
+	err := json.NewDecoder(r.Body).Decode(&user)
+
+	if err != nil || user.Goal.IsZero() || !user.Goal.Valid || user.Goal.Float64 >= 0 {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	_, err = db.Queryx(updateQuery, user.Goal, r.Header.Get("user"))
+
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
 }
