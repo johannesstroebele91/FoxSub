@@ -2,6 +2,7 @@ package main
 
 import (
 	_ "database/sql"
+	"encoding/json"
 
 	_ "github.com/lib/pq"
 	"gopkg.in/guregu/null.v3"
@@ -14,9 +15,7 @@ CREATE TABLE IF NOT EXISTS users (
     lastName VARCHAR(255) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
-    goal DECIMAL,
-    monthlyCumulatedPayment DECIMAL NULL DEFAULT 0,
-    nextDueDate INT(11) UNSIGNED
+    goal DECIMAL
 );
 `
 
@@ -28,7 +27,20 @@ type User struct {
 	Password                string     `db:"password" json:"password"`
 	Goal                    null.Float `db:"goal" json:"goal"`
 	MonthlyCumulatedPayment null.Float `db:"monthlyCumulatedPayment" json:"monthlyCumulatedPayment"`
-	NextDueDate             null.Float `db:"nextDueDate" json:"nextDueDate"`
+	DueDate                 `db:"dueDate" json:"dueDate"`
+	Day                     int `db:"day" json:"-"`
+	Month                   int `db:"month" json:"-"`
+}
+
+func (u *User) MarshalJSON() ([]byte, error) {
+	type Alias User
+	return json.Marshal(&struct {
+		Password string `json:"password,omitempty"`
+		*Alias
+	}{
+		Alias:    (*Alias)(u),
+		Password: "",
+	})
 }
 
 var SubscriptionsSchema = `
@@ -36,28 +48,38 @@ CREATE TABLE IF NOT EXISTS subscriptions (
 	id INT(11) PRIMARY KEY AUTO_INCREMENT,
 	uuid VARCHAR(36) UNIQUE NOT NULL,
   cost DECIMAL NOT NULL,
-  dueDate INT(11) UNSIGNED NOT NULL,
+	month INT NOT NULL,
+	day INT NOT NULL,
 	monthlyPayment BOOLEAN NOT NULL,
 	paymentMethod VARBINARY(255),
 	automaticPayment BOOLEAN NOT NULL,
 	serviceId VARCHAR(36),
 	userId VARCHAR(36),
 	  FOREIGN KEY (serviceId) REFERENCES services(id),
-    FOREIGN KEY (userId) REFERENCES users(id)
+		FOREIGN KEY (userId) REFERENCES users(id),
+		CONSTRAINT month_constraint CHECK (month >= 1 AND month <= 12),
+		CONSTRAINT day_constraint CHECK (day >= 1 and day <= 31)
 );
 `
 
 type Subscription struct {
-	ID               float32     `db:"id" json:"-"`
+	ID               int         `db:"id" json:"-"`
 	UUID             string      `db:"uuid" json:"uuid"`
 	Cost             float32     `db:"cost" json:"cost"`
-	DueDate          float64     `db:"dueDate" json:"dueDate"`
 	PaymentMethod    null.String `db:"paymentMethod" json:"paymentMethod"`
 	MonthlyPayment   bool        `db:"monthlyPayment" json:"monthlyPayment"`
 	AutomaticPayment bool        `db:"automaticPayment" json:"automaticPayment"`
 	UserID           string      `db:"userId" json:"-"`
 	ServiceID        string      `db:"serviceId" json:"serviceId"`
 	Service          Service     `db:"service" json:"service"`
+	Month            int         `db:"month" json:"-"`
+	Day              int         `db:"day" json:"-"`
+	DueDate          `db:"dueDate" json:"dueDate"`
+}
+
+type DueDate struct {
+	Day   int `json:"day"`
+	Month int `json:"month"`
 }
 
 var ServicesSchema = `
