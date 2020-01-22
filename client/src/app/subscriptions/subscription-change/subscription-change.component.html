@@ -2,15 +2,105 @@
 <div class="container">
     <div class="children-inline-block">
         <div class="material-icons" routerLink="/subscriptions">keyboard_backspace</div>
-        <h1>Edit {{subscription.service.name}} subscription</h1>
+            <h2 *ngIf="showEdit">Edit</h2>
+            <h2 *ngIf="!showEdit">Add</h2>
+<!--        <h1>Edit {{subscription.service.name}} subscription</h1>-->
     </div>
-    <div class="text-spacing">
-        <div>Due date: {{subscription.dueDate*1000|date:'dd.MM.yyyy'}}</div>
-        <div>Price: {{subscription.cost}} Euro</div>
-        <div>Provider: {{subscription.paymentMethod}}</div>
-        <div *ngIf="subscription.monthlyPayment">Monthly payment</div>
-        <div *ngIf="!subscription.monthlyPayment">Yearly payment</div>
-        <div *ngIf="subscription.automaticPayment">Automatic renewal</div>
-        <div *ngIf="!subscription.automaticPayment">Manual renewal</div>
+
+<!--    <div class="text-spacing">-->
+<!--        <div>Due date: {{subscription.dueDate*1000|date:'dd.MM.yyyy'}}</div>-->
+<!--        <div>Price: {{subscription.cost}} Euro</div>-->
+<!--        <div>Provider: {{subscription.paymentMethod}}</div>-->
+<!--        <div *ngIf="subscription.monthlyPayment">Monthly payment</div>-->
+<!--        <div *ngIf="!subscription.monthlyPayment">Yearly payment</div>-->
+<!--        <div *ngIf="subscription.automaticPayment">Automatic renewal</div>-->
+<!--        <div *ngIf="!subscription.automaticPayment">Manual renewal</div>-->
+<!--    </div>-->
+<!--</div>-->
+
+    <div [ngClass]="{'visible' : !showEdit, 'hidden': showEdit}" class="row-spacing text-login-error">
+        <div [formGroup]="form" class="text-spacing">
+            <div class="row-spacing">
+                <label for="add_name">Service</label>
+                <input type="text" id="add_name" [formControlName]="'name'" placeholder="Enter name here">
+            </div>
+
+            <div class="row-spacing">
+                <label for="add_date">Date</label>
+                <input type="date" id="add_date" [formControlName]="'dueDate'">
+            </div>
+
+            <div class="row-spacing">
+                <label for="add_price">Price</label>
+                <input type="number" min="0" id="add_price" [formControlName]="'price'" placeholder="7.99">
+                €
+            </div>
+
+            <label for="add_monthlyPayment">Frequency</label>
+            <label class="switch">
+                <input class="switch-input" type="checkbox" id="add_monthlyPayment" [formControlName]="'monthlyPayment'">
+                <span class="switch-label" data-on="Monthly" data-off="Yearly"></span>
+                <span class="switch-handle"></span>
+            </label>
+
+            <div class="row-spacing">
+                <label for="add_payment">Payment</label>
+                <input type="text" id="add_payment" [formControlName]="'payment'" placeholder="Paypal">
+            </div>
+
+            <label for="add_automaticRenewal">Type</label>
+            <label class="switch">
+                <input class="switch-input" type="checkbox" id="add_automaticRenewal" [formControlName]="'automaticRenewal '">
+                <span class="switch-label" data-on="Automatic" data-off="Manual"></span>
+                <span class="switch-handle"></span>
+            </label>
+
+            <button class="button" (click)="submitAdd()" [disabled]="form.invalid">Sign In</button>
+        </div>
+    </div>
+
+    <div [ngClass]="{'visible' : showEdit, 'hidden': !showEdit}" class="row-spacing text-login-error">
+        <div [formGroup]="form" class="text-spacing">
+            <div class="row-spacing">
+                <label for="edit_name">Service</label>
+                <input type="text" id="edit_name" [formControlName]="'name'">
+            </div>
+
+            <div class="row-spacing">
+                <label for="edit_date">Date</label>
+                <input type="date" id="edit_date" [formControlName]="'dueDate'">
+            </div>
+
+            <div class="row-spacing">
+                <label for="edit_price">Price €</label>
+                <input type="number" min="0" id="edit_price" [formControlName]="'price'">
+            </div>
+
+<!--            <div class="row-spacing">-->
+<!--                <input type="checkbox" id="edit_monthlyPayment" [formControlName]="'monthlyPayment'">-->
+<!--            </div>-->
+
+            <label for="edit_monthlyPayment">Frequency</label>
+            <label class="switch">
+                <input class="switch-input" type="checkbox" id="edit_monthlyPayment" [formControlName]="'monthlyPayment'">
+                <span class="switch-label" data-on="Monthly" data-off="Yearly"></span>
+                <span class="switch-handle"></span>
+            </label>
+
+            <div class="row-spacing">
+                <label for="edit_payment">Payment</label>
+                <input type="text" id="edit_payment" [formControlName]="'payment'">
+            </div>
+
+            <label for="edit_automaticRenewal">Type</label>
+            <label class="switch">
+                <input class="switch-input" type="checkbox" id="edit_automaticRenewal" [formControlName]="'automaticRenewal '">
+                <span class="switch-label" data-on="Automatic" data-off="Manual"></span>
+                <span class="switch-handle"></span>
+            </label>
+
+            <button *ngIf="showEdit" class="button" (click)="submitEdit()">Save</button>
+            <button *ngIf="!showEdit" class="button" (click)="submitAdd()" [disabled]="form.invalid">Save</button>
+        </div>
     </div>
 </div>
