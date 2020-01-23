@@ -1,6 +1,6 @@
 import { SubscriptionListComponent } from "./subscription-list.component"
 import { ComponentFixture, async, TestBed } from "@angular/core/testing";
-import { TestHelperModule } from "../../../../shared/utility/test-helper.module";
+import { TestHelperModule } from "../../../shared/utility/test-helper.module";
 import { CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
 import { of } from "rxjs";
 
