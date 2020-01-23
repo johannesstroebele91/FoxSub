@@ -2,7 +2,13 @@
   "compilerOptions": {
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "target": "ES5"
+    "target": "es2016",
+    "module": "commonjs",
+    "outDir": "./dist/",
+    "types": [
+      "jasmine",
+      "node"
+    ]
   },
   "paths": {
     "core-js/es7/reflect": [
@@ -11,5 +17,8 @@
     "core-js/es6/": [
       "./node_modules/core-js/es/"
     ]
-  }
+  },
+  "exclude": [
+    "node_modules/*"
+  ]
 }

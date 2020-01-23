@@ -4,9 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "tsc": "tsc",
     "start": "webpack-dev-server --history-api-fallback --mode development",
     "build": "webpack",
-    "test": "karma start src/karma.conf.js"
+    "test": "karma start src/karma.conf.js",
+    "test:e2e": "protractor e2e/protractor.conf.js"
   },
   "keywords": [],
   "author": "",
@@ -30,15 +32,16 @@
     "karma-spec-reporter": "0.0.32",
     "karma-webpack": "^4.0.2",
     "node-sass": "^4.13.0",
+    "protractor": "^5.4.2",
     "raw-loader": "1.0.0",
     "sass-loader": "^8.0.0",
+    "sass-resources-loader": "^2.0.1",
     "source-map-loader": "^0.2.4",
     "ts-loader": "^6.2.1",
-    "typescript": "^3.7.2",
-    "webpack": "^4.41.2",
+    "typescript": "3.6.4",
+    "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10",
-    "webpack-dev-server": "^3.9.0",
-    "sass-resources-loader": "^2.0.1"
+    "webpack-dev-server": "^3.9.0"
   },
   "dependencies": {
     "@angular/animations": "^8.2.14",
