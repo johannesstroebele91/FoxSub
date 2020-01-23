@@ -9,7 +9,7 @@
 
 <!--    <div class="text-spacing">-->
 <!--        <div>Due date: {{subscription.dueDate*1000|date:'dd.MM.yyyy'}}</div>-->
-<!--        <div>Price: {{subscription.cost}} Euro</div>-->
+<!--        <div>cost: {{subscription.cost}} Euro</div>-->
 <!--        <div>Provider: {{subscription.paymentMethod}}</div>-->
 <!--        <div *ngIf="subscription.monthlyPayment">Monthly payment</div>-->
 <!--        <div *ngIf="!subscription.monthlyPayment">Yearly payment</div>-->
@@ -21,9 +21,12 @@
 <!--        ADD -->
     <div [ngClass]="{'visible' : !showEdit, 'hidden': showEdit}" class="row-spacing text-login-error">
         <div [formGroup]="form" class="text-spacing">
-            <div class="row-spacing">
+            <div>
                 <label for="add_name">Service</label>
-                <input type="text" id="add_name" [formControlName]="'name'" placeholder="Enter name here">
+                <select id="add_name" [formControlName]="'services'" >
+                    <option value="" disabled selected>Select your option</option>
+                    <option *ngFor="let service of services" value="{{service.name}}">{{service.name}}</option>
+                </select>
             </div>
 
             <div class="row-spacing">
@@ -32,8 +35,8 @@
             </div>
 
             <div class="row-spacing">
-                <label for="add_price">Price €</label>
-                <input type="number" step="any" min="0" id="add_price" [formControlName]="'price'" placeholder="7,99">
+                <label for="add_cost">cost €</label>
+                <input type="number" step="any" min="0" id="add_cost" [formControlName]="'cost'" placeholder="7,99">
             </div>
 
             <label for="add_monthlyPayment">Frequency</label>
@@ -55,7 +58,7 @@
                 <span class="switch-handle"></span>
             </label>
 
-            <button class="button" (click)="submitAdd()" [disabled]="form.invalid">Save</button>
+            <button class="button" (click)="submitAdd()" [disabled]="form.invalid">Add</button>
         </div>
     </div>
 
@@ -73,8 +76,8 @@
             </div>
 
             <div class="row-spacing">
-                <label for="edit_price">Price €</label>
-                <input type="number" step="any" min="0" id="edit_price" [formControlName]="'price'">
+                <label for="edit_cost">Price €</label>
+                <input type="number" step="any" min="0" id="edit_cost" [formControlName]="'cost'">
             </div>
 
 <!--            <div class="row-spacing">-->
