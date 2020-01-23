@@ -5,8 +5,8 @@ import {LoginComponent} from "./login/login.component";
 import {DashboardComponent} from "./dashboard/dashboard.component";
 import { ProfileComponent } from "./profile/profile.component";
 import { RowComponent } from "./row/row.component";
-import { SubscriptionAddComponent } from './subscriptions/subscription-add/subscription-add.component';
-import { SubscriptionEditComponent } from './subscriptions/subscription-edit/subscription-edit.component';
+import { SubscriptionChangeComponent } from './subscriptions/subscription-change/subscription-change.component';
+import { Resolver} from "../../shared/resolver/Resolver";
 
 // TODO: opt. lazy loading einbauen
 const routes: Routes = [
@@ -19,9 +19,9 @@ const routes: Routes = [
     { path: 'dashboard', component: DashboardComponent },
     {
         path: 'subscriptions', children: [
-            { path: '', component: SubscriptionListComponent },
-            { path: 'add', component: SubscriptionAddComponent },
-            { path: 'edit', component: SubscriptionEditComponent }
+            { path: '', pathMatch: "full", component: SubscriptionListComponent },
+            { path: 'add', component: SubscriptionChangeComponent },
+            { path: 'edit/:uuid', component: SubscriptionChangeComponent, resolve: {subscriptions: Resolver } }
         ]
     },
 ];
