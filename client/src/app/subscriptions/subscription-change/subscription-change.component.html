@@ -18,6 +18,7 @@
 <!--    </div>-->
 <!--</div>-->
 
+<!--        ADD -->
     <div [ngClass]="{'visible' : !showEdit, 'hidden': showEdit}" class="row-spacing text-login-error">
         <div [formGroup]="form" class="text-spacing">
             <div class="row-spacing">
@@ -31,9 +32,8 @@
             </div>
 
             <div class="row-spacing">
-                <label for="add_price">Price</label>
-                <input type="number" min="0" id="add_price" [formControlName]="'price'" placeholder="7.99">
-                €
+                <label for="add_price">Price €</label>
+                <input type="number" step="any" min="0" id="add_price" [formControlName]="'price'" placeholder="7,99">
             </div>
 
             <label for="add_monthlyPayment">Frequency</label>
@@ -50,15 +50,16 @@
 
             <label for="add_automaticRenewal">Type</label>
             <label class="switch">
-                <input class="switch-input" type="checkbox" id="add_automaticRenewal" [formControlName]="'automaticRenewal '">
+                <input class="switch-input" type="checkbox" id="add_automaticRenewal" [formControlName]="'automaticRenewal'">
                 <span class="switch-label" data-on="Automatic" data-off="Manual"></span>
                 <span class="switch-handle"></span>
             </label>
 
-            <button class="button" (click)="submitAdd()" [disabled]="form.invalid">Sign In</button>
+            <button class="button" (click)="submitAdd()" [disabled]="form.invalid">Save</button>
         </div>
     </div>
 
+<!--        EDIT -->
     <div [ngClass]="{'visible' : showEdit, 'hidden': !showEdit}" class="row-spacing text-login-error">
         <div [formGroup]="form" class="text-spacing">
             <div class="row-spacing">
@@ -73,7 +74,7 @@
 
             <div class="row-spacing">
                 <label for="edit_price">Price €</label>
-                <input type="number" min="0" id="edit_price" [formControlName]="'price'">
+                <input type="number" step="any" min="0" id="edit_price" [formControlName]="'price'">
             </div>
 
 <!--            <div class="row-spacing">-->
@@ -94,13 +95,12 @@
 
             <label for="edit_automaticRenewal">Type</label>
             <label class="switch">
-                <input class="switch-input" type="checkbox" id="edit_automaticRenewal" [formControlName]="'automaticRenewal '">
+                <input class="switch-input" type="checkbox" id="edit_automaticRenewal" [formControlName]="'automaticRenewal'">
                 <span class="switch-label" data-on="Automatic" data-off="Manual"></span>
                 <span class="switch-handle"></span>
             </label>
 
-            <button *ngIf="showEdit" class="button" (click)="submitEdit()">Save</button>
-            <button *ngIf="!showEdit" class="button" (click)="submitAdd()" [disabled]="form.invalid">Save</button>
+            <button *ngIf="showEdit" class="button" (click)="submitEdit()" [disabled]="form.invalid">Save</button>
         </div>
     </div>
 </div>

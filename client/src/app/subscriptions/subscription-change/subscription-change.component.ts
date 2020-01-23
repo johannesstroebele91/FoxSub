@@ -32,24 +32,26 @@ export class SubscriptionChangeComponent implements OnInit {
 
     buildForm() {
         if(this.showEdit){
+            //EditForm
             this.form = this.formBuilder.group( {
-                name: [this.serviceName, [Validators.required]],
-                dueDate: [''], // date as String (2020-05-08)
-                price: [this.subscription.cost, [Validators.required]],
-                provider: [this.subscription.service, [Validators.required]],
-                monthlyPayment: [this.subscription.monthlyPayment, [Validators.required]],
-                payment: [this.subscription.paymentMethod, [Validators.required]],
-                automaticRenewal: [this.subscription.automaticPayment, [Validators.required]]
+                name: [this.serviceName],
+                dueDate: ['2020-05-30'], // date as String (2020-05-08)
+                price: [this.subscription.cost],
+                provider: [this.subscription.service],
+                monthlyPayment: [this.subscription.monthlyPayment],
+                payment: [this.subscription.paymentMethod],
+                automaticRenewal: [this.subscription.automaticPayment]
             });
         }else{
+            //AddForm
             this.form = this.formBuilder.group( {
                 name: ['', [Validators.required]],
                 dueDate: [''],
                 price: ['', [Validators.required]],
                 provider: ['', [Validators.required]],
-                monthlyPayment: [false, [Validators.required]],
+                monthlyPayment: [false],
                 payment: ['', [Validators.required]],
-                automaticRenewal: [false, [Validators.required]]
+                automaticRenewal: [true]
             });
         }
     }
@@ -63,8 +65,8 @@ export class SubscriptionChangeComponent implements OnInit {
 
     ngOnInit() {
         // this.subscriptionsService.getSubscription(this.activatedRoute.snapshot.params.uuid)
-        this.subscriptionsService.getSubscription("1564509e-3c5e-11ea-bc30-0242ac120002")
-            .subscribe((subscription) => { this.subscription = subscription });
+        // this.subscriptionsService.getSubscription("6f615dff-3d07-11ea-b50a-0242ac120002")
+        //     .subscribe((subscription) => { this.subscription = subscription });
 
         this.buildForm();
     }

@@ -6,7 +6,7 @@ import { Injectable } from "@angular/core";
 )
 export class AuthService {
 
-    private readonly signInEndpoint = "/api/signin";
+    private readonly signInEndpoint = "/api/login";
 
     constructor(private http: HttpClient) { }
 
