@@ -1,9 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import { Subscription} from "../../../../shared/models/Subscription";
-import { SubscriptionsService } from '../../../../shared/services/subscriptions.service';
 import {ActivatedRoute, Router} from "@angular/router";
 import { FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {User} from "../../../../shared/models/User";
+import {Subscription} from "../../../shared/models/Subscription";
+import {SubscriptionsService} from "../../../shared/services/subscriptions.service";
 
 @Component({
     selector: 'app-subscription-change',
