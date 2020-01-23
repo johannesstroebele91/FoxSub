@@ -5,4 +5,6 @@ export interface Service {
     name?: string;
 
     category?: string;
+
+    imageUrl?: string;
 }

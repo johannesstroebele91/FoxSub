@@ -11,7 +11,7 @@ func GetServices(w http.ResponseWriter, r *http.Request) {
 
 	services := []models.Service{}
 
-	err := DB.Select(&services, getUserQuery, r.Header.Get("user"), r.Header.Get("user"))
+	err := DB.Select(&services, getUserQuery)
 
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
