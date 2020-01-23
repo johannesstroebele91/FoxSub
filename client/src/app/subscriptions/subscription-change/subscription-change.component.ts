@@ -76,7 +76,6 @@ export class SubscriptionChangeComponent implements OnInit {
             service: this.form.get('service').value,
         };
 
-
         this.subscriptionsService.createSubscriptions(this.subscription).pipe(
             catchError(() => {
                 this.showError = true;
