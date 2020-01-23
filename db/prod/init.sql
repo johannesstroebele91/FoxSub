@@ -1,7 +1,7 @@
 CREATE DATABASE
-IF NOT EXISTS `fabulous-fox-dev`;
+IF NOT EXISTS `fabulous-fox`;
 
-USE `fabulous-fox-dev`;
+USE `fabulous-fox`;
 
 CREATE TABLE
 IF NOT EXISTS users
