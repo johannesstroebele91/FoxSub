@@ -8,9 +8,11 @@ module.exports = {
     historyApiFallback: true,
     proxy: {
       "/api":
-      {target: 'http://localhost:3000',
-      secure: false,
-      changeOrigin: true}
+      {
+        target: 'http://localhost:3000',
+        secure: false,
+        changeOrigin: true
+      }
     },
   },
   entry: {
@@ -51,7 +53,7 @@ module.exports = {
             },
           }
         ]
-      }
+      },
     ]
   },
   plugins: [
@@ -59,6 +61,6 @@ module.exports = {
     //fixes a compiler warning on build/serve
     new webpack.ContextReplacementPlugin(
       /\@angular(\\|\/)core(\\|\/)f?esm5/, path.join(__dirname, './src')
-  )
+    )
   ]
 };
