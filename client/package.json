@@ -8,6 +8,7 @@
     "start": "webpack-dev-server --history-api-fallback --mode development",
     "build": "webpack",
     "test": "karma start src/karma.conf.js",
+    "test:webdriver": "webdriver-manager update && webdriver-manager start",
     "test:e2e": "protractor e2e/protractor.conf.js"
   },
   "keywords": [],
