@@ -1,7 +1,7 @@
 import { Component, OnInit} from '@angular/core';
-import { User} from "../../../shared/models/User";
+import { User} from "../../shared/models/User";
 import { FormBuilder, FormGroup, Validators} from '@angular/forms';
-import { AuthService} from "../../../shared/services/auth.service";
+import { AuthService} from "../../shared/services/auth.service";
 import {Router} from "@angular/router";
 import {catchError} from "rxjs/operators";
 import {of} from "rxjs";

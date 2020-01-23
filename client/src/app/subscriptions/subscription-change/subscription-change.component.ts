@@ -1,6 +1,6 @@
 import { Component} from '@angular/core';
-import { Subscription} from "../../../../shared/models/Subscription";
-import { SubscriptionsService } from '../../../../shared/services/subscriptions.service';
+import { Subscription} from "../../../shared/models/Subscription";
+import { SubscriptionsService } from '../../../shared/services/subscriptions.service';
 import { ActivatedRoute} from "@angular/router";
 
 @Component({
@@ -15,7 +15,8 @@ export class SubscriptionChangeComponent {
 
     constructor(
         private subscriptionsService: SubscriptionsService,
-        private activatedRoute: ActivatedRoute) { }
+        private activatedRoute: ActivatedRoute) {
+    }
 
     ngOnInit() {
         this.subscriptionsService.getSubscription(this.activatedRoute.snapshot.params.uuid)

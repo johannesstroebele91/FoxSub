@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {Subscription} from "../../../../../shared/models/Subscription";
+import {Subscription} from "../../../../shared/models/Subscription";
 import {Router} from "@angular/router";
 
 @Component({
@@ -20,7 +20,7 @@ export class SubscriptionListElementComponent {
     }
     
     clickEdit(){
-        console.log(this.subscription)
+        console.log(this.subscription);
         this.router.navigate(["/subscriptions/edit/" + this.subscription.uuid])
     }
 }
