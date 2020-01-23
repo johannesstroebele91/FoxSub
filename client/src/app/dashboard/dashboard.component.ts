@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {User} from "../../../shared/models/User";
+import {User} from "../../shared/models/User";
 
 @Component({
     selector: 'app-dashboard',
@@ -8,7 +8,7 @@ import {User} from "../../../shared/models/User";
 })
 
 export class DashboardComponent {
-    user : User = {id: '1', firstName: 'Userius', lastName: 'Rex', email: 'userius@rex.me', goal: 15, montlyCumulatedPayment: 35.99, nextDueDate: 221213, subscriptionCounter: 9}
+    user : User = {id: '1', firstName: 'Userius', lastName: 'Rex', email: 'userius@rex.me', goal: 15, montlyCumulatedPayment: 35.99, nextDueDate: 221213, subscriptionCounter: 9};
 
     monthlyPayment: number = this.user.montlyCumulatedPayment;
     goal: number = this.user.goal;

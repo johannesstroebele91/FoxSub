@@ -2,7 +2,7 @@ import { Service } from "./Service";
 
 export interface Subscription {
 
-    id?: string;
+    uuid?: string;
 
     cost?: number;
 

@@ -1,9 +1,7 @@
 import { Component} from '@angular/core';
-import { Subscription} from "../../../../shared/models/Subscription";
-import { SubscriptionsService } from '../../../../shared/services/subscriptions.service';
+import { Subscription} from "../../../shared/models/Subscription";
+import { SubscriptionsService } from '../../../shared/services/subscriptions.service';
 import { ActivatedRoute} from "@angular/router";
-import { Resolver} from "../../../../shared/resolver/Resolver";
-import "rxjs/add/operator/map";
 
 @Component({
     selector: 'app-subscription-change',

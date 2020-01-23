@@ -1,0 +1,16 @@
+<app-header></app-header>
+<div class="container">
+    <div class="children-inline-block">
+        <div class="material-icons" routerLink="/subscriptions">keyboard_backspace</div>
+        <h1>Edit {{subscription.service.name}} subscription</h1>
+    </div>
+    <div class="text-spacing">
+        <div>Due date: {{subscription.dueDate*1000|date:'dd.MM.yyyy'}}</div>
+        <div>Price: {{subscription.cost}} Euro</div>
+        <div>Provider: {{subscription.paymentMethod}}</div>
+        <div *ngIf="subscription.monthlyPayment">Monthly payment</div>
+        <div *ngIf="!subscription.monthlyPayment">Yearly payment</div>
+        <div *ngIf="subscription.automaticPayment">Automatic renewal</div>
+        <div *ngIf="!subscription.automaticPayment">Manual renewal</div>
+    </div>
+</div>
