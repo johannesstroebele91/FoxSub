@@ -22,9 +22,6 @@ export class SubscriptionChangeComponent implements OnInit {
     services: Service[];
     showEdit: boolean;
 
-    dateFormatted: DateFormatted;
-    dateArr: number[];
-
     public showError: boolean = false;
 
     constructor(
@@ -69,18 +66,9 @@ export class SubscriptionChangeComponent implements OnInit {
     }
 
     submitAdd() {
-        this.dateArr = DateFormatter.formatDateToDB(this.form.get('dueDate').value);
-
-        console.info(this.dateArr);
-
-        this.dateFormatted = {
-            day: this.dateArr[0],
-            month: this.dateArr[1],
-        };
-
         this.subscription = {
             cost: this.form.get('cost').value,
-            dueDate: this.dateFormatted,
+            dueDate: DateFormatter.formatDateToDB(this.form.get('dueDate').value),
             paymentMethod: this.form.get('paymentMethod').value,
             monthlyPayment: this.form.get('monthlyPayment').value,
             automaticPayment: this.form.get('automaticPayment').value,

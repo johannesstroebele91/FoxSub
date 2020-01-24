@@ -3,7 +3,10 @@ import {DateFormatted} from "../models/DateFormatted";
 export class DateFormatter {
 
     static formatDateToDB(date: string) {
-        return [Number(date.substring(4, 6)), Number(date.substring(7, 9))];
+        return  {
+            day: Number(date.substring(4, 6)),
+            month: Number(date.substring(7, 9))
+        };
     }
 
     static formatDateFromDB(dateFormatted: DateFormatted) {
@@ -20,8 +23,6 @@ export class DateFormatter {
             year = currYear;
         }
 
-        let date: string = year + "-" + dateFormatted.day + "-" + dateFormatted.month;
-
-        return date;
+        return year + "-" + dateFormatted.day + "-" + dateFormatted.month;
     }
 }

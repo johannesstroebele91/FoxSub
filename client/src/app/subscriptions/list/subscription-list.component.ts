@@ -14,15 +14,6 @@ export class SubscriptionListComponent implements OnInit {
 
     constructor(private subscriptionsService: SubscriptionsService) { }
 
-    test() {
-        DateFormatter.formatDateFromDB(
-            {
-                day: 24,
-                month: 1,
-            }
-        );
-    }
-
     ngOnInit() {
         this.subscriptionsService.getSubscriptions().subscribe((subscriptions) => { this.subscriptions = subscriptions })
 
