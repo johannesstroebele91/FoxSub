@@ -29,7 +29,7 @@ module.exports = function(config) {
           require('karma-jasmine'),
           require('karma-sourcemap-loader'),
           require('karma-spec-reporter'),
-					require('karma-jasmine-html-reporter'),
+          require('karma-jasmine-html-reporter'),
       ],
   
   
@@ -77,7 +77,7 @@ module.exports = function(config) {
   
       // start these browsers
       // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-      browsers: ['ChromiumHeadless'],
+      browsers: ['ChromeHeadless'],
   
   
       // Continuous Integration mode
