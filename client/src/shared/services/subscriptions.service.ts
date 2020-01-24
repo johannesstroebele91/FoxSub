@@ -27,7 +27,7 @@ export class SubscriptionsService {
 
   getSubscription(uuid: string): Observable<Subscription>{
     if(uuid && uuid !== ''){
-      return this.http.get<Subscription>(this.endpoint + "/" + uuid)
+      return this.http.get<Subscription>(this.endpoint + "/" + uuid);
     } else {
       return of({})
     }

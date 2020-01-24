@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import { Subscription } from "../../../shared/models/Subscription";
 import { SubscriptionsService } from '../../../shared/services/subscriptions.service';
+import {DateFormatter} from "../../../shared/utility/dateFormatter";
 
 @Component({
     selector: 'app-subscription-list',
@@ -13,7 +14,17 @@ export class SubscriptionListComponent implements OnInit {
 
     constructor(private subscriptionsService: SubscriptionsService) { }
 
+    test() {
+        DateFormatter.formatDateFromDB(
+            {
+                day: 24,
+                month: 1,
+            }
+        );
+    }
+
     ngOnInit() {
         this.subscriptionsService.getSubscriptions().subscribe((subscriptions) => { this.subscriptions = subscriptions })
+
     }
 }

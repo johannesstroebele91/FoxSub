@@ -1,15 +1,27 @@
+import {DateFormatted} from "../models/DateFormatted";
+
 export class DateFormatter {
 
     static formatDateToDB(date: string) {
-
-
-        //let todayDate = new Date(Date.parse(Date()));
-        // dueDate:  = { day: <day>, month: <month>}
+        return [Number(date.substring(4, 6)), Number(date.substring(7, 9))];
     }
 
-    static formatDateFromDB(date: number) {
-        console.log(date);
+    static formatDateFromDB(dateFormatted: DateFormatted) {
+        let currYear: number = new Date().getFullYear();
+        let currMonth: number  = new Date().getMonth() + 1;
+        let currDay: number  = new Date().getDate();
+        let year: number;
 
-        let todaysDate = new Date(Date.parse(Date()));
+        if(dateFormatted.month < currMonth){
+            year = currYear + 1;
+        }else if(dateFormatted.month == currMonth && dateFormatted.day < currDay){
+            year = currYear + 1;
+        }else{
+            year = currYear;
+        }
+
+        let date: string = year + "-" + dateFormatted.day + "-" + dateFormatted.month;
+
+        return date;
     }
 }

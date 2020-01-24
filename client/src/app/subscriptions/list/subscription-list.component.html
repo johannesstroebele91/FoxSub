@@ -3,6 +3,7 @@
     <div id="top-bar" >
         <h1>{{subscriptions.length}} Subscriptions</h1>
         <div class="button" routerLink="add">Add Subscription</div>
+        <div class="button" (click)="test()">TEST</div>
     </div>
     <div class="subscription" *ngFor="let subscription of subscriptions">
         <app-subscription-list-expansion [subscription]="subscription"></app-subscription-list-expansion>

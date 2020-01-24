@@ -8,7 +8,7 @@ import {of} from "rxjs";
 import {ServicesService} from "../../../shared/services/services.service";
 import {Service} from "../../../shared/models/Service";
 import {DateFormatter} from "../../../shared/utility/dateFormatter";
-import DateTimeFormat = Intl.DateTimeFormat;
+import {DateFormatted} from "../../../shared/models/DateFormatted";
 
 @Component({
     selector: 'app-subscription-change',
@@ -20,10 +20,12 @@ export class SubscriptionChangeComponent implements OnInit {
 
     subscription: Subscription;
     services: Service[];
+    showEdit: boolean;
+
+    dateFormatted: DateFormatted;
+    dateArr: number[];
 
     public showError: boolean = false;
-
-    showEdit: any;
 
     constructor(
         private subscriptionsService: SubscriptionsService,
@@ -34,7 +36,6 @@ export class SubscriptionChangeComponent implements OnInit {
 
     form: FormGroup;
 
-    // TODO: date format
     // TODO: get DB Data and delete mocks
     // serviceName: String = "Spotify";
     // subscription: Subscription = {uuid: "0", cost: 10, dueDate: 2000, paymentMethod: "paypal", monthlyPayment: true, automaticPayment: false};
@@ -43,22 +44,22 @@ export class SubscriptionChangeComponent implements OnInit {
         if(this.showEdit){
             //EditForm
             this.form = this.formBuilder.group( {
-                name: [''],
+                service: [''],
                 dueDate: ['2020-05-30'], // date as String (2020-05-08)
-                cost: [this.subscription.cost],
-                monthlyPayment: [this.subscription.monthlyPayment],
-                payment: [this.subscription.paymentMethod],
-                automaticRenewal: [this.subscription.automaticPayment]
+                cost: ['this.subscription.cost'],
+                monthlyPayment: [''],
+                paymentMethod: [''],
+                automaticPayment: ['']
             });
         }else{
             //AddForm
             this.form = this.formBuilder.group( {
-                services: ['', [Validators.required]],
+                service: ['', [Validators.required]],
                 dueDate: [''],
                 cost: ['', [Validators.required]],
                 monthlyPayment: [false],
-                payment: ['', [Validators.required]],
-                automaticRenewal: [true]
+                paymentMethod: ['', [Validators.required]],
+                automaticPayment: [true]
             });
         }
     }
@@ -68,15 +69,22 @@ export class SubscriptionChangeComponent implements OnInit {
     }
 
     submitAdd() {
+        this.dateArr = DateFormatter.formatDateToDB(this.form.get('dueDate').value);
+
+        console.info(this.dateArr);
+
+        this.dateFormatted = {
+            day: this.dateArr[0],
+            month: this.dateArr[1],
+        };
+
         this.subscription = {
-            cost: this.form.get('price').value,
-            dueDate: this.form.get('dueDate').value,
+            cost: this.form.get('cost').value,
+            dueDate: this.dateFormatted,
             paymentMethod: this.form.get('paymentMethod').value,
             monthlyPayment: this.form.get('monthlyPayment').value,
             automaticPayment: this.form.get('automaticPayment').value,
             service: this.form.get('service').value,
-
-
         };
 
         this.subscriptionsService.createSubscriptions(this.subscription).pipe(
@@ -95,10 +103,12 @@ export class SubscriptionChangeComponent implements OnInit {
     ngOnInit() {
         this.activatedRoute
             .data
-            .subscribe(data => {this.showEdit = data.showEdit});
-        
+            .subscribe((data) => {this.showEdit = data.showEdit});
+
         this.subscriptionsService.getSubscription(this.activatedRoute.snapshot.params.uuid)
-             .subscribe((subscription) => { this.subscription = subscription });
+            .subscribe((subscription) => {
+                console.log(subscription);
+                this.subscription = subscription });
 
         this.servicesService.getServices()
             .subscribe((services) => { this.services = services });
