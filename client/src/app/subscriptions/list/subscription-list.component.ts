@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import { Subscription } from "../../../shared/models/Subscription";
 import { SubscriptionsService } from '../../../shared/services/subscriptions.service';
 

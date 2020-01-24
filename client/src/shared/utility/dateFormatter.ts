@@ -1,16 +1,15 @@
 export class DateFormatter {
 
-    constructor() { }
+    static formatDateToDB(date: string) {
 
-    formatDateToDB(date: string) {
-        let newDate = new Date(date);
-        console.log(newDate);
+
         //let todayDate = new Date(Date.parse(Date()));
-       // dueDate:  = { day: <day>, month: <month>}
+        // dueDate:  = { day: <day>, month: <month>}
     }
 
-    formatDateFromDB(date: string) {
+    static formatDateFromDB(date: number) {
+        console.log(date);
 
+        let todaysDate = new Date(Date.parse(Date()));
     }
-
 }

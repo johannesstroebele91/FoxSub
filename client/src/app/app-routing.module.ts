@@ -20,8 +20,8 @@ const routes: Routes = [
     {
         path: 'subscriptions', children: [
             { path: '', pathMatch: "full", component: SubscriptionListComponent },
-            { path: 'add', component: SubscriptionChangeComponent },
-            { path: 'edit/:uuid', component: SubscriptionChangeComponent, resolve: {subscriptions: SubscriptionResolver } }
+            { path: 'add', component: SubscriptionChangeComponent, data :{showEdit :false} },
+            { path: 'edit/:uuid', component: SubscriptionChangeComponent, resolve: {subscriptions: SubscriptionResolver }, data :{showEdit :true}  }
         ]
     },
 ];
