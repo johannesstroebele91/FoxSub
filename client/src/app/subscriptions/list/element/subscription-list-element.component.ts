@@ -1,17 +1,20 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Subscription} from "../../../../shared/models/Subscription";
 import {Router} from "@angular/router";
+import {DateFormatted} from "../../../../shared/models/DateFormatted";
 
 @Component({
     selector: 'app-subscription-list-expansion',
     templateUrl: './subscription-list-element.component.html',
     styleUrls: ['./subscription-list-element.component.scss']
 })
-export class SubscriptionListElementComponent {
+export class SubscriptionListElementComponent implements OnInit{
 
     @Input() subscription: Subscription;
 
     isExpanded: boolean = false;
+
+    dateFormatted: DateFormatted;
 
     constructor(private router: Router){}
 
@@ -22,5 +25,9 @@ export class SubscriptionListElementComponent {
     clickEdit(){
         console.log(this.subscription);
         this.router.navigate(["/subscriptions/edit/" + this.subscription.uuid])
+    }
+
+    ngOnInit(): void {
+        //TODO getSubscription > DateFormatter.formatDateFromDB()
     }
 }

@@ -83,11 +83,6 @@ export class SubscriptionChangeComponent implements OnInit {
         ).subscribe(()=> this.router.navigate(["/subscriptions"]));
     }
 
-
-    date(){
-        DateFormatter.formatDateFromDB(this.form.get('dueDate').value);
-    }
-
     ngOnInit() {
         this.activatedRoute
             .data
