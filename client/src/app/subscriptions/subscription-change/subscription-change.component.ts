@@ -4,11 +4,12 @@ import { FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Subscription} from "../../../shared/models/Subscription";
 import {SubscriptionsService} from "../../../shared/services/subscriptions.service";
 import {catchError} from "rxjs/operators";
-import {of} from "rxjs";
+import {Observable, of} from "rxjs";
 import {ServicesService} from "../../../shared/services/services.service";
 import {Service} from "../../../shared/models/Service";
 import {DateFormatter} from "../../../shared/utility/dateFormatter";
 import {DateFormatted} from "../../../shared/models/DateFormatted";
+import {lookupService} from "dns";
 
 @Component({
     selector: 'app-subscription-change',
@@ -42,17 +43,17 @@ export class SubscriptionChangeComponent implements OnInit {
             //EditForm
             this.form = this.formBuilder.group( {
                 service: [''],
-                dueDate: ['2020-05-30'], // date as String (2020-05-08)
-                cost: ['this.subscription.cost'],
-                monthlyPayment: [''],
-                paymentMethod: [''],
-                automaticPayment: ['']
+                dueDate: [DateFormatter.formatDateFromDB(this.subscription.dueDate)], // date as String (2020-05-08)
+                cost: [this.subscription.cost],
+                monthlyPayment: [this.subscription.monthlyPayment],
+                paymentMethod: [this.subscription.paymentMethod],
+                automaticPayment: [this.subscription.automaticPayment]
             });
         }else{
             //AddForm
             this.form = this.formBuilder.group( {
-                service: ['', [Validators.required]],
-                dueDate: [''],
+                service: [''],
+                dueDate: ['', [Validators.required]],
                 cost: ['', [Validators.required]],
                 monthlyPayment: [false],
                 paymentMethod: ['', [Validators.required]],
@@ -62,7 +63,22 @@ export class SubscriptionChangeComponent implements OnInit {
     }
 
     submitEdit() {
-        //TODO:
+        this.subscription = {
+            uuid: this.subscription.uuid,
+            cost: this.form.get('cost').value,
+            dueDate: DateFormatter.formatDateToDB(this.form.get('dueDate').value),
+            paymentMethod: this.form.get('paymentMethod').value,
+            monthlyPayment: this.form.get('monthlyPayment').value,
+            automaticPayment: this.form.get('automaticPayment').value,
+            service: this.form.get('service').value,
+        };
+
+        this.subscriptionsService.editSubscriptions(this.subscription).pipe(
+            catchError(() => {
+                this.showError = true;
+                return of();
+            })
+        ).subscribe(()=> this.router.navigate(["/subscriptions"]));
     }
 
     submitAdd() {
@@ -90,12 +106,24 @@ export class SubscriptionChangeComponent implements OnInit {
 
         this.subscriptionsService.getSubscription(this.activatedRoute.snapshot.params.uuid)
             .subscribe((subscription) => {
-                console.log(subscription);
-                this.subscription = subscription });
+                this.subscription = subscription;
 
-        this.servicesService.getServices()
-            .subscribe((services) => { this.services = services });
+                this.servicesService.getServices()
+                    .subscribe((services) => {
+                        this.services = services;
 
-        this.buildForm();
+                        if(this.showEdit){
+                            for(let i = 0; i< services.length; i++){
+                                if(services[i].name == this.subscription.service.name) {
+                                    services.splice(i, 1);
+                                }
+                            }
+                        }
+                    }
+                );
+
+                this.buildForm();
+            }
+        );
     }
 }

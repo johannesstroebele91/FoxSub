@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HeaderComponent} from "./header/header.component";
 import { SubscriptionListComponent } from './subscriptions/list/subscription-list.component';
-import { SubscriptionListElementComponent} from "./subscriptions/list/expansion/subscription-list-element.component";
+import { SubscriptionListElementComponent} from "./subscriptions/list/element/subscription-list-element.component";
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ReactiveFormsModule } from "@angular/forms";

@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Subscription} from "../../../../shared/models/Subscription";
 import {Router} from "@angular/router";
+import {Subscription} from "../../../../shared/models/Subscription";
 import {DateFormatted} from "../../../../shared/models/DateFormatted";
 
 @Component({

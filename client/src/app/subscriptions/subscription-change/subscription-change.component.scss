@@ -6,6 +6,14 @@
   display: none;
 }
 
+#service-dropdown select {
+  background: #4d4d4d;
+  border: none;
+  color: white;
+  padding: 9px;
+  width: 100%;
+}
+
 .row-spacing label {
   display: flex;
   flex-direction: column;
@@ -15,9 +23,22 @@
 .row-spacing input {
   width: 100%;
   padding: 9px;
-  color: #121212;
+  color: white;
   background: #4d4d4d;
   border: none;
+}
+
+.button {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  margin: 0 auto 42px auto;
+  color: #e8e8e8;
+  font-size: 14px;
+  border: none;
+}
+.button:disabled {
+  background: grey;
 }
 
 // Toggle Switch
@@ -121,4 +142,18 @@
   -webkit-transition: All 0.3s ease;
   -moz-transition: All 0.3s ease;
   -o-transition: All 0.3s ease;
+}
+
+
+// Mobile
+@media (max-width: 420px) {
+  .button {
+    width: 100%;
+  }
+}
+// Desktop
+@media (min-width: 421px) {
+  .button {
+    width: 50%;
+  }
 }

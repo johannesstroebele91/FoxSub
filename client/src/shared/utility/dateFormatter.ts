@@ -23,6 +23,14 @@ export class DateFormatter {
             year = currYear;
         }
 
-        return year + "-" + dateFormatted.day + "-" + dateFormatted.month;
+        if(dateFormatted.month < 10 && dateFormatted.day < 10){
+            return year + "-0" + dateFormatted.month + "-0" + dateFormatted.day;
+        }else if(dateFormatted.day < 10){
+            return year + "-" + dateFormatted.month + "-0" + dateFormatted.day;
+        }else if(dateFormatted.month < 10){
+            return year + "-0" + dateFormatted.month + "-" + dateFormatted.day;
+        }else {
+            return year + "-" + dateFormatted.month + "-" + dateFormatted.day;
+        }
     }
 }

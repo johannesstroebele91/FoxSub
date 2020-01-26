@@ -9,13 +9,22 @@
 
 <!--<div [ngClass]="{'visible' : showEdit, 'hidden': !showEdit}" class="row-spacing text-login-error">-->
     <div class="row-spacing text-login-error">
-        <div [formGroup]="form" class="text-spacing">
-            <div>
-                <label for="service">Service</label>
-                <select id="service" [formControlName]="'service'" >
-                    <option value="" disabled selected>Select your option</option>
-                    <option *ngFor="let service of services" value="{{service.id}}">{{service.name}}</option>
-                </select>
+        <form [formGroup]="form" class="text-spacing">
+            <div id="service-dropdown">
+                <div class="row-spacing" *ngIf="showEdit">
+                    <label  for="edit_service">Service</label>
+                    <select id="edit_service" [formControlName]="'service'" >
+                            <option value="{{subscription.service.id}}" selected>{{subscription.service.name}}</option>
+                            <option *ngFor="let service of services" value="{{service.id}}">{{service.name}}</option>
+                    </select>
+                </div>
+
+                <div class="row-spacing" *ngIf="!showEdit">
+                    <label for="add_service">Service</label>
+                    <select id="add_service" [formControlName]="'service'" >
+                        <option *ngFor="let service of services" value="{{service.id}}">{{service.name}}</option>
+                    </select>
+                </div>
             </div>
 
             <div class="row-spacing">
@@ -26,29 +35,34 @@
             <div class="row-spacing">
                 <label for="cost">Price €</label>
                 <input type="number" step="any" min="0" id="cost" [formControlName]="'cost'" placeholder="7,99">
+<!--                <input *ngIf="showEdit" type="number" step="any" min="0" [formControlName]="'cost'" value="{{ this.subscription.cost }}">-->
             </div>
 
-            <label for="monthlyPayment">Frequency</label>
-            <label class="switch">
-                <input class="switch-input" type="checkbox" id="monthlyPayment" [formControlName]="'monthlyPayment'">
-                <span class="switch-label" data-on="Monthly" data-off="Yearly"></span>
-                <span class="switch-handle"></span>
-            </label>
+            <div class="row-spacing">
+                <label for="monthlyPayment">Frequency</label>
+                <label class="switch">
+                    <input class="switch-input" type="checkbox" id="monthlyPayment" [formControlName]="'monthlyPayment'">
+                    <span class="switch-label" data-on="Monthly" data-off="Yearly"></span>
+                    <span class="switch-handle"></span>
+                </label>
+            </div>
 
             <div class="row-spacing">
                 <label for="paymentMethod">Payment</label>
                 <input type="text" id="paymentMethod" [formControlName]="'paymentMethod'" placeholder="Paypal">
             </div>
 
-            <label for="automaticPayment">Type</label>
-            <label class="switch">
-                <input class="switch-input" type="checkbox" id="automaticPayment" [formControlName]="'automaticPayment'">
-                <span class="switch-label" data-on="Automatic" data-off="Manual"></span>
-                <span class="switch-handle"></span>
-            </label>
+            <div class="row-spacing">
+                <label for="automaticPayment">Type</label>
+                <label class="switch">
+                    <input class="switch-input" type="checkbox" id="automaticPayment" [formControlName]="'automaticPayment'">
+                    <span class="switch-label" data-on="Automatic" data-off="Manual"></span>
+                    <span class="switch-handle"></span>
+                </label>
+            </div>
 
             <button *ngIf="!showEdit" class="button" (click)="submitAdd()" [disabled]="form.invalid">Add</button>
             <button *ngIf="showEdit" class="button" (click)="submitEdit()" [disabled]="form.invalid">Save</button>
-        </div>
+        </form>
     </div>
 </div>
