@@ -1,13 +1,13 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
-import { FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Subscription} from "../../../shared/models/Subscription";
-import {SubscriptionsService} from "../../../shared/services/subscriptions.service";
-import {catchError} from "rxjs/operators";
-import {of} from "rxjs";
-import {ServicesService} from "../../../shared/services/services.service";
-import {Service} from "../../../shared/models/Service";
-import {DateFormatter} from "../../../shared/utility/dateFormatter";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from "@angular/router";
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subscription } from "../../../shared/models/Subscription";
+import { SubscriptionsService } from "../../../shared/services/subscriptions.service";
+import { catchError } from "rxjs/operators";
+import { of } from "rxjs";
+import { ServicesService } from "../../../shared/services/services.service";
+import { Service } from "../../../shared/models/Service";
+import { DateFormatter } from "../../../shared/utility/dateFormatter";
 
 @Component({
     selector: 'app-subscription-change',
@@ -51,6 +51,29 @@ export class SubscriptionChangeComponent implements OnInit {
     }
 
     buildForm() {
+        //EditForm
+        if (this.showEdit) {
+            this.form = this.formBuilder.group({
+                service: [''],
+                dueDate: [DateFormatter.formatDateFromDB(this.subscription.dueDate)], // date as String (2020-05-08)
+                cost: [this.subscription.cost],
+                monthlyPayment: [this.subscription.monthlyPayment],
+                paymentMethod: [this.subscription.paymentMethod],
+                automaticPayment: [this.subscription.automaticPayment]
+            });
+
+        }
+        //AddForm
+        else {
+            this.form = this.formBuilder.group({
+                service: [''],
+                dueDate: ['', [Validators.required]],
+                cost: ['', [Validators.required]],
+                monthlyPayment: [false],
+                paymentMethod: ['', [Validators.required]],
+                automaticPayment: [true]
+            });
+        }
         this.form = this.formBuilder.group( {
             service: ['', [Validators.required]],
             dueDate: [DateFormatter.formatDateFromDB(this.subscription.dueDate), [Validators.required]],
@@ -70,7 +93,7 @@ export class SubscriptionChangeComponent implements OnInit {
             paymentMethod: this.form.get('paymentMethod').value,
             monthlyPayment: this.form.get('monthlyPayment').value,
             automaticPayment: this.form.get('automaticPayment').value,
-            service: this.form.get('service').value,
+            serviceId: this.form.get('service').value,
         };
 
         // Adapt subscription Object based on new input
@@ -79,7 +102,7 @@ export class SubscriptionChangeComponent implements OnInit {
                 this.showError = true;
                 return of();
             })
-        ).subscribe(()=> this.router.navigate(["/subscriptions"]));
+        ).subscribe(() => this.router.navigate(["/subscriptions"]));
     }
 
     submitAdd() {
@@ -90,8 +113,10 @@ export class SubscriptionChangeComponent implements OnInit {
             paymentMethod: this.form.get('paymentMethod').value,
             monthlyPayment: this.form.get('monthlyPayment').value,
             automaticPayment: this.form.get('automaticPayment').value,
-            service: this.form.get('service').value,
+            serviceId: this.form.get('service').value,
         };
+
+        console.log(this.subscription.serviceId)
 
         // Adapt subscription Object
         this.subscriptionsService.createSubscriptions(this.subscription).pipe(
@@ -99,6 +124,6 @@ export class SubscriptionChangeComponent implements OnInit {
                 this.showError = true;
                 return of();
             })
-        ).subscribe(()=> this.router.navigate(["/subscriptions"]));
+        ).subscribe(() => this.router.navigate(["/subscriptions"]));
     }
 }

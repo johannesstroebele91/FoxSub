@@ -2,8 +2,8 @@
 <div class="container">
     <div class="children-inline-block">
         <div class="material-icons" routerLink="/subscriptions">keyboard_backspace</div>
-            <h1 *ngIf="showEdit">Edit "{{subscription.service.name}}" subscription</h1>
-            <h1 *ngIf="!showEdit">Add subscription</h1>
+        <h1 *ngIf="showEdit">Edit "{{subscription.service.name}}" subscription</h1>
+        <h1 *ngIf="!showEdit">Add subscription</h1>
     </div>
 
     <div class="row-spacing text-login-error">
@@ -14,8 +14,9 @@
             <div id="service-dropdown">
                 <!-- Edit -->
                 <div class="row-spacing" *ngIf="showEdit">
-                    <label  for="edit_service">Service</label>
-                    <select id="edit_service" [formControlName]="'service'" >
+                    <label for="edit_service">Service</label>
+                    <select id="edit_service" [formControlName]="'service'">
+                        <option value="{{subscription.service.uuid}}" selected>{{subscription.service.name}}</option>
                         <option *ngFor="let service of services" value="{{service.uuid}}">{{service.name}}</option>
                     </select>
                 </div>
@@ -23,7 +24,7 @@
                 <!--Add-->
                 <div class="row-spacing" *ngIf="!showEdit">
                     <label for="add_service">Service</label>
-                    <select id="add_service" [formControlName]="'service'" >
+                    <select id="add_service" [formControlName]="'service'">
                         <option *ngFor="let service of services" value="{{service.uuid}}">{{service.name}}</option>
                     </select>
                 </div>
@@ -42,7 +43,8 @@
             <div class="row-spacing">
                 <label for="monthlyPayment">Frequency</label>
                 <label class="switch">
-                    <input class="switch-input" type="checkbox" id="monthlyPayment" [formControlName]="'monthlyPayment'">
+                    <input class="switch-input" type="checkbox" id="monthlyPayment"
+                        [formControlName]="'monthlyPayment'">
                     <span class="switch-label" data-on="Monthly" data-off="Yearly"></span>
                     <span class="switch-handle"></span>
                 </label>
@@ -56,7 +58,8 @@
             <div class="row-spacing">
                 <label for="automaticPayment">Type</label>
                 <label class="switch">
-                    <input class="switch-input" type="checkbox" id="automaticPayment" [formControlName]="'automaticPayment'">
+                    <input class="switch-input" type="checkbox" id="automaticPayment"
+                        [formControlName]="'automaticPayment'">
                     <span class="switch-label" data-on="Automatic" data-off="Manual"></span>
                     <span class="switch-handle"></span>
                 </label>
