@@ -17,7 +17,9 @@ const routes: Routes = [
     { path: 'subscriptions-list', component: SubscriptionListComponent},
     { path: 'login', component: LoginComponent },
     { path: 'row', component: RowComponent },
-    { path: 'profile', component: ProfileComponent },
+    { path: 'profile', pathMatch: "full", component: ProfileComponent, resolve: {
+            user: UserResolver,
+        } },
     { path: 'dashboard', pathMatch: "full", component: DashboardComponent, resolve: {
             user: UserResolver,
             categories: CategoryResolver

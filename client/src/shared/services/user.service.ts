@@ -10,10 +10,14 @@ export class UserService {
 
     private readonly endpoint = "/api/v1/user";
 
-    constructor(private http: HttpClient) {
-    }
+    constructor(private http: HttpClient) {}
 
     getUser(): Observable<User> {
         return this.http.get<User>(this.endpoint);
     }
+
+    editSubscriptionGoal(user: User): Observable<User> {
+        return this.http.put<User>(this.endpoint + "/goal", user);
+    }
+
 }

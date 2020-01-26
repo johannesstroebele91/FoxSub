@@ -1,0 +1,34 @@
+// General
+.inputEditGoal {
+  width: 24%;
+  padding: 9px;
+  color: white;
+  background: #4d4d4d;
+  border: none;
+  margin-right: 9px;
+}
+.vertical-align {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  align-content: stretch;
+}
+// Mobile
+@media (max-width: 420px) {
+  .button {
+    margin-bottom: 24px;
+  }
+}
+// Desktop
+@media (min-width: 421px) {
+  .horizontal-align{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    align-content: stretch;
+  }
+}

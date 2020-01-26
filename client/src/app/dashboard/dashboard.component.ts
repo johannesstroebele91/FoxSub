@@ -37,11 +37,9 @@ export class DashboardComponent implements OnInit{
         // load user from the database with resolver
         if(this.activatedRoute.snapshot.data.categories){
             this.categories = this.activatedRoute.snapshot.data.categories;
-            console.log(this.categories)
         }
 
         this.data[0].series = this.categoriesForGraph();
-
     }
 
     // CHART
@@ -86,6 +84,7 @@ export class DashboardComponent implements OnInit{
         domain: ['#3498db', '#9b59b6', '#e67e22', "#f1c40f"]
     };
 
+    // Creates an array for the graph of the categories
     categoriesForGraph() {
         const data = [];
         this.categories.forEach((category) => {
