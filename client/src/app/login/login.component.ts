@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit{
                 return of();
             })
         // redirect to dashboard screen
-        ).subscribe(()=> this.router.navigate(["/dashboard"]));
+        ).subscribe(()=> this.router.navigate(["/"]));
     }
 
     ngOnInit(): void {

@@ -1,16 +1,13 @@
 <app-header></app-header>
 <div class="container">
     <div class="general-information">
-        <h1>{{this.user.montlyCumulatedPayment}}€ / month</h1>
-        <div class="goal-edit">
-            <div>Goal: {{this.user.goal}}€ / month</div>
-            <div class="material-icons button-edit"  (click)="clickEdit()">create</div>
-        </div>
-<!--        <div>Next due date: {{this.dueDateFormatted}}</div>-->
+        <h1>{{this.user.monthlyCumulatedPayment}}€ / month</h1>
+        <div class="text-spacing">Goal: {{this.user.goal}}€ / month</div>
+        <div>Next due date: {{getNextDueDate()}}</div>
     </div>
 
 <!-- Chart from NGX-Charts https://swimlane.github.io/ngx-charts/ -->
-    <ngx-charts-bar-vertical-stacked
+    <ngx-charts-bar-vertical-stacked *ngIf="data"
             [view]="view"
             [scheme]="colorScheme"
             [results]="data"

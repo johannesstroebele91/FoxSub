@@ -6,18 +6,26 @@ import {DashboardComponent} from "./dashboard/dashboard.component";
 import { ProfileComponent } from "./profile/profile.component";
 import { RowComponent } from "./row/row.component";
 import { SubscriptionChangeComponent } from './subscriptions/subscription-change/subscription-change.component';
-import { SubscriptionResolver} from "./SubscriptionResolver";
-import {ServicesResolver} from "./ServicesResolver";
+import { SubscriptionResolver} from "../shared/resolver/subscription.resolver";
+import {ServicesResolver} from "../shared/resolver/services.resolver";
+import {UserResolver} from "../shared/resolver/user.resolver";
+import {CategoryResolver} from "../shared/resolver/category.resolver";
 
 // TODO: opt. lazy loading einbauen
 const routes: Routes = [
     { path: 'login', component: LoginComponent},
     { path: 'subscriptions-list', component: SubscriptionListComponent},
-    { path: '', component: DashboardComponent},
     { path: 'login', component: LoginComponent },
     { path: 'row', component: RowComponent },
     { path: 'profile', component: ProfileComponent },
-    { path: 'dashboard', component: DashboardComponent },
+    { path: 'dashboard', pathMatch: "full", component: DashboardComponent, resolve: {
+            user: UserResolver,
+            categories: CategoryResolver
+        } },
+    { path: '',
+        redirectTo: '/dashboard',
+        pathMatch: 'full'
+    },
     {
         path: 'subscriptions', children: [
             { path: '', pathMatch: "full", component: SubscriptionListComponent },

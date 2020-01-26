@@ -12,6 +12,8 @@ export class DateFormatter {
 
     // Convert numerical date from database into string date
     static formatDateFromDB(dateFormatted: DateFormatted) {
+        if (!dateFormatted || !dateFormatted.month || !dateFormatted.day)
+            return "";
 
         let currYear: number = new Date().getFullYear();
         let currMonth: number  = new Date().getMonth() + 1; // Month starts with 0

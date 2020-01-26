@@ -23,6 +23,10 @@ h1{
 a {
     color: #e8e8e8;
 }
+::ng-deep .chart-legend .legend-label span:hover {
+    color: #D7303E !important;
+}
+
 .button {
     text-align: center;
     padding: 12px 24px;
