@@ -1,13 +1,13 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
-import { FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Subscription} from "../../../shared/models/Subscription";
-import {SubscriptionsService} from "../../../shared/services/subscriptions.service";
-import {catchError} from "rxjs/operators";
-import {of} from "rxjs";
-import {ServicesService} from "../../../shared/services/services.service";
-import {Service} from "../../../shared/models/Service";
-import {DateFormatter} from "../../../shared/utility/dateFormatter";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from "@angular/router";
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subscription } from "../../../shared/models/Subscription";
+import { SubscriptionsService } from "../../../shared/services/subscriptions.service";
+import { catchError } from "rxjs/operators";
+import { of } from "rxjs";
+import { ServicesService } from "../../../shared/services/services.service";
+import { Service } from "../../../shared/models/Service";
+import { DateFormatter } from "../../../shared/utility/dateFormatter";
 
 @Component({
     selector: 'app-subscription-change',
@@ -34,8 +34,8 @@ export class SubscriptionChangeComponent implements OnInit {
 
     buildForm() {
         //EditForm
-        if(this.showEdit){
-            this.form = this.formBuilder.group( {
+        if (this.showEdit) {
+            this.form = this.formBuilder.group({
                 service: [''],
                 dueDate: [DateFormatter.formatDateFromDB(this.subscription.dueDate)], // date as String (2020-05-08)
                 cost: [this.subscription.cost],
@@ -46,8 +46,8 @@ export class SubscriptionChangeComponent implements OnInit {
 
         }
         //AddForm
-        else{
-            this.form = this.formBuilder.group( {
+        else {
+            this.form = this.formBuilder.group({
                 service: [''],
                 dueDate: ['', [Validators.required]],
                 cost: ['', [Validators.required]],
@@ -67,7 +67,7 @@ export class SubscriptionChangeComponent implements OnInit {
             paymentMethod: this.form.get('paymentMethod').value,
             monthlyPayment: this.form.get('monthlyPayment').value,
             automaticPayment: this.form.get('automaticPayment').value,
-            service: this.form.get('service').value,
+            serviceId: this.form.get('service').value,
         };
 
         // Adapt subscription Object based on new input
@@ -76,7 +76,7 @@ export class SubscriptionChangeComponent implements OnInit {
                 this.showError = true;
                 return of();
             })
-        ).subscribe(()=> this.router.navigate(["/subscriptions"]));
+        ).subscribe(() => this.router.navigate(["/subscriptions"]));
     }
 
     submitAdd() {
@@ -87,8 +87,10 @@ export class SubscriptionChangeComponent implements OnInit {
             paymentMethod: this.form.get('paymentMethod').value,
             monthlyPayment: this.form.get('monthlyPayment').value,
             automaticPayment: this.form.get('automaticPayment').value,
-            service: this.form.get('service').value,
+            serviceId: this.form.get('service').value,
         };
+
+        console.log(this.subscription.serviceId)
 
         // Adapt subscription Object
         this.subscriptionsService.createSubscriptions(this.subscription).pipe(
@@ -96,14 +98,14 @@ export class SubscriptionChangeComponent implements OnInit {
                 this.showError = true;
                 return of();
             })
-        ).subscribe(()=> this.router.navigate(["/subscriptions"]));
+        ).subscribe(() => this.router.navigate(["/subscriptions"]));
     }
 
     ngOnInit() {
         // change component into edit or add based on button clicked in subscription list
         this.activatedRoute
             .data
-            .subscribe((data) => {this.showEdit = data.showEdit});
+            .subscribe((data) => { this.showEdit = data.showEdit });
 
         // get subscription from the database based on uuid
         this.subscriptionsService.getSubscription(this.activatedRoute.snapshot.params.uuid)
@@ -116,18 +118,18 @@ export class SubscriptionChangeComponent implements OnInit {
                         this.services = services;
 
                         // remove the already selected service from the list of services
-                        if(this.showEdit){
-                            for(let i = 0; i< services.length; i++){
-                                if(services[i].name == this.subscription.service.name) {
+                        if (this.showEdit) {
+                            for (let i = 0; i < services.length; i++) {
+                                if (services[i].name == this.subscription.service.name) {
                                     services.splice(i, 1);
                                 }
                             }
                         }
                     }
-                );
+                    );
 
                 this.buildForm();
             }
-        );
+            );
     }
 }

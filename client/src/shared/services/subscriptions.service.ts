@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import {Observable, of} from "rxjs";
+import { Observable, of } from "rxjs";
 import { Subscription } from "../models/Subscription";
 
 @Injectable(
@@ -24,8 +24,8 @@ export class SubscriptionsService {
     return this.http.get<Subscription[]>(this.endpoint)
   }
 
-  getSubscription(uuid: string): Observable<Subscription>{
-    if(uuid && uuid !== ''){
+  getSubscription(uuid: string): Observable<Subscription> {
+    if (uuid && uuid !== '') {
       return this.http.get<Subscription>(this.endpoint + "/" + uuid);
     } else {
       return of({})
