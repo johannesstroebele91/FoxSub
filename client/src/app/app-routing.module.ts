@@ -7,6 +7,7 @@ import { ProfileComponent } from "./profile/profile.component";
 import { RowComponent } from "./row/row.component";
 import { SubscriptionChangeComponent } from './subscriptions/subscription-change/subscription-change.component';
 import { SubscriptionResolver} from "./SubscriptionResolver";
+import {ServicesResolver} from "./ServicesResolver";
 
 // TODO: opt. lazy loading einbauen
 const routes: Routes = [
@@ -20,8 +21,13 @@ const routes: Routes = [
     {
         path: 'subscriptions', children: [
             { path: '', pathMatch: "full", component: SubscriptionListComponent },
-            { path: 'add', component: SubscriptionChangeComponent, data :{showEdit :false} },
-            { path: 'edit/:uuid', component: SubscriptionChangeComponent, resolve: {subscriptions: SubscriptionResolver }, data :{showEdit :true}  }
+            { path: 'add', component: SubscriptionChangeComponent, resolve: {
+                services: ServicesResolver
+                } },
+            { path: 'edit/:uuid', component: SubscriptionChangeComponent, resolve: {
+                subscription: SubscriptionResolver,
+                services: ServicesResolver
+                } }
         ]
     },
 ];

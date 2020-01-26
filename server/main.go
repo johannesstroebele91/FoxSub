@@ -25,6 +25,7 @@ func main() {
 	v1Subrouter.HandleFunc("/user", GetUser).Methods("GET")
 	v1Subrouter.HandleFunc("/user/goal", UpdateGoal).Methods("PUT")
 	v1Subrouter.HandleFunc("/services", GetServices).Methods("GET")
+	v1Subrouter.HandleFunc("/categories", GetCategories).Methods("GET")
 
 	apiSubrouter.HandleFunc("/login", SignIn).Methods("POST")
 	apiSubrouter.HandleFunc("/register", Register).Methods("POST")

@@ -17,11 +17,11 @@ import {DateFormatter} from "../../../shared/utility/dateFormatter";
 
 export class SubscriptionChangeComponent implements OnInit {
 
-    subscription: Subscription;
+    subscription: Subscription = {dueDate: {}, service: {}};
     services: Service[];
-    showEdit: boolean;
-
-    public showError: boolean = false;
+    showEdit: boolean = false;
+    form: FormGroup;
+    showError: boolean = false;
 
     constructor(
         private subscriptionsService: SubscriptionsService,
@@ -30,32 +30,35 @@ export class SubscriptionChangeComponent implements OnInit {
         private formBuilder: FormBuilder,
         private router: Router) { }
 
-    form: FormGroup;
+    ngOnInit() {
+        if(this.activatedRoute.snapshot.data.subscription){
+            this.subscription = this.activatedRoute.snapshot.data.subscription;
+            this.showEdit = true;
+        }
+
+        if(this.activatedRoute.snapshot.data.services){
+            this.services = this.activatedRoute.snapshot.data.services;
+        }
+
+        this.buildForm();
+
+        for(let i = 0; i< this.services.length; i++){
+            if(this.services[i].name == this.subscription.service.name) {
+                // this.services.splice(i, 1);
+                this.form.get('service').setValue(this.services[i].uuid);
+            }
+        }
+    }
 
     buildForm() {
-        //EditForm
-        if(this.showEdit){
-            this.form = this.formBuilder.group( {
-                service: [''],
-                dueDate: [DateFormatter.formatDateFromDB(this.subscription.dueDate)], // date as String (2020-05-08)
-                cost: [this.subscription.cost],
-                monthlyPayment: [this.subscription.monthlyPayment],
-                paymentMethod: [this.subscription.paymentMethod],
-                automaticPayment: [this.subscription.automaticPayment]
-            });
-
-        }
-        //AddForm
-        else{
-            this.form = this.formBuilder.group( {
-                service: [''],
-                dueDate: ['', [Validators.required]],
-                cost: ['', [Validators.required]],
-                monthlyPayment: [false],
-                paymentMethod: ['', [Validators.required]],
-                automaticPayment: [true]
-            });
-        }
+        this.form = this.formBuilder.group( {
+            service: ['', [Validators.required]],
+            dueDate: [DateFormatter.formatDateFromDB(this.subscription.dueDate), [Validators.required]],
+            cost: [this.subscription.cost, [Validators.required]],
+            monthlyPayment: [this.subscription.monthlyPayment],
+            paymentMethod: [this.subscription.paymentMethod, [Validators.required]],
+            automaticPayment: [this.subscription.automaticPayment]
+        });
     }
 
     submitEdit() {
@@ -97,37 +100,5 @@ export class SubscriptionChangeComponent implements OnInit {
                 return of();
             })
         ).subscribe(()=> this.router.navigate(["/subscriptions"]));
-    }
-
-    ngOnInit() {
-        // change component into edit or add based on button clicked in subscription list
-        this.activatedRoute
-            .data
-            .subscribe((data) => {this.showEdit = data.showEdit});
-
-        // get subscription from the database based on uuid
-        this.subscriptionsService.getSubscription(this.activatedRoute.snapshot.params.uuid)
-            .subscribe((subscription) => {
-                this.subscription = subscription;
-
-                // get all services
-                this.servicesService.getServices()
-                    .subscribe((services) => {
-                        this.services = services;
-
-                        // remove the already selected service from the list of services
-                        if(this.showEdit){
-                            for(let i = 0; i< services.length; i++){
-                                if(services[i].name == this.subscription.service.name) {
-                                    services.splice(i, 1);
-                                }
-                            }
-                        }
-                    }
-                );
-
-                this.buildForm();
-            }
-        );
     }
 }

@@ -1,6 +1,6 @@
 export interface Service {
 
-    id?: string;
+    uuid?: string;
 
     name?: string;
 

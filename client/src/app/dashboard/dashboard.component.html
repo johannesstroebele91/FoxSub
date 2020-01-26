@@ -1,12 +1,12 @@
 <app-header></app-header>
 <div class="container">
     <div class="general-information">
-        <h1>{{monthlyPayment}}€ / month</h1>
+        <h1>{{this.user.montlyCumulatedPayment}}€ / month</h1>
         <div class="goal-edit">
-            <div>Goal: {{goal}}€ / month</div>
+            <div>Goal: {{this.user.goal}}€ / month</div>
             <div class="material-icons button-edit"  (click)="clickEdit()">create</div>
         </div>
-        <div>Next due date: {{dueDate}}</div>
+<!--        <div>Next due date: {{this.dueDateFormatted}}</div>-->
     </div>
 
 <!-- Chart from NGX-Charts https://swimlane.github.io/ngx-charts/ -->
@@ -21,7 +21,6 @@
             [showXAxisLabel]="showXAxisLabel"
             [showYAxisLabel]="showYAxisLabel"
             [animations]="animations"
-            [tooltipDisabled]="tooltipDisabled"
-            (select)="onSelect($event)">
+            [tooltipDisabled]="tooltipDisabled">
     </ngx-charts-bar-vertical-stacked>
 </div>

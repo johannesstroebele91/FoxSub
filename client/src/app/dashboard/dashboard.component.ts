@@ -1,5 +1,7 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {User} from "../../shared/models/User";
+import {UserService} from "../../shared/services/user.service";
+import {DateFormatter} from "../../shared/utility/dateFormatter";
 
 @Component({
     selector: 'app-dashboard',
@@ -7,13 +9,30 @@ import {User} from "../../shared/models/User";
     styleUrls: ['./dashboard.component.scss']
 })
 
-export class DashboardComponent {
+export class DashboardComponent implements OnInit{
     //TODO get User drom DB
-    user : User = {id: '1', firstName: 'Userius', lastName: 'Rex', email: 'userius@rex.me', goal: 15, montlyCumulatedPayment: 35.99, nextDueDate: 221213, subscriptionCounter: 9};
+    //user : User = {id: '1', firstName: 'Userius', lastName: 'Rex', email: 'userius@rex.me', goal: 15, montlyCumulatedPayment: 35.99, nextDueDate: 221213, subscriptionCounter: 9};
 
-    monthlyPayment: number = this.user.montlyCumulatedPayment;
-    goal: number = this.user.goal;
-    dueDate: number = this.user.nextDueDate;
+
+    user: User;
+    dueDateFormatted: string;
+
+    constructor(
+        private userService: UserService) {
+        Object.assign(this, this.data);
+    }
+
+    clickEdit() {
+        //TODO optional: goal edit
+    }
+
+    ngOnInit() {
+        // get subscription from the database based on uuid
+        this.userService.getUser()
+            .subscribe((user) => {
+                this.user = user;
+            });
+    }
 
     // CHART
     data: any = [
@@ -56,16 +75,4 @@ export class DashboardComponent {
     colorScheme = {
         domain: ['#3498db', '#9b59b6', '#e67e22', "#f1c40f"]
     };
-
-    constructor() {
-        Object.assign(this, this.data);
-    }
-
-    onSelect(event) {
-        console.log(event);
-    }
-
-    clickEdit() {
-        //TODO optional: goal edit
-    }
 }

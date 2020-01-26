@@ -16,8 +16,7 @@
                 <div class="row-spacing" *ngIf="showEdit">
                     <label  for="edit_service">Service</label>
                     <select id="edit_service" [formControlName]="'service'" >
-                            <option value="{{subscription.service.id}}" selected>{{subscription.service.name}}</option>
-                            <option *ngFor="let service of services" value="{{service.id}}">{{service.name}}</option>
+                        <option *ngFor="let service of services" value="{{service.uuid}}">{{service.name}}</option>
                     </select>
                 </div>
 
@@ -25,7 +24,7 @@
                 <div class="row-spacing" *ngIf="!showEdit">
                     <label for="add_service">Service</label>
                     <select id="add_service" [formControlName]="'service'" >
-                        <option *ngFor="let service of services" value="{{service.id}}">{{service.name}}</option>
+                        <option *ngFor="let service of services" value="{{service.uuid}}">{{service.name}}</option>
                     </select>
                 </div>
             </div>
