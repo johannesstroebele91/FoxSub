@@ -1,11 +1,7 @@
+// General
 .text-spacing div {
   margin-bottom: 24px;
 }
-
-.hidden {
-  display: none;
-}
-
 #service-dropdown select {
   background: #4d4d4d;
   border: none;
@@ -13,7 +9,6 @@
   padding: 9px;
   width: 100%;
 }
-
 .row-spacing label {
   display: flex;
   flex-direction: column;
@@ -28,6 +23,7 @@
   border: none;
 }
 
+// Button
 .button {
   display: flex;
   justify-content: center;
@@ -39,6 +35,18 @@
 }
 .button:disabled {
   background: grey;
+}
+// Mobile
+@media (max-width: 420px) {
+  .button {
+    width: 100%;
+  }
+}
+// Desktop
+@media (min-width: 421px) {
+  .button {
+    width: 50%;
+  }
 }
 
 // Toggle Switch
@@ -134,26 +142,10 @@
   left: 74px;
   box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.2);
 }
-
-/* Transition
-========================== */
+// Transition
 .switch-label, .switch-handle {
   transition: All 0.3s ease;
   -webkit-transition: All 0.3s ease;
   -moz-transition: All 0.3s ease;
   -o-transition: All 0.3s ease;
-}
-
-
-// Mobile
-@media (max-width: 420px) {
-  .button {
-    width: 100%;
-  }
-}
-// Desktop
-@media (min-width: 421px) {
-  .button {
-    width: 50%;
-  }
 }

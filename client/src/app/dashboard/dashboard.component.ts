@@ -8,6 +8,7 @@ import {User} from "../../shared/models/User";
 })
 
 export class DashboardComponent {
+    //TODO get User drom DB
     user : User = {id: '1', firstName: 'Userius', lastName: 'Rex', email: 'userius@rex.me', goal: 15, montlyCumulatedPayment: 35.99, nextDueDate: 221213, subscriptionCounter: 9};
 
     monthlyPayment: number = this.user.montlyCumulatedPayment;
@@ -41,7 +42,7 @@ export class DashboardComponent {
 
     view: any[] = [200, 400];
 
-    // options
+    // Chart options
     showXAxis: boolean = false;
     showYAxis: boolean = false;
     gradient: boolean = false;
@@ -51,6 +52,7 @@ export class DashboardComponent {
     animations: boolean = true;
     tooltipDisabled: boolean = true;
 
+    // Chart colors
     colorScheme = {
         domain: ['#3498db', '#9b59b6', '#e67e22', "#f1c40f"]
     };
@@ -64,6 +66,6 @@ export class DashboardComponent {
     }
 
     clickEdit() {
-        //TODO
+        //TODO optional: goal edit
     }
 }

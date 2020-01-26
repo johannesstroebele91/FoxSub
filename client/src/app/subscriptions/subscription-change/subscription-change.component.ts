@@ -4,12 +4,10 @@ import { FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Subscription} from "../../../shared/models/Subscription";
 import {SubscriptionsService} from "../../../shared/services/subscriptions.service";
 import {catchError} from "rxjs/operators";
-import {Observable, of} from "rxjs";
+import {of} from "rxjs";
 import {ServicesService} from "../../../shared/services/services.service";
 import {Service} from "../../../shared/models/Service";
 import {DateFormatter} from "../../../shared/utility/dateFormatter";
-import {DateFormatted} from "../../../shared/models/DateFormatted";
-import {lookupService} from "dns";
 
 @Component({
     selector: 'app-subscription-change',
@@ -34,13 +32,9 @@ export class SubscriptionChangeComponent implements OnInit {
 
     form: FormGroup;
 
-    // TODO: get DB Data and delete mocks
-    // serviceName: String = "Spotify";
-    // subscription: Subscription = {uuid: "0", cost: 10, dueDate: 2000, paymentMethod: "paypal", monthlyPayment: true, automaticPayment: false};
-
     buildForm() {
+        //EditForm
         if(this.showEdit){
-            //EditForm
             this.form = this.formBuilder.group( {
                 service: [''],
                 dueDate: [DateFormatter.formatDateFromDB(this.subscription.dueDate)], // date as String (2020-05-08)
@@ -49,8 +43,10 @@ export class SubscriptionChangeComponent implements OnInit {
                 paymentMethod: [this.subscription.paymentMethod],
                 automaticPayment: [this.subscription.automaticPayment]
             });
-        }else{
-            //AddForm
+
+        }
+        //AddForm
+        else{
             this.form = this.formBuilder.group( {
                 service: [''],
                 dueDate: ['', [Validators.required]],
@@ -63,6 +59,7 @@ export class SubscriptionChangeComponent implements OnInit {
     }
 
     submitEdit() {
+        // Save changed input
         this.subscription = {
             uuid: this.subscription.uuid,
             cost: this.form.get('cost').value,
@@ -73,6 +70,7 @@ export class SubscriptionChangeComponent implements OnInit {
             service: this.form.get('service').value,
         };
 
+        // Adapt subscription Object based on new input
         this.subscriptionsService.editSubscriptions(this.subscription).pipe(
             catchError(() => {
                 this.showError = true;
@@ -82,6 +80,7 @@ export class SubscriptionChangeComponent implements OnInit {
     }
 
     submitAdd() {
+        // Save new input
         this.subscription = {
             cost: this.form.get('cost').value,
             dueDate: DateFormatter.formatDateToDB(this.form.get('dueDate').value),
@@ -91,6 +90,7 @@ export class SubscriptionChangeComponent implements OnInit {
             service: this.form.get('service').value,
         };
 
+        // Adapt subscription Object
         this.subscriptionsService.createSubscriptions(this.subscription).pipe(
             catchError(() => {
                 this.showError = true;
@@ -100,18 +100,22 @@ export class SubscriptionChangeComponent implements OnInit {
     }
 
     ngOnInit() {
+        // change component into edit or add based on button clicked in subscription list
         this.activatedRoute
             .data
             .subscribe((data) => {this.showEdit = data.showEdit});
 
+        // get subscription from the database based on uuid
         this.subscriptionsService.getSubscription(this.activatedRoute.snapshot.params.uuid)
             .subscribe((subscription) => {
                 this.subscription = subscription;
 
+                // get all services
                 this.servicesService.getServices()
                     .subscribe((services) => {
                         this.services = services;
 
+                        // remove the already selected service from the list of services
                         if(this.showEdit){
                             for(let i = 0; i< services.length; i++){
                                 if(services[i].name == this.subscription.service.name) {

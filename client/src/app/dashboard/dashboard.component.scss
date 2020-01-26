@@ -1,13 +1,4 @@
-::ng-deep .legend-title {
-    margin-top: 30px;
-    width: 80px;
-}
-::ng-deep .chart-legend .legend-labels {
-    width: auto !important;
-}
-::ng-deep .bar-chart{
-    width: 700px !important;
-}
+// General
 .general-information {
     margin-bottom: 30px;
 }
@@ -21,4 +12,16 @@
 .goal-edit div:first-child {
     line-height: 26px;
     margin-right: 12px;
+}
+
+// Chart
+::ng-deep .legend-title {
+    margin-top: 30px;
+    width: 80px;
+}
+::ng-deep .chart-legend .legend-labels {
+    width: auto !important;
+}
+::ng-deep .bar-chart{
+    width: 700px !important;
 }

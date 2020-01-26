@@ -2,15 +2,17 @@
 <div class="container">
     <div class="children-inline-block">
         <div class="material-icons" routerLink="/subscriptions">keyboard_backspace</div>
-            <h1 *ngIf="showEdit">Edit</h1>
-            <h1 *ngIf="!showEdit">Add</h1>
-<!--        <h1>Edit {{subscription.service.name}} subscription</h1>-->
+            <h1 *ngIf="showEdit">Edit "{{subscription.service.name}}" subscription</h1>
+            <h1 *ngIf="!showEdit">Add subscription</h1>
     </div>
 
-<!--<div [ngClass]="{'visible' : showEdit, 'hidden': !showEdit}" class="row-spacing text-login-error">-->
     <div class="row-spacing text-login-error">
+
+        <!-- The same form is used for both add and edit subscription -->
         <form [formGroup]="form" class="text-spacing">
+
             <div id="service-dropdown">
+                <!-- Edit -->
                 <div class="row-spacing" *ngIf="showEdit">
                     <label  for="edit_service">Service</label>
                     <select id="edit_service" [formControlName]="'service'" >
@@ -19,6 +21,7 @@
                     </select>
                 </div>
 
+                <!--Add-->
                 <div class="row-spacing" *ngIf="!showEdit">
                     <label for="add_service">Service</label>
                     <select id="add_service" [formControlName]="'service'" >
@@ -35,7 +38,6 @@
             <div class="row-spacing">
                 <label for="cost">Price €</label>
                 <input type="number" step="any" min="0" id="cost" [formControlName]="'cost'" placeholder="7,99">
-<!--                <input *ngIf="showEdit" type="number" step="any" min="0" [formControlName]="'cost'" value="{{ this.subscription.cost }}">-->
             </div>
 
             <div class="row-spacing">

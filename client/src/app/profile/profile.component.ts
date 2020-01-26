@@ -9,8 +9,6 @@ import {User} from "../../shared/models/User";
 
 export class ProfileComponent {
 
-    date: Date = new Date();
-
     //TODO: DB Data
     user: User = {id:"0", firstName:"Manni", lastName:"DelGardo", email:"manni@del.gardo", goal:30.00, montlyCumulatedPayment:3, nextDueDate:121212, subscriptionCounter:6};
 
