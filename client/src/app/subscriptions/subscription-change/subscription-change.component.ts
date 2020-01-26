@@ -18,7 +18,7 @@ import { DateFormatter } from "../../../shared/utility/dateFormatter";
 export class SubscriptionChangeComponent implements OnInit {
 
     subscription: Subscription = {dueDate: {}, service: {}};
-    services: Service[];
+    services: Service[] =[];
     showEdit: boolean = false;
     form: FormGroup;
     showError: boolean = false;
@@ -51,36 +51,13 @@ export class SubscriptionChangeComponent implements OnInit {
     }
 
     buildForm() {
-        //EditForm
-        if (this.showEdit) {
-            this.form = this.formBuilder.group({
-                service: [''],
-                dueDate: [DateFormatter.formatDateFromDB(this.subscription.dueDate)], // date as String (2020-05-08)
-                cost: [this.subscription.cost],
-                monthlyPayment: [this.subscription.monthlyPayment],
-                paymentMethod: [this.subscription.paymentMethod],
-                automaticPayment: [this.subscription.automaticPayment]
-            });
-
-        }
-        //AddForm
-        else {
-            this.form = this.formBuilder.group({
-                service: [''],
-                dueDate: ['', [Validators.required]],
-                cost: ['', [Validators.required]],
-                monthlyPayment: [false],
-                paymentMethod: ['', [Validators.required]],
-                automaticPayment: [true]
-            });
-        }
         this.form = this.formBuilder.group( {
             service: ['', [Validators.required]],
             dueDate: [DateFormatter.formatDateFromDB(this.subscription.dueDate), [Validators.required]],
             cost: [this.subscription.cost, [Validators.required]],
-            monthlyPayment: [this.subscription.monthlyPayment],
-            paymentMethod: [this.subscription.paymentMethod, [Validators.required]],
-            automaticPayment: [this.subscription.automaticPayment]
+            monthlyPayment: [this.subscription.monthlyPayment || false],
+            paymentMethod: [this.subscription.paymentMethod],
+            automaticPayment: [this.subscription.automaticPayment || false]
         });
     }
 
@@ -116,10 +93,17 @@ export class SubscriptionChangeComponent implements OnInit {
             serviceId: this.form.get('service').value,
         };
 
-        console.log(this.subscription.serviceId)
-
         // Adapt subscription Object
         this.subscriptionsService.createSubscriptions(this.subscription).pipe(
+            catchError(() => {
+                this.showError = true;
+                return of();
+            })
+        ).subscribe(() => this.router.navigate(["/subscriptions"]));
+    }
+
+    submitDeleteSubscription() {
+        this.subscriptionsService.deleteSubscription(this.subscription).pipe(
             catchError(() => {
                 this.showError = true;
                 return of();

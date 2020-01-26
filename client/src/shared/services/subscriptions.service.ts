@@ -24,6 +24,10 @@ export class SubscriptionsService {
     return this.http.get<Subscription[]>(this.endpoint)
   }
 
+  deleteSubscription(subscription: Subscription): Observable<Subscription> {
+    return this.http.delete<Subscription>(this.endpoint + "/" + subscription.uuid);
+  }
+
   getSubscription(uuid: string): Observable<Subscription> {
     if (uuid && uuid !== '') {
       return this.http.get<Subscription>(this.endpoint + "/" + uuid);

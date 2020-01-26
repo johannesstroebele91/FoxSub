@@ -1,13 +1,12 @@
 <div class="headerBackground"></div>
 <div id="logo">
-    <!-- TODO insert renderer for logo <img src="../../assets/logo.svg" alt="Logo" height="30" width="30"> später ersetzen für nächste Zeile-->
     <div class="material-icons">assignment</div>
-    <div id="logoText" >Abofy</div>
+    <div id="logoText">FoxSub</div>
 </div>
 <div class="container-login">
     <h1>Welcome!</h1>
 
-    <div [formGroup]="form">
+    <form [formGroup]="form">
         <div class="row-spacing">
             <label for="email">Email</label>
             <input type="text" id="email" [formControlName]="'email'" placeholder="Insert your email">
@@ -20,7 +19,7 @@
 
         <button class="button" (click)="submit()" [disabled]="form.invalid">Sign In</button>
 
-    </div>
+    </form>
 
     <div id="vertical-line"></div>
 

@@ -2,13 +2,23 @@
 .text-spacing div {
   margin-bottom: 24px;
 }
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 #service-dropdown select {
+  width: 100%;
+  padding: 9px;
+  border-radius: 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
   background: #4d4d4d;
   border: none;
   color: white;
-  padding: 9px;
-  width: 100%;
 }
+
 .row-spacing label {
   display: flex;
   flex-direction: column;
@@ -28,23 +38,27 @@
   display: flex;
   justify-content: center;
   text-align: center;
-  margin: 0 auto 42px auto;
   color: #e8e8e8;
   font-size: 14px;
   border: none;
+}
+.buttonEdit {
+  margin: 0 auto 42px auto;
 }
 .button:disabled {
   background: grey;
 }
 // Mobile
 @media (max-width: 420px) {
-  .button {
+  .buttonEdit, .buttonAdd {
+    margin: 0 auto;
     width: 100%;
   }
 }
 // Desktop
 @media (min-width: 421px) {
-  .button {
+  .buttonEdit, .buttonAdd {
+    margin: 0 auto;
     width: 50%;
   }
 }
