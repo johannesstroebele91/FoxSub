@@ -1,29 +1,32 @@
-package main
+package controllers
 
 import (
 	"encoding/json"
+	"fabulous-fox/db"
 	"fabulous-fox/models"
 	"fmt"
 	"net/http"
 	"time"
+
+	"log"
 )
 
 func GetUser(w http.ResponseWriter, r *http.Request) {
-	const getUserQuery = `SELECT users.*, day "dueDate.day", month "dueDate.month", d.monthlyCumulatedPayment FROM users 	CROSS JOIN (SELECT SUM(CASE WHEN subscriptions.monthlyPayment = 1 THEN subscriptions.cost ELSE subscriptions.cost / 12 END) "monthlyCumulatedPayment" FROM subscriptions WHERE subscriptions.userId=? GROUP BY subscriptions.userId) d JOIN subscriptions ON subscriptions.userId=users.id WHERE userId=? ORDER BY month, day ASC`
+	const getUserQuery = `SELECT users.*, day "dueDate.day", month "dueDate.month", d.monthlyCumulatedPayment FROM users CROSS JOIN (SELECT SUM(CASE WHEN subscriptions.monthlyPayment = 1 THEN subscriptions.cost ELSE subscriptions.cost / 12 END) "monthlyCumulatedPayment" FROM subscriptions WHERE subscriptions.userId=? GROUP BY subscriptions.userId) d JOIN subscriptions ON subscriptions.userId=users.id WHERE userId=? ORDER BY month, day ASC`
 
 	users := []models.User{}
 
-	err := DB.Select(&users, getUserQuery, r.Header.Get("user"), r.Header.Get("user"))
+	err := db.DB.Select(&users, getUserQuery, r.Header.Get("user"), r.Header.Get("user"))
 
 	if err != nil {
+		fmt.Println(err)
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 
 	user, err := findClosestDate(users)
 	if err != nil {
-		w.WriteHeader(http.StatusNotFound)
-		return
+		err = db.DB.Select(&users, `SELECT * FROM users WHERE userId=?`, r.Header.Get("user"))
 	}
 
 	userJSON, err := json.Marshal(user)
@@ -43,12 +46,13 @@ func UpdateGoal(w http.ResponseWriter, r *http.Request) {
 
 	err := json.NewDecoder(r.Body).Decode(&user)
 
-	if err != nil || user.Goal.IsZero() || !user.Goal.Valid || user.Goal.Float64 >= 0 {
+	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
-	_, err = DB.Queryx(updateQuery, user.Goal, r.Header.Get("user"))
+	rows, err := db.DB.Queryx(updateQuery, user.Goal, r.Header.Get("user"))
+	rows.Close()
 
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
@@ -58,7 +62,8 @@ func UpdateGoal(w http.ResponseWriter, r *http.Request) {
 
 func findClosestDate(users []models.User) (models.User, error) {
 	if len(users) < 1 {
-		return models.User{}, fmt.Errorf("No user")
+		log.Println("No user or subscriptions")
+		return models.User{}, fmt.Errorf("No user or subscriptions")
 	}
 	currentDate := time.Now()
 	month := int(currentDate.Month())

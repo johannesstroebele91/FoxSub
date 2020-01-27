@@ -1,4 +1,5 @@
 import { Service } from "./Service";
+import { DateFormatted } from "./DateFormatted";
 
 export interface Subscription {
 
@@ -6,7 +7,7 @@ export interface Subscription {
 
     cost?: number;
 
-    dueDate?: number;
+    dueDate?: DateFormatted;
 
     paymentMethod?: string;
 
@@ -15,4 +16,6 @@ export interface Subscription {
     automaticPayment?: boolean;
 
     service?: Service;
+
+    serviceId?: string;
 }

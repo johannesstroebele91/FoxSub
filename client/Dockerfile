@@ -1,4 +1,4 @@
-FROM node:8-alpine AS build_base
+FROM node AS build_base
 WORKDIR client
 COPY . .
 RUN npm install

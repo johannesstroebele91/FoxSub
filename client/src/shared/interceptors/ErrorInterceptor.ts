@@ -9,13 +9,14 @@ export class ErrorInterceptor implements HttpInterceptor {
 
     constructor(private router: Router) {}
 
+    // Checks if the user sessions is still valid, if not the user is redirected to the login screen with a 401 error (unauthorized)
     intercept(
         request: HttpRequest<any>,
         next: HttpHandler
     ): Observable<HttpEvent<any>> {
         return next.handle(request).pipe(
             catchError(error => {
-                // TODO: request sigin auf login anpassen @Rafail
+
                 if(error.status === 401 && !request.url.endsWith('signin')) {
                     this.router.navigate(["/login"]);
                 }

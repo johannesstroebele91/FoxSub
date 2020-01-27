@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fabulous-fox/db"
 	"fabulous-fox/models"
 	"net/http"
 	"time"
@@ -35,7 +36,8 @@ func Authenticator() func(http.Handler) http.Handler {
 				return
 			}
 
-			row := DB.QueryRowx("SELECT * FROM sessions WHERE id=?", sessionToken.Value)
+			row := db.DB.QueryRowx("SELECT * FROM sessions WHERE id=?", sessionToken.Value)
+
 			var session models.Session
 			err = row.StructScan(&session)
 			if err != nil || session.UserID == "" {

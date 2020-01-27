@@ -1,16 +1,80 @@
 <app-header></app-header>
 <div class="container">
-    <div class="children-inline-block">
-        <div class="material-icons" routerLink="/subscriptions">keyboard_backspace</div>
-        <h1>Edit {{subscription.service.name}} subscription</h1>
+    <div>
+        <div *ngIf="!showEdit" class="children-inline-block">
+            <div class="material-icons" routerLink="/subscriptions">keyboard_backspace</div>
+            <h1>Add subscription</h1>
+        </div>
+        <div *ngIf="showEdit" class="top-bar">
+            <div class="children-inline-block">
+                <div class="material-icons" routerLink="/subscriptions">keyboard_backspace</div>
+                <h1>Edit subscription</h1>
+            </div>
+            <div class="button" (click)="submitDeleteSubscription()">Delete Subscription</div>
+        </div>
     </div>
-    <div class="text-spacing">
-        <div>Due date: {{subscription.dueDate*1000|date:'dd.MM.yyyy'}}</div>
-        <div>Price: {{subscription.cost}} Euro</div>
-        <div>Provider: {{subscription.paymentMethod}}</div>
-        <div *ngIf="subscription.monthlyPayment">Monthly payment</div>
-        <div *ngIf="!subscription.monthlyPayment">Yearly payment</div>
-        <div *ngIf="subscription.automaticPayment">Automatic renewal</div>
-        <div *ngIf="!subscription.automaticPayment">Manual renewal</div>
+
+    <div class="row-spacing text-login-error">
+
+        <!-- The same form is used for both add and edit subscription -->
+        <form [formGroup]="form" class="text-spacing">
+
+            <div id="service-dropdown">
+                <!-- Edit -->
+                <div class="row-spacing" *ngIf="showEdit">
+                    <label for="edit_service">Service</label>
+                    <select id="edit_service" [formControlName]="'service'">
+                        <option *ngFor="let service of services" value="{{service.uuid}}">{{service.name}}</option>
+                    </select>
+                </div>
+
+                <!--Add-->
+                <div class="row-spacing" *ngIf="!showEdit">
+                    <label for="add_service">Service</label>
+                    <select id="add_service" [formControlName]="'service'">
+                        <option value="" disabled selected>Select your option</option>
+                        <option *ngFor="let service of services" value="{{service.uuid}}">{{service.name}}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row-spacing">
+                <label for="date">Date</label>
+                <input type="date" id="date" [formControlName]="'dueDate'">
+            </div>
+
+            <div class="row-spacing">
+                <label for="cost">Cost €</label>
+                <input type="number" step="any" min="0" id="cost" [formControlName]="'cost'" placeholder="Enter the cost here">
+            </div>
+
+            <div class="row-spacing">
+                <label for="monthlyPayment">Frequency</label>
+                <label class="switch">
+                    <input class="switch-input" type="checkbox" id="monthlyPayment"
+                        [formControlName]="'monthlyPayment'">
+                    <span class="switch-label" data-on="Monthly" data-off="Yearly"></span>
+                    <span class="switch-handle"></span>
+                </label>
+            </div>
+
+            <div class="row-spacing">
+                <label for="paymentMethod">Payment</label>
+                <input type="text" id="paymentMethod" [formControlName]="'paymentMethod'" placeholder="Enter your payment method here (optional)">
+            </div>
+
+            <div class="row-spacing">
+                <label for="automaticPayment">Type</label>
+                <label class="switch">
+                    <input class="switch-input" type="checkbox" id="automaticPayment"
+                        [formControlName]="'automaticPayment'">
+                    <span class="switch-label" data-on="Automatic" data-off="Manual"></span>
+                    <span class="switch-handle"></span>
+                </label>
+            </div>
+
+            <button *ngIf="!showEdit" class="button buttonAdd" (click)="submitAdd()" [disabled]="form.invalid">Add</button>
+            <button *ngIf="showEdit" class="button buttonEdit" (click)="submitEdit()" [disabled]="form.invalid">Save</button>
+        </form>
     </div>
 </div>
