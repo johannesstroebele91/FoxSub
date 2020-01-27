@@ -24,7 +24,7 @@ import { ErrorInterceptor } from "../shared/interceptors/ErrorInterceptor";
         ReactiveFormsModule,
         NgxChartsModule,
         BrowserAnimationsModule,
-        FormsModule
+        FormsModule,
     ],
   declarations: [
     AppComponent,
