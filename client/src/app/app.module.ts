@@ -14,7 +14,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SubscriptionChangeComponent } from './subscriptions/subscription-change/subscription-change.component';
 import { ProfileComponent} from "./profile/profile.component";
 import { RowComponent} from "./row/row.component";
-import { ErrorInterceptor } from "../../shared/interceptors/ErrorInterceptor";
+import { ErrorInterceptor } from "../shared/interceptors/ErrorInterceptor";
 
 @NgModule({
   imports: [

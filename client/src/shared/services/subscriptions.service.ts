@@ -16,6 +16,11 @@ export class SubscriptionsService {
     return this.http.post<Subscription>(this.endpoint, subscription);
   }
 
+  //UUID mit übergeben
+  editSubscriptions(subscription: Subscription): Observable<Subscription> {
+    return this.http.put<Subscription>(this.endpoint, subscription);
+  }
+
   getSubscriptions(): Observable<Subscription[]> {
     return this.http.get<Subscription[]>(this.endpoint)
   }

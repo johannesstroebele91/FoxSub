@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Subscription } from "../../../../shared/models/Subscription";
-import { SubscriptionsService } from '../../../../shared/services/subscriptions.service';
+import { Subscription } from "../../../shared/models/Subscription";
+import { SubscriptionsService } from '../../../shared/services/subscriptions.service';
 
 @Component({
     selector: 'app-subscription-list',
