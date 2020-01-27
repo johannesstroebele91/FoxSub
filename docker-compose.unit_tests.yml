@@ -6,9 +6,9 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile_unit
-  db_unit:
+  dbunit:
     image: mariadb
-    container_name: db_unit_tests
+    container_name: db_unit
     environment:
       MYSQL_DATABASE: 'fabulous-fox-test'
       # So you don't have to use root, but you can if you like
@@ -28,9 +28,10 @@ services:
   backend_unit:
     container_name: backend_unit_tests
     depends_on:
-      - db_unit
+      - dbunit
     build:
       context: ./server
       dockerfile: Dockerfile_unit
     environment:
-      MARIA_DB: root:password@tcp(db_unit:3306)/fabulous-fox-test 
+      MARIA_DB: root:password@tcp(dbunit:3306)/fabulous-fox-test
+      MARIA_DB_CONTAINER: dbunit

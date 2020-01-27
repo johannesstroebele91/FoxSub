@@ -13,4 +13,4 @@ COPY ./go.sum .
 
 COPY / .
 
-CMD ./wait-go/wait-go-linux --interval 5 --wait "db:3306" --command "go test ./..."
+CMD ./wait-go/wait-go-linux --interval 5 --wait "${MARIA_DB_CONTAINER}:3306" --command "go test ./..."
