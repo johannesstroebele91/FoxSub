@@ -1,11 +1,14 @@
-package main
+package controllers
 
 import (
 	"encoding/json"
+	"fabulous-fox/db"
 	"fabulous-fox/models"
 	"fmt"
 	"net/http"
 	"time"
+
+	"log"
 )
 
 func GetUser(w http.ResponseWriter, r *http.Request) {
@@ -13,9 +16,10 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 
 	users := []models.User{}
 
-	err := DB.Select(&users, getUserQuery, r.Header.Get("user"), r.Header.Get("user"))
+	err := db.DB.Select(&users, getUserQuery, r.Header.Get("user"), r.Header.Get("user"))
 
 	if err != nil {
+		fmt.Println(err)
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
@@ -43,12 +47,13 @@ func UpdateGoal(w http.ResponseWriter, r *http.Request) {
 
 	err := json.NewDecoder(r.Body).Decode(&user)
 
-	if err != nil || user.Goal.IsZero() || !user.Goal.Valid || user.Goal.Float64 >= 0 {
+	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
-	_, err = DB.Queryx(updateQuery, user.Goal, r.Header.Get("user"))
+	rows, err := db.DB.Queryx(updateQuery, user.Goal, r.Header.Get("user"))
+	rows.Close()
 
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
@@ -58,7 +63,8 @@ func UpdateGoal(w http.ResponseWriter, r *http.Request) {
 
 func findClosestDate(users []models.User) (models.User, error) {
 	if len(users) < 1 {
-		return models.User{}, fmt.Errorf("No user")
+		log.Println("No user or subscriptions")
+		return models.User{}, fmt.Errorf("No user or subscriptions")
 	}
 	currentDate := time.Now()
 	month := int(currentDate.Month())

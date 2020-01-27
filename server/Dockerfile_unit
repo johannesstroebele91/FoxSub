@@ -1,0 +1,16 @@
+# build stage
+FROM golang:alpine AS build_base
+
+RUN apk add bash ca-certificates git gcc g++ libc-dev
+
+ENV GO111MODULE=on
+
+WORKDIR server
+
+COPY ./go.mod .
+COPY ./go.sum .
+# RUN go mod download
+
+COPY / .
+
+CMD ./wait-go/wait-go-linux --interval 5 --wait "db:3306" --command "go test"

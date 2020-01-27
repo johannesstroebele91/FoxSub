@@ -1,7 +1,8 @@
-package main
+package controllers
 
 import (
 	"encoding/json"
+	"fabulous-fox/db"
 	"fabulous-fox/models"
 	"net/http"
 
@@ -23,16 +24,21 @@ func CreateSubscription(w http.ResponseWriter, r *http.Request) {
 		subscription.ServiceID = subscription.Service.ID
 	}
 
-	results := DB.MustExec(createSubscription, subscription.Cost, subscription.PaymentMethod, subscription.MonthlyPayment, subscription.AutomaticPayment, r.Header.Get("user"), subscription.ServiceID, subscription.DueDate.Month, subscription.DueDate.Day)
-
-	insertedIndex, err := results.LastInsertId()
+	results, err := db.DB.Exec(createSubscription, subscription.Cost, subscription.PaymentMethod, subscription.MonthlyPayment, subscription.AutomaticPayment, r.Header.Get("user"), subscription.ServiceID, subscription.DueDate.Month, subscription.DueDate.Day)
 
 	if err != nil {
 		w.WriteHeader(http.StatusUnprocessableEntity)
 		return
 	}
 
-	err = DB.QueryRowx("SELECT * FROM subscriptions WHERE id=?", insertedIndex).StructScan(&subscription)
+	insertedIndex, err := results.LastInsertId()
+
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	err = db.DB.QueryRowx("SELECT * FROM subscriptions WHERE id=?", insertedIndex).StructScan(&subscription)
 
 	subscriptionJSON, err := json.Marshal(&subscription)
 
@@ -46,7 +52,7 @@ func CreateSubscription(w http.ResponseWriter, r *http.Request) {
 
 func GetSubscriptions(w http.ResponseWriter, r *http.Request) {
 	subscriptions := []models.Subscription{}
-	err := DB.Select(&subscriptions, `SELECT services.id "service.id", services.name "service.name", services.category "service.category", day "dueDate.day", month "dueDate.month", cost, uuid, paymentMethod, monthlyPayment, automaticPayment, serviceId FROM subscriptions JOIN services ON services.id = subscriptions.serviceId AND subscriptions.userId=?`, r.Header.Get("user"))
+	err := db.DB.Select(&subscriptions, `SELECT services.id "service.id", services.name "service.name", services.category "service.category", day "dueDate.day", month "dueDate.month", cost, uuid, paymentMethod, monthlyPayment, automaticPayment, serviceId FROM subscriptions JOIN services ON services.id = subscriptions.serviceId AND subscriptions.userId=?`, r.Header.Get("user"))
 
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
@@ -69,7 +75,7 @@ func GetSubscription(w http.ResponseWriter, r *http.Request) {
 	var subscription models.Subscription
 	subscriptionUUID := mux.Vars(r)["uuid"]
 
-	result := DB.QueryRowx(getQuery, r.Header.Get("user"), subscriptionUUID)
+	result := db.DB.QueryRowx(getQuery, r.Header.Get("user"), subscriptionUUID)
 	err := result.StructScan(&subscription)
 
 	if err != nil {
@@ -105,7 +111,7 @@ func UpdateSubscription(w http.ResponseWriter, r *http.Request) {
 		subscription.ServiceID = subscription.Service.ID
 	}
 
-	_, err = DB.Queryx(updateQuery, subscription.Cost, subscription.MonthlyPayment, subscription.PaymentMethod, subscription.AutomaticPayment, subscription.ServiceID, subscription.UUID, subscription.UserID)
+	_, err = db.DB.Queryx(updateQuery, subscription.Cost, subscription.MonthlyPayment, subscription.PaymentMethod, subscription.AutomaticPayment, subscription.ServiceID, subscription.UUID, subscription.UserID)
 
 	if err != nil {
 		w.WriteHeader(http.StatusUnprocessableEntity)
@@ -126,16 +132,14 @@ func UpdateSubscription(w http.ResponseWriter, r *http.Request) {
 func DeleteSubscription(w http.ResponseWriter, r *http.Request) {
 	const deleteQuery = `DELETE FROM subscriptions WHERE uuid=? AND userId=?`
 
-	var subscription models.Subscription
+	subscriptionUUID := mux.Vars(r)["uuid"]
 
-	err := json.NewDecoder(r.Body).Decode(&subscription)
-
-	if err != nil || subscription.UUID == "" {
-		w.WriteHeader(http.StatusUnprocessableEntity)
+	if subscriptionUUID == "" {
+		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
-	_, err = DB.Query(deleteQuery, subscription.UUID, r.Header.Get("user"))
+	_, err := db.DB.Query(deleteQuery, subscriptionUUID, r.Header.Get("user"))
 
 	if err != nil {
 		w.WriteHeader(http.StatusUnprocessableEntity)

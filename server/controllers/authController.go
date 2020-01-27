@@ -1,7 +1,8 @@
-package main
+package controllers
 
 import (
 	"encoding/json"
+	"fabulous-fox/db"
 	"fabulous-fox/models"
 	"fmt"
 	"net/http"
@@ -22,7 +23,7 @@ func SignIn(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	row := DB.QueryRowx("SELECT * FROM users WHERE email=?", credentials.Email)
+	row := db.DB.QueryRowx("SELECT * FROM users WHERE email=?", credentials.Email)
 	var user models.User
 	row.StructScan(&user)
 
@@ -37,16 +38,12 @@ func SignIn(w http.ResponseWriter, r *http.Request) {
 
 	sessionToken := uuid.NewV4().String()
 
-	results := DB.MustExec(createSession, sessionToken, user.ID)
+	_, err = db.DB.Exec(createSession, sessionToken, user.ID)
 
-	affectedRows, err := results.RowsAffected()
-
-	if err != nil || affectedRows <= 0 {
-		w.WriteHeader(http.StatusInternalServerError)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-
-	fmt.Print(affectedRows)
 
 	http.SetCookie(w, &http.Cookie{
 		Name:    "session_token",
@@ -67,12 +64,10 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	results := DB.MustExec(createUser, "myuser", "myuser", credentials.Email, credentials.Password)
+	results := db.DB.MustExec(createUser, "myuser", "myuser", credentials.Email, credentials.Password)
 
 	if results == nil {
-		w.WriteHeader(http.StatusUnprocessableEntity)
+		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-
-	w.WriteHeader(http.StatusOK)
 }
