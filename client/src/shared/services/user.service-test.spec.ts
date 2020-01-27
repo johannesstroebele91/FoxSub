@@ -2,8 +2,6 @@ import {getTestBed, TestBed} from "@angular/core/testing";
 import {UserService} from "./user.service";
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import {User} from "../models/User";
-import {not} from "rxjs/internal-compatibility";
-import {Subscription} from "rxjs";
 
 describe("Testing the user Service", () => {
     let injector: TestBed;

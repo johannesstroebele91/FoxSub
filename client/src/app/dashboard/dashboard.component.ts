@@ -28,7 +28,6 @@ export class DashboardComponent implements OnInit{
     }
 
     ngOnInit() {
-
         // load user from the database with resolver
         if(this.activatedRoute.snapshot.data.user){
             this.user = this.activatedRoute.snapshot.data.user;
@@ -46,24 +45,7 @@ export class DashboardComponent implements OnInit{
     data: any = [
         {
             "name": "Subscriptions",
-            "series": [
-                {
-                    "name": "Others",
-                    "value": 2
-                },
-                {
-                    "name": "Games",
-                    "value": 3
-                },
-                {
-                    "name": "Productivity",
-                    "value": 2
-                },
-                {
-                    "name": "Entertainment",
-                    "value": 7
-                }
-            ]
+            "series": []
         }
     ];
 
@@ -89,7 +71,7 @@ export class DashboardComponent implements OnInit{
         const data = [];
         this.categories.forEach((category) => {
             data.push({name: category.category, value: category.cost})
-        })
+        });
 
         return data;
     }
