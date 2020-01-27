@@ -121,7 +121,6 @@ func UpdateSubscription(w http.ResponseWriter, r *http.Request) {
 	subscriptionJSON, _ := json.Marshal(&subscription)
 
 	if err != nil {
-		// TODO think about error response? is it rly needed
 		w.WriteHeader(http.StatusUnprocessableEntity)
 		return
 	}
