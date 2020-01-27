@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  selenium-hub:
+    build:
+      context: ./client
+      dockerfile: Dockerfile_e2e_webdriver
+    ports:
+      - "4444:4444"
+  e2e:
+    container_name: e2e
+    build:
+      context: ./client
+      dockerfile: Dockerfile_e2e
+    depends_on:
+      - selenium-hub
+    environment:
+      WAIT_HOSTS: selenium-hub:4444
