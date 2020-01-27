@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {User} from "../../shared/models/User";
-import {UserService} from "../../shared/services/user.service";
-import {DateFormatter} from "../../shared/utility/dateFormatter";
-import {ActivatedRoute} from "@angular/router";
-import {Category} from "../../shared/models/Category";
+import { Component, OnInit } from '@angular/core';
+import { User } from "../../shared/models/User";
+import { UserService } from "../../shared/services/user.service";
+import { DateFormatter } from "../../shared/utility/dateFormatter";
+import { ActivatedRoute } from "@angular/router";
+import { Category } from "../../shared/models/Category";
 
 @Component({
     selector: 'app-dashboard',
@@ -11,30 +11,29 @@ import {Category} from "../../shared/models/Category";
     styleUrls: ['./dashboard.component.scss']
 })
 
-export class DashboardComponent implements OnInit{
+export class DashboardComponent implements OnInit {
 
     // Initialisation with empty object is important
     user: User = {};
     categories: Category[] = [];
 
     constructor(
-        private userService: UserService,
-        private activatedRoute: ActivatedRoute,) {
+        private activatedRoute: ActivatedRoute, ) {
         Object.assign(this, this.data);
     }
 
-    getNextDueDate(){
+    getNextDueDate() {
         return DateFormatter.formatDateFromDB(this.user.dueDate);
     }
 
     ngOnInit() {
         // load user from the database with resolver
-        if(this.activatedRoute.snapshot.data.user){
+        if (this.activatedRoute.snapshot.data.user) {
             this.user = this.activatedRoute.snapshot.data.user;
         }
 
         // load user from the database with resolver
-        if(this.activatedRoute.snapshot.data.categories){
+        if (this.activatedRoute.snapshot.data.categories) {
             this.categories = this.activatedRoute.snapshot.data.categories;
         }
 
@@ -70,7 +69,7 @@ export class DashboardComponent implements OnInit{
     categoriesForGraph() {
         const data = [];
         this.categories.forEach((category) => {
-            data.push({name: category.category, value: category.cost})
+            data.push({ name: category.category, value: category.cost })
         });
 
         return data;

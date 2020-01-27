@@ -61,7 +61,6 @@
     "material-icons": "^0.3.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^6.5.3",
-    "zone.js": "^0.10.2",
-    "@angular/http": "latest"
+    "zone.js": "^0.10.2"
   }
 }

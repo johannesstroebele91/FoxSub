@@ -1,23 +1,15 @@
 <app-header></app-header>
 <div class="container">
     <div class="general-information">
-        <h1>{{this.user.monthlyCumulatedPayment}}€ / month</h1>
-        <div class="text-spacing">Goal: {{this.user.goal}}€ / month</div>
-        <div>Next due date: {{getNextDueDate()}}</div>
+        <h1>{{this.user.monthlyCumulatedPayment || '-'}}€ / month</h1>
+        <div class="text-spacing">Goal: {{this.user.goal || '-'}}€ / month</div>
+        <div>Next due date: {{getNextDueDate() || '-'}}</div>
     </div>
 
-<!-- Chart from NGX-Charts https://swimlane.github.io/ngx-charts/ -->
-    <ngx-charts-bar-vertical-stacked *ngIf="data"
-            [view]="view"
-            [scheme]="colorScheme"
-            [results]="data"
-            [gradient]="gradient"
-            [xAxis]="showXAxis"
-            [yAxis]="showYAxis"
-            [legend]="showLegend"
-            [showXAxisLabel]="showXAxisLabel"
-            [showYAxisLabel]="showYAxisLabel"
-            [animations]="animations"
-            [tooltipDisabled]="tooltipDisabled">
+    <!-- Chart from NGX-Charts https://swimlane.github.io/ngx-charts/ -->
+    <ngx-charts-bar-vertical-stacked *ngIf="data && data[0].series.length > 0" [view]="view" [scheme]="colorScheme"
+        [results]="data" [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend"
+        [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [animations]="animations"
+        [tooltipDisabled]="tooltipDisabled">
     </ngx-charts-bar-vertical-stacked>
 </div>

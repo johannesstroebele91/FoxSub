@@ -1,9 +1,9 @@
-import { Component, OnInit} from '@angular/core';
-import { FormBuilder, FormGroup, Validators} from '@angular/forms';
-import { AuthService} from "../../shared/services/auth.service";
-import {Router} from "@angular/router";
-import {catchError} from "rxjs/operators";
-import {of} from "rxjs";
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from "../../shared/services/auth.service";
+import { Router } from "@angular/router";
+import { catchError } from "rxjs/operators";
+import { of } from "rxjs";
 
 @Component({
     selector: 'app-login',
@@ -11,7 +11,7 @@ import {of} from "rxjs";
     styleUrls: ['./login.component.scss']
 })
 
-export class LoginComponent implements OnInit{
+export class LoginComponent implements OnInit {
 
     showLoginError: boolean = false;
 
@@ -20,10 +20,10 @@ export class LoginComponent implements OnInit{
     constructor(
         private formBuilder: FormBuilder,
         private authService: AuthService,
-        private router: Router) {}
+        private router: Router) { }
 
     buildLoginForm() {
-        this.form = this.formBuilder.group( {
+        this.form = this.formBuilder.group({
             email: ['', [Validators.required, Validators.email]],
             password: ['', [Validators.required]]
         });
@@ -36,8 +36,8 @@ export class LoginComponent implements OnInit{
                 this.showLoginError = true;
                 return of();
             })
-        // redirect to dashboard screen
-        ).subscribe(()=> this.router.navigate(["/"]));
+            // redirect to dashboard screen
+        ).subscribe(() => this.router.navigate(['/dashboard']));
     }
 
     ngOnInit(): void {
