@@ -1,13 +1,14 @@
 version: "3"
 
 services:
-  frontend:
+  frontend_unit:
     container_name: frontend_unit_tests
     build:
       context: ./client
       dockerfile: Dockerfile_unit
-  db:
+  dbunit:
     image: mariadb
+    container_name: db_unit
     environment:
       MYSQL_DATABASE: 'fabulous-fox-test'
       # So you don't have to use root, but you can if you like
@@ -20,22 +21,17 @@ services:
       # <Port exposed> : < MySQL Port running inside container>
       - '3306:3306'
     expose:
-      # Opens port 3306 on the container
       - '3306'
-      # Where our data will be persisted
+    command: --init-file /data/application/init.sql
     volumes:
-      - my-db:/data/mysql
-      - ./db/test:/docker-entrypoint-initdb.d
-  backend:
+      - ./db/test/init.sql:/data/application/init.sql
+  backend_unit:
     container_name: backend_unit_tests
     depends_on:
-      - db
+      - dbunit
     build:
       context: ./server
       dockerfile: Dockerfile_unit
     environment:
-      - MARIA_DB=root:password@tcp(db:3306)/fabulous-fox-test 
-
-# Names our volume
-volumes:
-  my-db:
+      MARIA_DB: root:password@tcp(dbunit:3306)/fabulous-fox-test
+      MARIA_DB_CONTAINER: dbunit

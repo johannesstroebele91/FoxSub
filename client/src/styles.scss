@@ -1,3 +1,5 @@
+// General
+
 // ng-deep needed for editing body
 ::ng-deep body {
     background: #121212;
@@ -20,9 +22,15 @@
 h1{
     padding-top: 12px;
 }
+
 a {
     color: #e8e8e8;
 }
+::ng-deep .chart-legend .legend-label span:hover {
+    color: #D7303E !important;
+}
+
+// Button
 .button {
     text-align: center;
     padding: 12px 24px;
@@ -30,6 +38,10 @@ a {
     border-radius: 6px;
     background: #D7303E;
 }
+.button:active {
+    background: #9c272d;
+}
+
 
 // Header for all pages and login
 .headerBackground {

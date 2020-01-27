@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { Subscription } from "../../../shared/models/Subscription";
 import { SubscriptionsService } from '../../../shared/services/subscriptions.service';
 
@@ -14,6 +14,8 @@ export class SubscriptionListComponent implements OnInit {
     constructor(private subscriptionsService: SubscriptionsService) { }
 
     ngOnInit() {
-        this.subscriptionsService.getSubscriptions().subscribe((subscriptions) => { this.subscriptions = subscriptions })
+        // loading subscriptions from the database via the subscriptionService
+        this.subscriptionsService.getSubscriptions()
+            .subscribe((subscriptions) => { this.subscriptions = subscriptions });
     }
 }

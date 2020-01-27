@@ -1,3 +1,5 @@
+DROP DATABASE `fabulous-fox-test`;
+
 CREATE DATABASE
 IF NOT EXISTS `fabulous-fox-test`;
 

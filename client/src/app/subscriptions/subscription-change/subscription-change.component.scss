@@ -1,9 +1,22 @@
+// General
 .text-spacing div {
   margin-bottom: 24px;
 }
-
-.hidden {
-  display: none;
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+#service-dropdown select {
+  width: 100%;
+  padding: 9px;
+  border-radius: 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: #4d4d4d;
+  border: none;
+  color: white;
 }
 
 .row-spacing label {
@@ -15,9 +28,39 @@
 .row-spacing input {
   width: 100%;
   padding: 9px;
-  color: #121212;
+  color: white;
   background: #4d4d4d;
   border: none;
+}
+
+// Button
+.button {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  color: #e8e8e8;
+  font-size: 14px;
+  border: none;
+}
+.buttonEdit {
+  margin: 0 auto 42px auto;
+}
+.button:disabled {
+  background: grey;
+}
+// Mobile
+@media (max-width: 420px) {
+  .buttonEdit, .buttonAdd {
+    margin: 0 auto;
+    width: 100%;
+  }
+}
+// Desktop
+@media (min-width: 421px) {
+  .buttonEdit, .buttonAdd {
+    margin: 0 auto;
+    width: 50%;
+  }
 }
 
 // Toggle Switch
@@ -113,9 +156,7 @@
   left: 74px;
   box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.2);
 }
-
-/* Transition
-========================== */
+// Transition
 .switch-label, .switch-handle {
   transition: All 0.3s ease;
   -webkit-transition: All 0.3s ease;

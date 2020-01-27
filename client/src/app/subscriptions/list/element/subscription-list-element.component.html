@@ -1,7 +1,7 @@
 <div class="row fieldBackground">
     <div class="col-xs-11">
         <h3 class="text">{{subscription.service.name}}</h3>
-        <div class="text">Due date: {{subscription.dueDate*1000|date:'dd.MM.yyyy'}}</div>
+        <div class="text">Due date: {{dueDateFormatted}}</div>
         <div class="text">Price: {{subscription.cost}} Euro</div>
         <div *ngIf="isExpanded">
             <div class="text">Provider: {{subscription.paymentMethod}}</div>
