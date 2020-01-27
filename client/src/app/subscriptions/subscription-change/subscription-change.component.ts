@@ -1,12 +1,13 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
-import { FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Subscription} from "../../../shared/models/Subscription";
-import {SubscriptionsService} from "../../../shared/services/subscriptions.service";
-import {catchError} from "rxjs/operators";
-import {of} from "rxjs";
-import {ServicesService} from "../../../shared/services/services.service";
-import {Service} from "../../../shared/models/Service";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from "@angular/router";
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subscription } from "../../../shared/models/Subscription";
+import { SubscriptionsService } from "../../../shared/services/subscriptions.service";
+import { catchError } from "rxjs/operators";
+import { of } from "rxjs";
+import { ServicesService } from "../../../shared/services/services.service";
+import { Service } from "../../../shared/models/Service";
+import { DateFormatter } from "../../../shared/utility/dateFormatter";
 
 @Component({
     selector: 'app-subscription-change',
@@ -16,20 +17,11 @@ import {Service} from "../../../shared/models/Service";
 
 export class SubscriptionChangeComponent implements OnInit {
 
-    subscription: Subscription;
-    services: Service[];
-
-    // TODO: get showEdit value
-
-    public showError: boolean = false;
-    public showEdit: boolean = false;
-
+    subscription: Subscription = {dueDate: {}, service: {}};
+    services: Service[] =[];
+    showEdit: boolean = false;
     form: FormGroup;
-
-    // TODO: date format
-    // TODO: get DB Data and delete mocks
-    // serviceName: String = "Spotify";
-    // subscription: Subscription = {uuid: "0", cost: 10, dueDate: 2000, paymentMethod: "paypal", monthlyPayment: true, automaticPayment: false};
+    showError: boolean = false;
 
     constructor(
         private subscriptionsService: SubscriptionsService,
@@ -38,61 +30,84 @@ export class SubscriptionChangeComponent implements OnInit {
         private formBuilder: FormBuilder,
         private router: Router) { }
 
-    buildForm() {
-        if(this.showEdit){
-            //EditForm
-            this.form = this.formBuilder.group( {
-                name: [''],
-                dueDate: ['2020-05-30'], // date as String (2020-05-08)
-                cost: [this.subscription.cost],
-                monthlyPayment: [this.subscription.monthlyPayment],
-                payment: [this.subscription.paymentMethod],
-                automaticRenewal: [this.subscription.automaticPayment]
-            });
-        }else{
-            //AddForm
-            this.form = this.formBuilder.group( {
-                services: ['', [Validators.required]],
-                dueDate: [''],
-                cost: ['', [Validators.required]],
-                monthlyPayment: [false],
-                payment: ['', [Validators.required]],
-                automaticRenewal: [true]
-            });
+    ngOnInit() {
+        if(this.activatedRoute.snapshot.data.subscription){
+            this.subscription = this.activatedRoute.snapshot.data.subscription;
+            this.showEdit = true;
+        }
+
+        if(this.activatedRoute.snapshot.data.services){
+            this.services = this.activatedRoute.snapshot.data.services;
+        }
+
+        this.buildForm();
+
+        for(let i = 0; i< this.services.length; i++){
+            if(this.services[i].name == this.subscription.service.name) {
+                // this.services.splice(i, 1);
+                this.form.get('service').setValue(this.services[i].uuid);
+            }
         }
     }
 
-    submitEdit() {
-        //TODO:
+    buildForm() {
+        this.form = this.formBuilder.group( {
+            service: ['', [Validators.required]],
+            dueDate: [DateFormatter.formatDateFromDB(this.subscription.dueDate), [Validators.required]],
+            cost: [this.subscription.cost, [Validators.required]],
+            monthlyPayment: [this.subscription.monthlyPayment || false],
+            paymentMethod: [this.subscription.paymentMethod],
+            automaticPayment: [this.subscription.automaticPayment || false]
+        });
     }
 
-    submitAdd() {
+    submitEdit() {
+        // Save changed input
         this.subscription = {
-            cost: this.form.get('price').value,
-            dueDate: this.form.get('dueDate').value,
+            uuid: this.subscription.uuid,
+            cost: this.form.get('cost').value,
+            dueDate: DateFormatter.formatDateToDB(this.form.get('dueDate').value),
             paymentMethod: this.form.get('paymentMethod').value,
             monthlyPayment: this.form.get('monthlyPayment').value,
             automaticPayment: this.form.get('automaticPayment').value,
-            service: this.form.get('service').value,
+            serviceId: this.form.get('service').value,
         };
 
+        // Adapt subscription Object based on new input
+        this.subscriptionsService.editSubscriptions(this.subscription).pipe(
+            catchError(() => {
+                this.showError = true;
+                return of();
+            })
+        ).subscribe(() => this.router.navigate(["/subscriptions"]));
+    }
+
+    submitAdd() {
+        // Save new input
+        this.subscription = {
+            cost: this.form.get('cost').value,
+            dueDate: DateFormatter.formatDateToDB(this.form.get('dueDate').value),
+            paymentMethod: this.form.get('paymentMethod').value,
+            monthlyPayment: this.form.get('monthlyPayment').value,
+            automaticPayment: this.form.get('automaticPayment').value,
+            serviceId: this.form.get('service').value,
+        };
+
+        // Adapt subscription Object
         this.subscriptionsService.createSubscriptions(this.subscription).pipe(
             catchError(() => {
                 this.showError = true;
                 return of();
             })
-        ).subscribe(()=> this.router.navigate(["/subscriptions"]));
+        ).subscribe(() => this.router.navigate(["/subscriptions"]));
     }
 
-    ngOnInit() {
-        this.subscriptionsService.getSubscription(this.activatedRoute.snapshot.params.uuid)
-             .subscribe((subscription) => { this.subscription = subscription });
-
-        this.servicesService.getServices()
-            .subscribe((services) => { this.services = services });
-
-        console.log(this.services);
-
-        this.buildForm();
+    submitDeleteSubscription() {
+        this.subscriptionsService.deleteSubscription(this.subscription).pipe(
+            catchError(() => {
+                this.showError = true;
+                return of();
+            })
+        ).subscribe(() => this.router.navigate(["/subscriptions"]));
     }
 }

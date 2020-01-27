@@ -1,5 +1,13 @@
 <app-header></app-header>
 <div class="container">
-    <div><h1>{{user.firstName}} {{user.lastName}}</h1></div>
+    <div class="horizontal-align">
+        <h1>{{user.firstName}} {{user.lastName}}</h1>
+        <div class="button" (click)="submitEditProfile()">Save changes</div>
+    </div>
+    <div></div>
     <app-row [rows]= "rows"></app-row>
+    <div class="row vertical-align">
+        <div class="col-xs-4"><b>Goal</b></div>
+        <input type="number" step="any" min="0" placeholder="Enter subscription goal" class="row-spacing inputEditGoal" [(ngModel)]="user.goal"><span>€ / month</span> <!--  -->
+    </div>
 </div>

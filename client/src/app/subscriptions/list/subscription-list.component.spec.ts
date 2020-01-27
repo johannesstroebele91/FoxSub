@@ -22,7 +22,7 @@ describe('SubscriptionListComponent', () => {
         fixture = TestBed.createComponent(SubscriptionListComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
-    })
+    });
 
     describe('ngOnInit', () => {
         it('should fetch and set subscriptions', () => {
@@ -34,4 +34,4 @@ describe('SubscriptionListComponent', () => {
             expect(component.subscriptions).toEqual([{ uuid: 'test' }])
         })
     })
-})
+});

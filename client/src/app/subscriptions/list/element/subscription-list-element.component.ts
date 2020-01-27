@@ -1,17 +1,20 @@
-import {Component, Input} from '@angular/core';
-import {Subscription} from "../../../../shared/models/Subscription";
+import {Component, Input, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
+import {Subscription} from "../../../../shared/models/Subscription";
+import {DateFormatter} from "../../../../shared/utility/dateFormatter";
 
 @Component({
     selector: 'app-subscription-list-expansion',
     templateUrl: './subscription-list-element.component.html',
     styleUrls: ['./subscription-list-element.component.scss']
 })
-export class SubscriptionListElementComponent {
+export class SubscriptionListElementComponent implements OnInit{
 
     @Input() subscription: Subscription;
 
     isExpanded: boolean = false;
+
+    dueDateFormatted: string;
 
     constructor(private router: Router){}
 
@@ -20,7 +23,12 @@ export class SubscriptionListElementComponent {
     }
     
     clickEdit(){
-        console.log(this.subscription);
+        // redirect to the respective subscription based on the uuid
         this.router.navigate(["/subscriptions/edit/" + this.subscription.uuid])
+    }
+
+    ngOnInit(): void {
+        // Format due date
+        this.dueDateFormatted = DateFormatter.formatDateFromDB(this.subscription.dueDate);
     }
 }

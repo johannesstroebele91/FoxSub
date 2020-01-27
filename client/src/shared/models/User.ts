@@ -1,3 +1,5 @@
+import {DateFormatted} from "./DateFormatted";
+
 export interface User {
     id?: string;
 
@@ -9,9 +11,9 @@ export interface User {
 
     goal?: number;
 
-    montlyCumulatedPayment?: number;
+    monthlyCumulatedPayment?: number;
 
-    nextDueDate?: number;
+    dueDate?: DateFormatted;
 
     subscriptionCounter?: number;
 }

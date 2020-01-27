@@ -1,3 +1,12 @@
+// General
+.general-information {
+    margin-bottom: 30px;
+}
+.text-spacing {
+    margin-bottom: 12px;
+}
+
+// Chart
 ::ng-deep .legend-title {
     margin-top: 30px;
     width: 80px;
@@ -7,18 +16,4 @@
 }
 ::ng-deep .bar-chart{
     width: 700px !important;
-}
-.general-information {
-    margin-bottom: 30px;
-}
-.goal-edit {
-    display: flex;
-    align-items: stretch;
-}
-.goal-edit div {
-    margin-bottom: 12px;
-}
-.goal-edit div:first-child {
-    line-height: 26px;
-    margin-right: 12px;
 }
