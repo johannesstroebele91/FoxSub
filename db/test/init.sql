@@ -1,7 +1,7 @@
 CREATE DATABASE
-IF NOT EXISTS `fabulous-fox-dev`;
+IF NOT EXISTS `fabulous-fox-test`;
 
-USE `fabulous-fox-dev`;
+USE `fabulous-fox-test`;
 
 CREATE TABLE
 IF NOT EXISTS users
@@ -94,19 +94,22 @@ VALUES
   (UUID(), 'Entertainment'),
   (UUID(), 'Productivity'),
   (UUID(), 'Games'),
-  (UUID(), 'Others')
+  (UUID(), 'Others');
 
 INSERT INTO users
-  (id, firstName, lastName, email, password, goal)
-VALUES( '129f7f2c-9a8a-4e63-94a1-cc3bd2f8cc7a', 'Axel', 'Fotz', 'axel.fotz@internetlegende.de', 'admin123', 0);
+VALUES 
+('129f7f2c-9a8a-4e63-94a1-cc3bd2f8cc7a', 'Axel', 'Fotz', 'axel.fotz@internetlegende.de', 'admin123', 0);
 
 
 INSERT INTO services
 VALUES
-  (UUID(), 'Netflix', '', 'Entertainment'),
-  (UUID(), 'Spotify', '', 'Entertainment'),
-  (UUID(), 'Runescape', '', 'Games'),
-  (UUID(), 'World of Warcraft', '', 'Games'),
-  (UUID(), '1Password', '', 'Others'),
-  (UUID(), 'Shift', '', 'Productivity'),
-  (UUID(), 'To-Do List', '', 'Productivity');
+  ('129f7f2c-9a8a-4e63-94a1-cc3bd2f8cc7b', 'Netflix', '', 'Entertainment');
+
+INSERT INTO subscriptions
+  (uuid, cost, month, day, monthlyPayment, paymentMethod, automaticPayment, serviceId, userId)
+VALUES 
+  ('129f7f2c-9a8a-4e63-94a1-cc3bd2f8cc7c', 2,1, 1,1,'Paypal',1,'129f7f2c-9a8a-4e63-94a1-cc3bd2f8cc7b','129f7f2c-9a8a-4e63-94a1-cc3bd2f8cc7a');
+
+INSERT INTO sessions
+VALUES
+  ('129f7f2c-9a8a-4e63-94a1-cc3bd2f8cc7d', '129f7f2c-9a8a-4e63-94a1-cc3bd2f8cc7a');
