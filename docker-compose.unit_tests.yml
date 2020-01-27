@@ -1,12 +1,12 @@
 version: "3"
 
 services:
-  frontend:
+  frontend_unit:
     container_name: frontend_unit_tests
     build:
       context: ./client
       dockerfile: Dockerfile_unit
-  db:
+  db_unit:
     image: mariadb
     container_name: db_unit_tests
     environment:
@@ -19,17 +19,18 @@ services:
       MYSQL_ROOT_PASSWORD: 'password'
     ports:
       # <Port exposed> : < MySQL Port running inside container>
-      - '3307:3306'
+      - '3306:3306'
+    expose:
+      - '3306'
     command: --init-file /data/application/init.sql
     volumes:
       - ./db/test/init.sql:/data/application/init.sql
-     
-  backend:
+  backend_unit:
     container_name: backend_unit_tests
     depends_on:
-      - db
+      - db_unit
     build:
       context: ./server
       dockerfile: Dockerfile_unit
     environment:
-      MARIA_DB: root:password@tcp(db:3306)/fabulous-fox-test 
+      MARIA_DB: root:password@tcp(db_unit:3306)/fabulous-fox-test 

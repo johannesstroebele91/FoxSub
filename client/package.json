@@ -9,7 +9,7 @@
     "build": "webpack",
     "test": "karma start src/karma.conf.js",
     "test:webdriver": "webdriver-manager update && webdriver-manager start",
-    "test:e2e": "protractor e2e/protractor.conf.js"
+    "test:e2e": "npm run tsc && protractor e2e/protractor.conf.js"
   },
   "keywords": [],
   "author": "",
@@ -32,14 +32,15 @@
     "karma-sourcemap-loader": "^0.3.7",
     "karma-spec-reporter": "0.0.32",
     "karma-webpack": "^4.0.2",
-    "node-sass": "^4.13.1",
-    "protractor": "^5.4.2",
+    "node-sass": "^4.13.0",
+    "protractor": "5.4.2",
     "raw-loader": "1.0.0",
     "sass-loader": "^8.0.0",
     "sass-resources-loader": "^2.0.1",
     "source-map-loader": "^0.2.4",
     "ts-loader": "^6.2.1",
     "typescript": "3.6.4",
+    "webdriverio": "^5.18.6",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.9.0"

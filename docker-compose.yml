@@ -14,10 +14,12 @@ services:
   frontend:
     build:
       context: ./client
+      dockerfile: Dockerfile
 
   backend:
     build:
       context: ./server
+      dockerfile: Dockerfile
     depends_on:
         - db
     environment:
@@ -30,10 +32,9 @@ services:
       MYSQL_USER: 'user'
       MYSQL_PASSWORD: 'password'
       MYSQL_ROOT_PASSWORD: 'password'
-    command: --init-file /data/application/init.sql
     volumes:
       - my-db:/data/mysql
-      - ./db/prod/init.sql:/data/application/init.sql
+      - ./db/prod:/docker-entrypoint-initdb.d
 
 volumes:
   my-db:

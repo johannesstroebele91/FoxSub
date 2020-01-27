@@ -21,7 +21,7 @@ func createDBConnection() *sqlx.DB {
 	dbIP := utility.GetEnv("MARIA_DB", "root:password@tcp(127.0.0.1:3306)/fabulous-fox")
 
 	fmt.Println(dbIP)
-	db, err := retry(10, time.Second*5, func() (*sqlx.DB, error) {
+	db, err := retry(2, time.Second*5, func() (*sqlx.DB, error) {
 		dbConnection, dbConnectionError := sqlx.Connect("mysql", dbIP)
 		if dbConnectionError != nil {
 			log.Println("Retry db connection", dbIP)
