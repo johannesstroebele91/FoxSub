@@ -2,6 +2,8 @@ import {getTestBed, TestBed} from "@angular/core/testing";
 import {UserService} from "./user.service";
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import {User} from "../models/User";
+import {not} from "rxjs/internal-compatibility";
+import {Subscription} from "rxjs";
 
 describe("Testing the user Service", () => {
     let injector: TestBed;
@@ -32,17 +34,16 @@ describe("Testing the user Service", () => {
         req.flush(dummyUserResponse);
     });
 
+    it('editUser() should put and return data', () => {
+        service.editSubscriptionGoal(dummyUserResponse).subscribe((res) => {});
+
+        const req = httpMock.expectOne('/api/v1/user/goal');
+        expect(req.request.method).toBe('PUT');
+        req.flush({ msg: 'success' });
+    });
+
     afterEach(() => {
         httpMock.verify();
     });
 
-    it('editUser() should put and return data', () => {
-        service.editSubscriptionGoal(dummyUserResponse).subscribe((res) => {
-            expect(res).toEqual({  });
-        });
-
-        const req = httpMock.expectOne('https://someUrl.com/association/');
-        expect(req.request.method).toBe('POST');
-        req.flush({ msg: 'success' });
-    });
 });
