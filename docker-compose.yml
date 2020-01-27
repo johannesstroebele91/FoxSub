@@ -21,7 +21,7 @@ services:
     depends_on:
         - db
     environment:
-      - MARIA_DB=root:password@tcp(db:3306)/fabulous-fox
+      MARIA_DB: root:password@tcp(db:3306)/fabulous-fox
     
   db:
     image: mariadb
@@ -30,9 +30,10 @@ services:
       MYSQL_USER: 'user'
       MYSQL_PASSWORD: 'password'
       MYSQL_ROOT_PASSWORD: 'password'
+    command: --init-file /data/application/init.sql
     volumes:
       - my-db:/data/mysql
-      - ./db/prod:/docker-entrypoint-initdb.d
+      - ./db/prod/init.sql:/data/application/init.sql
 
 volumes:
   my-db:
