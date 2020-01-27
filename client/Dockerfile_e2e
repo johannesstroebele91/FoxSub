@@ -1,0 +1,25 @@
+FROM node
+
+RUN set -eux \
+    && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list \
+    && wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends \
+        google-chrome-stable 
+
+WORKDIR /app
+
+ENV PATH /app/node_modules/.bin:$PATH
+
+COPY package.json /app/package.json
+RUN npm install
+
+COPY . /app
+
+## COPY ./wait-for-it.sh /usr/wait-for-it.sh
+## RUN chmod +x /usr/wait-for-it.sh
+
+ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.2.1/wait /wait
+RUN chmod +x /wait
+
+CMD /wait && npm run test:e2e
