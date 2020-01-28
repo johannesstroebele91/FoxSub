@@ -6,6 +6,7 @@ This project was developed for the course "Mobile Web Application" of the Stuttg
 
 ## HowToRun
 ``` $ docker-compose build && $ docker-compose up ```
+
 Fronend: Terminal "npm start"
 Dev Docker (just mariaDB): Terminal 1) Navigate to root 2) "docker-compose -f docker-compose.dev.yml up"
 Backend: Terminal 1) Navigate to server 2) "go build fabulous-fox" 3) "./fabulous-fox"
